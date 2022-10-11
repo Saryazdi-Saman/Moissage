@@ -9,7 +9,9 @@ import SwiftUI
 
 struct LoginView: View {
     
-    @EnvironmentObject var appManager : AppManager
+    @StateObject var viewModel = LoginViewModelImpl(
+        service: LoginServiceImpl()
+    )
     
     @State var email : String = ""
     @State var password : String = ""
@@ -18,11 +20,11 @@ struct LoginView: View {
         NavigationView{
             VStack(spacing: 16) {
                 VStack(spacing: 16) {
-                    InputTextFieldView(text: $email,
+                    InputTextFieldView(text: $viewModel.credentials.email,
                                        placeHolder: "Email",
                                        keyboardType: .emailAddress)
                     
-                    PasswordField(text: $password,
+                    PasswordField(text: $viewModel.credentials.password,
                                   placeHolder: "Password")
                 }
                 HStack{
@@ -37,14 +39,13 @@ struct LoginView: View {
                 
                 VStack(spacing: 16) {
                     ButtonView(title: "Login") {
-                        guard !email.isEmpty, !password.isEmpty else{
-                            return
-                        }
-                        appManager.signIn(email: email,
-                                          password: password)
+//                        guard !email.isEmpty, !password.isEmpty else{
+//                            return
+//                        }
+                        viewModel.login()
                     }
                     
-                    NavigationLink(destination: RegistrationView().environmentObject(appManager)) {
+                    NavigationLink(destination: RegistrationView()) {
                         RoundedRectangle(cornerRadius: 12)
                             .stroke(Color(.systemBlue), lineWidth: 4)
                             .frame(width: UIScreen.main.bounds.size.width - 40,
@@ -58,6 +59,19 @@ struct LoginView: View {
                 }
             }
             .padding(.horizontal, 15)
+            .alert(isPresented: $viewModel.hasError,
+                           content: {
+                            
+                            if case .failed(let error) = viewModel.state {
+                                return Alert(
+                                    title: Text("Error"),
+                                    message: Text(error.localizedDescription))
+                            } else {
+                                return Alert(
+                                    title: Text("Error"),
+                                    message: Text("Something went wrong"))
+                            }
+                     })
         }
     }
 }

@@ -8,8 +8,21 @@
 import SwiftUI
 
 struct MainView: View {
+    @EnvironmentObject var appManager : AppManager
+    
     var body: some View {
-        Text("We Are Logged In")
+        Button {
+            appManager.logout()
+        } label: {
+            RoundedRectangle(cornerRadius: 10)
+                .frame(width: 250, height: 50)
+                .overlay (
+                    Text("Logout")
+                        .foregroundColor(.white)
+                        .fontWeight(.bold)
+                )
+        }
+
     }
 }
 

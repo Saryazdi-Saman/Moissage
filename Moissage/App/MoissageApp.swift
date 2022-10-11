@@ -21,22 +21,27 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct MoissageApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    @StateObject var appManager = AppManager()
+    @StateObject var sessionService = AppManager()
     
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                
-                if appManager.signedIn {
+                if sessionService.signedIn {
                     MainView()
-                    
-                } else {
+                        .environmentObject(sessionService)
+                } else{
                     LoginView()
-                        .environmentObject(appManager)
                 }
+                //                if appManager.signedIn {
+                //                    MainView()
+                //
+                //                } else {
+                //                    LoginView()
+                //                        .environmentObject(appManager)
+                //                }
             }
             .onAppear{
-                appManager.signedIn = appManager.isSignedIn
+                sessionService.signedIn = sessionService.isSignedIn
             }
             
         }

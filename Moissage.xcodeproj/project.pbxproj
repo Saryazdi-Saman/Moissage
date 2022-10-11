@@ -24,6 +24,10 @@
 		F2D3596328F513DE00724B4B /* AppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3596228F513DE00724B4B /* AppManager.swift */; };
 		F2E9478928F54B8F009B8A3F /* ForgotPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E9478828F54B8F009B8A3F /* ForgotPasswordViewModel.swift */; };
 		F2E9478C28F54CA0009B8A3F /* ForgotPasswordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E9478B28F54CA0009B8A3F /* ForgotPasswordService.swift */; };
+		F2E9479028F5584F009B8A3F /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E9478F28F5584F009B8A3F /* LoginViewModel.swift */; };
+		F2E9479328F5588C009B8A3F /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E9479228F5588C009B8A3F /* LoginService.swift */; };
+		F2E9479628F55A3A009B8A3F /* RegistrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E9479528F55A3A009B8A3F /* RegistrationService.swift */; };
+		F2E9479928F55A72009B8A3F /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E9479828F55A72009B8A3F /* RegistrationViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +47,10 @@
 		F2D3596228F513DE00724B4B /* AppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppManager.swift; sourceTree = "<group>"; };
 		F2E9478828F54B8F009B8A3F /* ForgotPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewModel.swift; sourceTree = "<group>"; };
 		F2E9478B28F54CA0009B8A3F /* ForgotPasswordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordService.swift; sourceTree = "<group>"; };
+		F2E9478F28F5584F009B8A3F /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		F2E9479228F5588C009B8A3F /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
+		F2E9479528F55A3A009B8A3F /* RegistrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationService.swift; sourceTree = "<group>"; };
+		F2E9479828F55A72009B8A3F /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +126,8 @@
 		F2D3594328F4DAA000724B4B /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				F2E9479128F55864009B8A3F /* Service */,
+				F2E9478E28F5583B009B8A3F /* ViewModel */,
 				F2D3594428F4DAB500724B4B /* LoginView.swift */,
 			);
 			path = Login;
@@ -137,6 +147,8 @@
 		F2D3595428F4E51000724B4B /* Registration */ = {
 			isa = PBXGroup;
 			children = (
+				F2E9479428F55A1E009B8A3F /* Service */,
+				F2E9479728F55A4B009B8A3F /* ViewModel */,
 				F2D3595528F4E54800724B4B /* RegistrationView.swift */,
 			);
 			path = Registration;
@@ -182,6 +194,38 @@
 				F2E9478B28F54CA0009B8A3F /* ForgotPasswordService.swift */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		F2E9478E28F5583B009B8A3F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				F2E9478F28F5584F009B8A3F /* LoginViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		F2E9479128F55864009B8A3F /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				F2E9479228F5588C009B8A3F /* LoginService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		F2E9479428F55A1E009B8A3F /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				F2E9479528F55A3A009B8A3F /* RegistrationService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		F2E9479728F55A4B009B8A3F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				F2E9479828F55A72009B8A3F /* RegistrationViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -263,6 +307,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F2D3594528F4DAB500724B4B /* LoginView.swift in Sources */,
+				F2E9479628F55A3A009B8A3F /* RegistrationService.swift in Sources */,
 				F2D3596028F4FF5000724B4B /* MainView.swift in Sources */,
 				F2D3595928F4E93800724B4B /* ForgotPasswordView.swift in Sources */,
 				F2E9478C28F54CA0009B8A3F /* ForgotPasswordService.swift in Sources */,
@@ -270,10 +315,13 @@
 				F2D3593428F4DA6600724B4B /* MoissageApp.swift in Sources */,
 				F2D3594F28F4E29E00724B4B /* ButtonView.swift in Sources */,
 				F2E9478928F54B8F009B8A3F /* ForgotPasswordViewModel.swift in Sources */,
+				F2E9479028F5584F009B8A3F /* LoginViewModel.swift in Sources */,
 				F2D3595628F4E54800724B4B /* RegistrationView.swift in Sources */,
 				F2D3595328F4E35C00724B4B /* PasswordField.swift in Sources */,
 				F2D3595B28F4E9F900724B4B /* DismissButton.swift in Sources */,
+				F2E9479928F55A72009B8A3F /* RegistrationViewModel.swift in Sources */,
 				F2D3595128F4E33800724B4B /* InputTextFieldView.swift in Sources */,
+				F2E9479328F5588C009B8A3F /* LoginService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

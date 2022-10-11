@@ -8,64 +8,67 @@
 import SwiftUI
 
 struct RegistrationView: View {
-    @EnvironmentObject var appManager : AppManager
+    @StateObject private var viewModel = RegistrationViewModelImpl(
+            service: RegistrationServiceImpl()
+        )
     
     var body: some View {
         NavigationView{
-                VStack(alignment: .leading, spacing: 10){
+                VStack(spacing: 10){
                     ScrollView{
-                        InputTextFieldView(text: $appManager.newUser.email,
+                        InputTextFieldView(text: $viewModel.newUser.email,
                                            placeHolder: "Email",
                                            keyboardType: .emailAddress)
                         .padding(.bottom,10)
-                        PasswordField(text: $appManager.newUser.password,
+                        PasswordField(text: $viewModel.newUser.password,
                                       placeHolder: "Password")
                     
                         .padding(.bottom,10)
-                        InputTextFieldView(text: $appManager.newUser.firstName,
+                        InputTextFieldView(text: $viewModel.newUser.firstName,
                                            placeHolder: "First Name",
                                            keyboardType: .alphabet)
                         .padding(.bottom,10)
-                        InputTextFieldView(text: $appManager.newUser.lastName,
+                        InputTextFieldView(text: $viewModel.newUser.lastName,
                                            placeHolder: "Last Name",
                                            keyboardType: .alphabet)
                         .padding(.bottom,10)
-                        InputTextFieldView(text: $appManager.newUser.phoneNumber,
+                        InputTextFieldView(text: $viewModel.newUser.phoneNumber,
                                            placeHolder: "Phone Number: (xxx) xxx - xxxx",
                                            keyboardType: .numberPad)
                         .padding(.bottom,10)
                         ButtonView(title: "Sign up") {
-                            guard !appManager.newUser.email.isEmpty,
-                                  !appManager.newUser.password.isEmpty,
-                                  !appManager.newUser.firstName.isEmpty,
-                                  !appManager.newUser.lastName.isEmpty,
-                                  !appManager.newUser.phoneNumber.isEmpty else{
-                                return
-                            }
-                            appManager.creatAccount()
+//                            guard !viewModel.newUser.email.isEmpty,
+//                                  !viewModel.newUser.password.isEmpty,
+//                                  !viewModel.newUser.firstName.isEmpty,
+//                                  !viewModel.newUser.lastName.isEmpty,
+//                                  !viewModel.newUser.phoneNumber.isEmpty else{
+//                                return
+//                            }
+                            viewModel.create()
                         }
                     }
-                    
-                    
-                
-                
                 }
                 .padding(15)
-//                .alert(isPresented: $viewModel.hasError) {
-//                    if case .failed(let error) = viewModel.state{
-//                        return Alert(title: Text("Error"),
-//                                     message: Text(error.localizedDescription))
-//                    } else {
-//                        return Alert(title: Text("Error"),
-//                                     message: Text("Something went wrong"))
-//                    }
-//                }
+                .alert(isPresented: $viewModel.hasError,
+                        content: {
+                         
+                         if case .failed(let error) = viewModel.state {
+                             return Alert(
+                                 title: Text("Error"),
+                                 message: Text(error.localizedDescription))
+                         } else {
+                             return Alert(
+                                 title: Text("Error"),
+                                 message: Text("Something went wrong"))
+                         }
+                 })
+            
         }
     }
 }
 
 struct RegistrationView_Previews: PreviewProvider {
     static var previews: some View {
-        RegistrationView().environmentObject(AppManager())
+        RegistrationView()
     }
 }
