@@ -8,46 +8,45 @@
 import SwiftUI
 
 struct RegistrationView: View {
-//    @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var appManager : AppManager
     
-    @State var email : String = ""
-    @State var password : String = ""
-    @State var firstName : String = ""
-    @State var lastName : String = ""
-    @State var phoneNumber : String = ""
     var body: some View {
         NavigationView{
-                VStack(alignment: .leading, spacing: 16){
-                    Spacer()
-                    Text("CREAT ACCOUNT")
-                        .font(.title)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.primary)
-                    VStack(spacing: 16){
-                        InputTextFieldView(text: $email,
+                VStack(alignment: .leading, spacing: 10){
+                    ScrollView{
+                        InputTextFieldView(text: $appManager.newUser.email,
                                            placeHolder: "Email",
                                            keyboardType: .emailAddress)
-                        PasswordField(text: $password, placeHolder: "Password")
-                    }
-                    Divider()
-                    VStack{
-                        InputTextFieldView(text: $firstName,
+                        .padding(.bottom,10)
+                        PasswordField(text: $appManager.newUser.password,
+                                      placeHolder: "Password")
+                    
+                        .padding(.bottom,10)
+                        InputTextFieldView(text: $appManager.newUser.firstName,
                                            placeHolder: "First Name",
-                                           keyboardType: .default)
-                        .padding(.bottom,5)
-                        InputTextFieldView(text: $lastName,
+                                           keyboardType: .alphabet)
+                        .padding(.bottom,10)
+                        InputTextFieldView(text: $appManager.newUser.lastName,
                                            placeHolder: "Last Name",
-                                           keyboardType: .default)
-                        .padding(.bottom,5)
-                        InputTextFieldView(text: $phoneNumber,
+                                           keyboardType: .alphabet)
+                        .padding(.bottom,10)
+                        InputTextFieldView(text: $appManager.newUser.phoneNumber,
                                            placeHolder: "Phone Number: (xxx) xxx - xxxx",
                                            keyboardType: .numberPad)
-                        .padding(.bottom,5)
+                        .padding(.bottom,10)
+                        ButtonView(title: "Sign up") {
+                            guard !appManager.newUser.email.isEmpty,
+                                  !appManager.newUser.password.isEmpty,
+                                  !appManager.newUser.firstName.isEmpty,
+                                  !appManager.newUser.lastName.isEmpty,
+                                  !appManager.newUser.phoneNumber.isEmpty else{
+                                return
+                            }
+                            appManager.creatAccount()
+                        }
                     }
                     
-                    ButtonView(title: "Sign up") {
-//                        viewModel.create()
-                    }
+                    
                 
                 
                 }
@@ -67,6 +66,6 @@ struct RegistrationView: View {
 
 struct RegistrationView_Previews: PreviewProvider {
     static var previews: some View {
-        RegistrationView()
+        RegistrationView().environmentObject(AppManager())
     }
 }

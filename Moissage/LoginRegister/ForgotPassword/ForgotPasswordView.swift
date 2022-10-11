@@ -9,30 +9,23 @@ import SwiftUI
 
 struct ForgotPasswordView: View {
     @Environment(\.presentationMode) var presentationMode
-    @State var email : String
+    @StateObject var viewModel = ForgotPasswordViewModelImp(service: ForgotPasswordServiceImp())
+
     var body: some View {
         NavigationView{
-            VStack (alignment: .leading, spacing: 16){
-//                DismissButton()
-                Spacer()
-                InputTextFieldView(text: $email, placeHolder: "Email", keyboardType: .emailAddress)
+            VStack (spacing: 16){
+                InputTextFieldView(text: $viewModel.email, placeHolder: "Email", keyboardType: .emailAddress)
                 ButtonView(title: "Send Reset Password Link") {
                     presentationMode.wrappedValue.dismiss()
                 }
-                Spacer()
             }
             .padding(15)
-//            .toolbar {
-//                ToolbarItem(placement: ToolbarItemPlacement.navigationBarLeading){
-//                    
-//                }
-//            }
         }
     }
 }
 
 struct ForgotPasswordView_Previews: PreviewProvider {
     static var previews: some View {
-        ForgotPasswordView(email: "")
+        ForgotPasswordView()
     }
 }

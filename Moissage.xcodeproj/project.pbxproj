@@ -21,6 +21,9 @@
 		F2D3595B28F4E9F900724B4B /* DismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3595A28F4E9F900724B4B /* DismissButton.swift */; };
 		F2D3595D28F4F19A00724B4B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F2D3595C28F4F19A00724B4B /* GoogleService-Info.plist */; };
 		F2D3596028F4FF5000724B4B /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3595F28F4FF5000724B4B /* MainView.swift */; };
+		F2D3596328F513DE00724B4B /* AppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3596228F513DE00724B4B /* AppManager.swift */; };
+		F2E9478928F54B8F009B8A3F /* ForgotPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E9478828F54B8F009B8A3F /* ForgotPasswordViewModel.swift */; };
+		F2E9478C28F54CA0009B8A3F /* ForgotPasswordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E9478B28F54CA0009B8A3F /* ForgotPasswordService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +40,9 @@
 		F2D3595A28F4E9F900724B4B /* DismissButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissButton.swift; sourceTree = "<group>"; };
 		F2D3595C28F4F19A00724B4B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F2D3595F28F4FF5000724B4B /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		F2D3596228F513DE00724B4B /* AppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppManager.swift; sourceTree = "<group>"; };
+		F2E9478828F54B8F009B8A3F /* ForgotPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewModel.swift; sourceTree = "<group>"; };
+		F2E9478B28F54CA0009B8A3F /* ForgotPasswordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +78,7 @@
 		F2D3593228F4DA6600724B4B /* Moissage */ = {
 			isa = PBXGroup;
 			children = (
+				F2D3596128F513BB00724B4B /* Manager */,
 				F2D3595E28F4FF3A00724B4B /* HomeView */,
 				F2D3594228F4DA9700724B4B /* LoginRegister */,
 				F2D3594128F4DA8800724B4B /* App */,
@@ -139,6 +146,8 @@
 			isa = PBXGroup;
 			children = (
 				F2D3595828F4E93800724B4B /* ForgotPasswordView.swift */,
+				F2E9478A28F54C8C009B8A3F /* Service */,
+				F2E9478728F54B77009B8A3F /* ViewModel */,
 			);
 			path = ForgotPassword;
 			sourceTree = "<group>";
@@ -149,6 +158,30 @@
 				F2D3595F28F4FF5000724B4B /* MainView.swift */,
 			);
 			path = HomeView;
+			sourceTree = "<group>";
+		};
+		F2D3596128F513BB00724B4B /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				F2D3596228F513DE00724B4B /* AppManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		F2E9478728F54B77009B8A3F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				F2E9478828F54B8F009B8A3F /* ForgotPasswordViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		F2E9478A28F54C8C009B8A3F /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				F2E9478B28F54CA0009B8A3F /* ForgotPasswordService.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -232,8 +265,11 @@
 				F2D3594528F4DAB500724B4B /* LoginView.swift in Sources */,
 				F2D3596028F4FF5000724B4B /* MainView.swift in Sources */,
 				F2D3595928F4E93800724B4B /* ForgotPasswordView.swift in Sources */,
+				F2E9478C28F54CA0009B8A3F /* ForgotPasswordService.swift in Sources */,
+				F2D3596328F513DE00724B4B /* AppManager.swift in Sources */,
 				F2D3593428F4DA6600724B4B /* MoissageApp.swift in Sources */,
 				F2D3594F28F4E29E00724B4B /* ButtonView.swift in Sources */,
+				F2E9478928F54B8F009B8A3F /* ForgotPasswordViewModel.swift in Sources */,
 				F2D3595628F4E54800724B4B /* RegistrationView.swift in Sources */,
 				F2D3595328F4E35C00724B4B /* PasswordField.swift in Sources */,
 				F2D3595B28F4E9F900724B4B /* DismissButton.swift in Sources */,

@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct LoginView: View {
+    
+    @EnvironmentObject var appManager : AppManager
+    
     @State var email : String = ""
     @State var password : String = ""
-    @State var showForgotPassword : Bool = false
-    @State var showRegistration : Bool = false
+    
     var body: some View {
         NavigationView{
             VStack(spacing: 16) {
@@ -26,22 +28,29 @@ struct LoginView: View {
                 HStack{
                     Spacer()
                     NavigationLink {
-                        ForgotPasswordView(email: "")
+                        ForgotPasswordView()
                     } label: {
                         Text("Forgot Password")
                             .fontWeight(.semibold)
                     }
                 }
+                
                 VStack(spacing: 16) {
                     ButtonView(title: "Login") {
-                        
+                        guard !email.isEmpty, !password.isEmpty else{
+                            return
+                        }
+                        appManager.signIn(email: email,
+                                          password: password)
                     }
-                    NavigationLink(destination: RegistrationView()) {
+                    
+                    NavigationLink(destination: RegistrationView().environmentObject(appManager)) {
                         RoundedRectangle(cornerRadius: 12)
                             .stroke(Color(.systemBlue), lineWidth: 4)
-                            .frame(maxWidth: .infinity, maxHeight: 50)
+                            .frame(width: UIScreen.main.bounds.size.width - 40,
+                                   height: 50)
                             .overlay (
-                                Text("Register")
+                                Text("Creat Account")
                                     .fontWeight(.bold)
                                     
                             )

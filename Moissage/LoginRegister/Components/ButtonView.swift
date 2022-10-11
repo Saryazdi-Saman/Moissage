@@ -34,8 +34,8 @@ struct ButtonView: View {
         Button(action: handler) {
             Text(title)
                 .fontWeight(.bold)
-                .frame(maxWidth: .infinity,
-                       maxHeight: 50)
+                .frame(width: UIScreen.main.bounds.size.width - 40,
+                       height: 50)
                 .background(background)
                 .cornerRadius(12)
                 .foregroundColor(forground)

@@ -13,8 +13,8 @@ struct PasswordField: View {
     
     var body: some View {
         SecureField(placeHolder, text: $text)
-            .frame(maxWidth: .infinity,
-                   maxHeight: 50)
+            .frame(width: UIScreen.main.bounds.size.width - 40,
+                   height: 50)
             .padding(.leading, 30)
             .background(Color(.secondarySystemBackground))
             .cornerRadius(12)
