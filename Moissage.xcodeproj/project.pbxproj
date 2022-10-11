@@ -21,13 +21,20 @@
 		F2D3595B28F4E9F900724B4B /* DismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3595A28F4E9F900724B4B /* DismissButton.swift */; };
 		F2D3595D28F4F19A00724B4B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F2D3595C28F4F19A00724B4B /* GoogleService-Info.plist */; };
 		F2D3596028F4FF5000724B4B /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3595F28F4FF5000724B4B /* MainView.swift */; };
-		F2D3596328F513DE00724B4B /* AppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3596228F513DE00724B4B /* AppManager.swift */; };
+		F2D3596328F513DE00724B4B /* SessionManagerImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3596228F513DE00724B4B /* SessionManagerImp.swift */; };
 		F2E9478928F54B8F009B8A3F /* ForgotPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E9478828F54B8F009B8A3F /* ForgotPasswordViewModel.swift */; };
 		F2E9478C28F54CA0009B8A3F /* ForgotPasswordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E9478B28F54CA0009B8A3F /* ForgotPasswordService.swift */; };
 		F2E9479028F5584F009B8A3F /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E9478F28F5584F009B8A3F /* LoginViewModel.swift */; };
 		F2E9479328F5588C009B8A3F /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E9479228F5588C009B8A3F /* LoginService.swift */; };
 		F2E9479628F55A3A009B8A3F /* RegistrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E9479528F55A3A009B8A3F /* RegistrationService.swift */; };
 		F2E9479928F55A72009B8A3F /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E9479828F55A72009B8A3F /* RegistrationViewModel.swift */; };
+		F2E9479B28F58203009B8A3F /* AppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E9479A28F58203009B8A3F /* AppManager.swift */; };
+		F2E947A028F5AB74009B8A3F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E9479F28F5AB74009B8A3F /* HomeView.swift */; };
+		F2E947A228F5ABE3009B8A3F /* MapViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E947A128F5ABE3009B8A3F /* MapViewRepresentable.swift */; };
+		F2E947A428F5AED1009B8A3F /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E947A328F5AED1009B8A3F /* LocationManager.swift */; };
+		F2E947A828F5B6B6009B8A3F /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E947A728F5B6B6009B8A3F /* MenuButton.swift */; };
+		F2E947AA28F5BA5F009B8A3F /* MassageTypeSelectionCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E947A928F5BA5F009B8A3F /* MassageTypeSelectionCard.swift */; };
+		F2E947AD28F5BAC3009B8A3F /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E947AC28F5BAC3009B8A3F /* File.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,13 +51,20 @@
 		F2D3595A28F4E9F900724B4B /* DismissButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissButton.swift; sourceTree = "<group>"; };
 		F2D3595C28F4F19A00724B4B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F2D3595F28F4FF5000724B4B /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
-		F2D3596228F513DE00724B4B /* AppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppManager.swift; sourceTree = "<group>"; };
+		F2D3596228F513DE00724B4B /* SessionManagerImp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManagerImp.swift; sourceTree = "<group>"; };
 		F2E9478828F54B8F009B8A3F /* ForgotPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewModel.swift; sourceTree = "<group>"; };
 		F2E9478B28F54CA0009B8A3F /* ForgotPasswordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordService.swift; sourceTree = "<group>"; };
 		F2E9478F28F5584F009B8A3F /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		F2E9479228F5588C009B8A3F /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		F2E9479528F55A3A009B8A3F /* RegistrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationService.swift; sourceTree = "<group>"; };
 		F2E9479828F55A72009B8A3F /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
+		F2E9479A28F58203009B8A3F /* AppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppManager.swift; sourceTree = "<group>"; };
+		F2E9479F28F5AB74009B8A3F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		F2E947A128F5ABE3009B8A3F /* MapViewRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewRepresentable.swift; sourceTree = "<group>"; };
+		F2E947A328F5AED1009B8A3F /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		F2E947A728F5B6B6009B8A3F /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
+		F2E947A928F5BA5F009B8A3F /* MassageTypeSelectionCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MassageTypeSelectionCard.swift; sourceTree = "<group>"; };
+		F2E947AC28F5BAC3009B8A3F /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +100,8 @@
 		F2D3593228F4DA6600724B4B /* Moissage */ = {
 			isa = PBXGroup;
 			children = (
+				F2E947AB28F5BAB3009B8A3F /* Models */,
+				F2E9479C28F5AB4A009B8A3F /* Core */,
 				F2D3596128F513BB00724B4B /* Manager */,
 				F2D3595E28F4FF3A00724B4B /* HomeView */,
 				F2D3594228F4DA9700724B4B /* LoginRegister */,
@@ -175,7 +191,9 @@
 		F2D3596128F513BB00724B4B /* Manager */ = {
 			isa = PBXGroup;
 			children = (
-				F2D3596228F513DE00724B4B /* AppManager.swift */,
+				F2D3596228F513DE00724B4B /* SessionManagerImp.swift */,
+				F2E9479A28F58203009B8A3F /* AppManager.swift */,
+				F2E947A328F5AED1009B8A3F /* LocationManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -226,6 +244,57 @@
 				F2E9479828F55A72009B8A3F /* RegistrationViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		F2E9479C28F5AB4A009B8A3F /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				F2E947A628F5B697009B8A3F /* Components */,
+				F2E947A528F5B5A3009B8A3F /* Home */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		F2E9479D28F5AB52009B8A3F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F2E9479F28F5AB74009B8A3F /* HomeView.swift */,
+				F2E947A128F5ABE3009B8A3F /* MapViewRepresentable.swift */,
+				F2E947A928F5BA5F009B8A3F /* MassageTypeSelectionCard.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F2E9479E28F5AB5A009B8A3F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		F2E947A528F5B5A3009B8A3F /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				F2E9479E28F5AB5A009B8A3F /* ViewModel */,
+				F2E9479D28F5AB52009B8A3F /* View */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		F2E947A628F5B697009B8A3F /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				F2E947A728F5B6B6009B8A3F /* MenuButton.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		F2E947AB28F5BAB3009B8A3F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F2E947AC28F5BAC3009B8A3F /* File.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -308,15 +377,22 @@
 			files = (
 				F2D3594528F4DAB500724B4B /* LoginView.swift in Sources */,
 				F2E9479628F55A3A009B8A3F /* RegistrationService.swift in Sources */,
+				F2E947A828F5B6B6009B8A3F /* MenuButton.swift in Sources */,
 				F2D3596028F4FF5000724B4B /* MainView.swift in Sources */,
+				F2E947AA28F5BA5F009B8A3F /* MassageTypeSelectionCard.swift in Sources */,
 				F2D3595928F4E93800724B4B /* ForgotPasswordView.swift in Sources */,
+				F2E947AD28F5BAC3009B8A3F /* File.swift in Sources */,
 				F2E9478C28F54CA0009B8A3F /* ForgotPasswordService.swift in Sources */,
-				F2D3596328F513DE00724B4B /* AppManager.swift in Sources */,
+				F2D3596328F513DE00724B4B /* SessionManagerImp.swift in Sources */,
 				F2D3593428F4DA6600724B4B /* MoissageApp.swift in Sources */,
 				F2D3594F28F4E29E00724B4B /* ButtonView.swift in Sources */,
 				F2E9478928F54B8F009B8A3F /* ForgotPasswordViewModel.swift in Sources */,
+				F2E947A028F5AB74009B8A3F /* HomeView.swift in Sources */,
+				F2E947A228F5ABE3009B8A3F /* MapViewRepresentable.swift in Sources */,
 				F2E9479028F5584F009B8A3F /* LoginViewModel.swift in Sources */,
+				F2E947A428F5AED1009B8A3F /* LocationManager.swift in Sources */,
 				F2D3595628F4E54800724B4B /* RegistrationView.swift in Sources */,
+				F2E9479B28F58203009B8A3F /* AppManager.swift in Sources */,
 				F2D3595328F4E35C00724B4B /* PasswordField.swift in Sources */,
 				F2D3595B28F4E9F900724B4B /* DismissButton.swift in Sources */,
 				F2E9479928F55A72009B8A3F /* RegistrationViewModel.swift in Sources */,
@@ -452,6 +528,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Moissage/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your Location will be used to find you the closest massage therapist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -481,6 +558,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Moissage/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your Location will be used to find you the closest massage therapist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

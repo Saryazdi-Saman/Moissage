@@ -23,7 +23,7 @@ struct DismissButton: View {
                     .foregroundColor(.primary)
                     
             }
-            .padding()
+            
         }
     }
 }
