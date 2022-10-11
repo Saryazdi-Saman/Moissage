@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>989264236195-59fc39lk6nh0bt66k0jq4li6forr07hm.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.989264236195-59fc39lk6nh0bt66k0jq4li6forr07hm</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDMh_SpOncm-5i_Fm_Jvf7-3A8JeKG6CUA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>989264236195</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>SamanSaryazdi.Moissage</string>
+	<key>PROJECT_ID</key>
+	<string>moissage-a078d</string>
+	<key>STORAGE_BUCKET</key>
+	<string>moissage-a078d.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:989264236195:ios:df4b0bf7b9eb5c0315f916</string>
+</dict>
+</plist>

@@ -11,6 +11,16 @@
 		F2D3593828F4DA6800724B4B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F2D3593728F4DA6800724B4B /* Assets.xcassets */; };
 		F2D3593B28F4DA6800724B4B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F2D3593A28F4DA6800724B4B /* Preview Assets.xcassets */; };
 		F2D3594528F4DAB500724B4B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3594428F4DAB500724B4B /* LoginView.swift */; };
+		F2D3594A28F4E16400724B4B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F2D3594928F4E16400724B4B /* FirebaseAuth */; };
+		F2D3594C28F4E16400724B4B /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F2D3594B28F4E16400724B4B /* FirebaseDatabaseSwift */; };
+		F2D3594F28F4E29E00724B4B /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3594E28F4E29E00724B4B /* ButtonView.swift */; };
+		F2D3595128F4E33800724B4B /* InputTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3595028F4E33800724B4B /* InputTextFieldView.swift */; };
+		F2D3595328F4E35C00724B4B /* PasswordField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3595228F4E35C00724B4B /* PasswordField.swift */; };
+		F2D3595628F4E54800724B4B /* RegistrationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3595528F4E54800724B4B /* RegistrationView.swift */; };
+		F2D3595928F4E93800724B4B /* ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3595828F4E93800724B4B /* ForgotPasswordView.swift */; };
+		F2D3595B28F4E9F900724B4B /* DismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3595A28F4E9F900724B4B /* DismissButton.swift */; };
+		F2D3595D28F4F19A00724B4B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F2D3595C28F4F19A00724B4B /* GoogleService-Info.plist */; };
+		F2D3596028F4FF5000724B4B /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3595F28F4FF5000724B4B /* MainView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +29,14 @@
 		F2D3593728F4DA6800724B4B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F2D3593A28F4DA6800724B4B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		F2D3594428F4DAB500724B4B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		F2D3594E28F4E29E00724B4B /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
+		F2D3595028F4E33800724B4B /* InputTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTextFieldView.swift; sourceTree = "<group>"; };
+		F2D3595228F4E35C00724B4B /* PasswordField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordField.swift; sourceTree = "<group>"; };
+		F2D3595528F4E54800724B4B /* RegistrationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationView.swift; sourceTree = "<group>"; };
+		F2D3595828F4E93800724B4B /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
+		F2D3595A28F4E9F900724B4B /* DismissButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissButton.swift; sourceTree = "<group>"; };
+		F2D3595C28F4F19A00724B4B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F2D3595F28F4FF5000724B4B /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -26,6 +44,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F2D3594C28F4E16400724B4B /* FirebaseDatabaseSwift in Frameworks */,
+				F2D3594A28F4E16400724B4B /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -35,6 +55,7 @@
 		F2D3592728F4DA6600724B4B = {
 			isa = PBXGroup;
 			children = (
+				F2D3595C28F4F19A00724B4B /* GoogleService-Info.plist */,
 				F2D3593228F4DA6600724B4B /* Moissage */,
 				F2D3593128F4DA6600724B4B /* Products */,
 			);
@@ -51,6 +72,7 @@
 		F2D3593228F4DA6600724B4B /* Moissage */ = {
 			isa = PBXGroup;
 			children = (
+				F2D3595E28F4FF3A00724B4B /* HomeView */,
 				F2D3594228F4DA9700724B4B /* LoginRegister */,
 				F2D3594128F4DA8800724B4B /* App */,
 				F2D3593728F4DA6800724B4B /* Assets.xcassets */,
@@ -78,6 +100,9 @@
 		F2D3594228F4DA9700724B4B /* LoginRegister */ = {
 			isa = PBXGroup;
 			children = (
+				F2D3595728F4E92200724B4B /* ForgotPassword */,
+				F2D3595428F4E51000724B4B /* Registration */,
+				F2D3594D28F4E28300724B4B /* Components */,
 				F2D3594328F4DAA000724B4B /* Login */,
 			);
 			path = LoginRegister;
@@ -89,6 +114,41 @@
 				F2D3594428F4DAB500724B4B /* LoginView.swift */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		F2D3594D28F4E28300724B4B /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				F2D3594E28F4E29E00724B4B /* ButtonView.swift */,
+				F2D3595028F4E33800724B4B /* InputTextFieldView.swift */,
+				F2D3595228F4E35C00724B4B /* PasswordField.swift */,
+				F2D3595A28F4E9F900724B4B /* DismissButton.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		F2D3595428F4E51000724B4B /* Registration */ = {
+			isa = PBXGroup;
+			children = (
+				F2D3595528F4E54800724B4B /* RegistrationView.swift */,
+			);
+			path = Registration;
+			sourceTree = "<group>";
+		};
+		F2D3595728F4E92200724B4B /* ForgotPassword */ = {
+			isa = PBXGroup;
+			children = (
+				F2D3595828F4E93800724B4B /* ForgotPasswordView.swift */,
+			);
+			path = ForgotPassword;
+			sourceTree = "<group>";
+		};
+		F2D3595E28F4FF3A00724B4B /* HomeView */ = {
+			isa = PBXGroup;
+			children = (
+				F2D3595F28F4FF5000724B4B /* MainView.swift */,
+			);
+			path = HomeView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -107,6 +167,10 @@
 			dependencies = (
 			);
 			name = Moissage;
+			packageProductDependencies = (
+				F2D3594928F4E16400724B4B /* FirebaseAuth */,
+				F2D3594B28F4E16400724B4B /* FirebaseDatabaseSwift */,
+			);
 			productName = Moissage;
 			productReference = F2D3593028F4DA6600724B4B /* Moissage.app */;
 			productType = "com.apple.product-type.application";
@@ -135,6 +199,9 @@
 				Base,
 			);
 			mainGroup = F2D3592728F4DA6600724B4B;
+			packageReferences = (
+				F2D3594828F4E16400724B4B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = F2D3593128F4DA6600724B4B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -151,6 +218,7 @@
 			files = (
 				F2D3593B28F4DA6800724B4B /* Preview Assets.xcassets in Resources */,
 				F2D3593828F4DA6800724B4B /* Assets.xcassets in Resources */,
+				F2D3595D28F4F19A00724B4B /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -162,7 +230,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				F2D3594528F4DAB500724B4B /* LoginView.swift in Sources */,
+				F2D3596028F4FF5000724B4B /* MainView.swift in Sources */,
+				F2D3595928F4E93800724B4B /* ForgotPasswordView.swift in Sources */,
 				F2D3593428F4DA6600724B4B /* MoissageApp.swift in Sources */,
+				F2D3594F28F4E29E00724B4B /* ButtonView.swift in Sources */,
+				F2D3595628F4E54800724B4B /* RegistrationView.swift in Sources */,
+				F2D3595328F4E35C00724B4B /* PasswordField.swift in Sources */,
+				F2D3595B28F4E9F900724B4B /* DismissButton.swift in Sources */,
+				F2D3595128F4E33800724B4B /* InputTextFieldView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,6 +373,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -326,6 +402,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -361,6 +438,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F2D3594828F4E16400724B4B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F2D3594928F4E16400724B4B /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F2D3594828F4E16400724B4B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		F2D3594B28F4E16400724B4B /* FirebaseDatabaseSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F2D3594828F4E16400724B4B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabaseSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F2D3592828F4DA6600724B4B /* Project object */;
 }
