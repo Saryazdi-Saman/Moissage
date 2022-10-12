@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SaveNewAddress: View {
+    @EnvironmentObject var vm : LocationSearchViewModel
     @State var info : String = ""
     var body: some View {
         VStack(spacing: 10){
@@ -37,7 +38,7 @@ struct SaveNewAddress: View {
                 .background(Color(.systemGray4))
             
             Button {
-                
+                vm.viewState = .noInput
             } label: {
                 Text("SAVE ADDRESS")
                     .fontWeight(.bold)
@@ -53,6 +54,6 @@ struct SaveNewAddress: View {
 
 struct SaveNewAddress_Previews: PreviewProvider {
     static var previews: some View {
-        SaveNewAddress()
+        SaveNewAddress().environmentObject(LocationSearchViewModel())
     }
 }

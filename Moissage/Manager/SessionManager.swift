@@ -1,5 +1,5 @@
 //
-//  SessionManagerImp.swift
+//  SessionManager.swift
 //  Moissage
 //
 //  Created by Saman Saryazdi on 2022-10-10.
@@ -16,19 +16,11 @@ struct UserSessionDetails {
     let preferredGender: String
 }
 
-protocol SessionManager {
-    var userDetails: UserSessionDetails? { get }
-    init()
-    func logout()
-}
-
-final class SessionManagerImp: SessionManager, ObservableObject {
+final class SessionManager: ObservableObject {
     
-    @Published var userDetails: UserSessionDetails?
     @Published var signedIn = false
     
-    private var activeMale = [Therapist]()
-    private var activeFemale = [Therapist]()
+    
     var isSignedIn : Bool {
         return Auth.auth().currentUser != nil
     }
@@ -56,7 +48,7 @@ final class SessionManagerImp: SessionManager, ObservableObject {
     }
 }
 
-private extension SessionManagerImp {
+private extension SessionManager {
     
     func setupObservations() {
         
@@ -75,6 +67,7 @@ private extension SessionManagerImp {
                         .reference()
                         .child("users")
                         .child(uid)
+                        .child("credentials")
                         .observeSingleEvent(of: .value, with: { snapshot  in
                             
                             guard
@@ -85,10 +78,9 @@ private extension SessionManagerImp {
                                   let preferredGender = value[RegistrationKeys.preferredGender.rawValue] as? String else {
                                 return
                             }
-                            
-                            
-                            
+                
                             DispatchQueue.main.async {
+                                UserDefaults.standard.set(uid, forKey: "id")
                                 UserDefaults.standard.set(firstName, forKey: "firstName")
                                 UserDefaults.standard.set(lastName, forKey: "lastName")
                                 UserDefaults.standard.set(phoneNumber, forKey: "phoneNumber")

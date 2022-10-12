@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct LocationSearchView: View {
-    @State var serviceAddress : String = ""
-    @ObservedObject var viewModel : LocationSearchViewModel
+    @EnvironmentObject var viewModel : LocationSearchViewModel
+    @State private var showSave = false
     var body: some View {
         VStack{
             HStack{
@@ -20,10 +20,33 @@ struct LocationSearchView: View {
             .padding(.bottom)
             ScrollView{
                 VStack(alignment: .leading) {
-                    ForEach (viewModel.results, id: \.self){
-                        result in
-                        LocationSearchResultCell(title: result.title,
-                                                 subtitle: result.subtitle)
+                    if viewModel.viewState == .showSavedAddresses {
+                        ForEach(viewModel.userSavedAddresses, id: \.self){
+                            result in
+                            LocationSearchResultCell(title: result.label,
+                                                     subtitle: result.address)
+                            .onTapGesture {
+                                withAnimation(.spring()){
+                                    viewModel.viewState = .noInput
+                                }
+                            }
+                        }
+                    }
+                    if viewModel.viewState == .userIsTyping {
+                        ForEach (viewModel.results, id: \.self){
+                            result in
+                            LocationSearchResultCell(title: result.title,
+                                                     subtitle: result.subtitle)
+                            .onTapGesture {
+                                withAnimation(.spring()){
+                                    viewModel.viewState = .saveNewAddress
+                                }
+                            }
+                        }
+                    }
+                    if viewModel.viewState == .saveNewAddress {
+                        SaveNewAddress()
+                        
                     }
                 }.padding(.horizontal)
             }
@@ -33,6 +56,6 @@ struct LocationSearchView: View {
 
 struct LocationSearchView_Previews: PreviewProvider {
     static var previews: some View {
-        LocationSearchView(viewModel: LocationSearchViewModel())
+        LocationSearchView().environmentObject(LocationSearchViewModel())
     }
 }

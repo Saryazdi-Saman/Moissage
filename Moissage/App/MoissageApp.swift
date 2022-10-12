@@ -21,14 +21,15 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct MoissageApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    @StateObject var sessionService = SessionManagerImp()
+    @StateObject var sessionService = SessionManager()
+    @StateObject var locationViewModel = LocationSearchViewModel()
     
     var body: some Scene {
         WindowGroup {
             NavigationView {
                 if sessionService.signedIn {
                     HomeView()
-                        .environmentObject(sessionService)
+                        .environmentObject(locationViewModel)
                 } else{
                     LoginView()
                 }

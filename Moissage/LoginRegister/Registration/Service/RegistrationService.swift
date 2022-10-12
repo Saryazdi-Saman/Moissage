@@ -66,11 +66,13 @@ final class RegistrationServiceImpl: RegistrationService {
                                 .reference()
                                 .child("users")
                                 .child(uid)
+                                .child("credentials")
                                 .updateChildValues(values) { error, ref in
                                     
                                     if let err = error {
                                         promise(.failure(err))
                                     } else {
+                                        UserDefaults.standard.set(uid, forKey: "id")
                                         UserDefaults.standard.set(credentials.firstName, forKey: "firstName")
                                         UserDefaults.standard.set(credentials.lastName, forKey: "lastName")
                                         UserDefaults.standard.set(credentials.phoneNumber, forKey: "phoneNumber")

@@ -9,19 +9,13 @@ import SwiftUI
 
 struct OrderDetailView: View {
     @ObservedObject var cartVM : CartViewModel
-    @StateObject var locationVM = LocationSearchViewModel()
+    @EnvironmentObject var locationVM: LocationSearchViewModel
     
     init(viewModel : CartViewModel){
         self.cartVM = viewModel
         UISegmentedControl.appearance().selectedSegmentTintColor = .systemBlue
         UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
     }
-    
-//    @EnvironmentObject var viewModel: LocationSearchViewModel
-//    @EnvironmentObject var cartManager : CartManager
-//    @State var name = ""
-//    @State var addressBar = ""
-//    @State private var adressText: String = ""
     @State private var openSearchBar = false
     
     var body: some View {
@@ -50,48 +44,13 @@ struct OrderDetailView: View {
                             .padding(.bottom,8)
                             .onTapGesture {
                                 withAnimation(.spring()){
-                                    locationVM.viewState = .searchAddress
+                                    locationVM.viewState = .showSavedAddresses
                                 }
                             }
                     } else{
-                        LocationSearchView(viewModel: locationVM)
+                        LocationSearchView()
+                            .environmentObject(locationVM)
                     }
-    //                if locationSelectionState == .searchAdress{
-    //                    ScrollView{
-    //                        VStack(alignment: .leading) {
-    //                            if viewModel.results.count == 0 {
-    //                                ForEach( savedAdresses, id: \.self){ result in
-    //                                    LocationSearchResultCell(title: result.name,
-    //                                                             subtitle: result.adress)
-    //                                    .onTapGesture {
-    //                                        viewModel.selectLocation(result.adress)
-    //                                        withAnimation(.spring()) {
-    //                                            locationSelectionState = .noInput
-    //                                        }
-    //
-    //                                    }
-    //                                }
-    //                            } else {
-    //                                ForEach(viewModel.results, id: \.self){ result in
-    //                                    LocationSearchResultCell(title: result.title,
-    //                                                             subtitle: result.subtitle)
-    //                                    .onTapGesture {
-    //                                        viewModel.selectLocation(result.title)
-    //                                        withAnimation(.spring()) {
-    //                                            locationSelectionState = .saveNewAdress
-    //                                        }
-    //
-    //                                    }
-    //                                }
-    //                            }
-    //                        }
-    //                    }
-    //                }
-    //                if locationSelectionState == .saveNewAdress{
-    //                    ScrollView{
-    //                        SaveNewAddress()
-    //                    }
-    //                }
                 }
                 
                 // MARK: - Duration Picker
@@ -177,7 +136,6 @@ struct OrderDetailView: View {
 
             }.padding(.horizontal)
                 .padding(.vertical, 24)
-    //            .background(.white)
             .cornerRadius(20)
         }
     }
@@ -186,5 +144,6 @@ struct OrderDetailView: View {
 struct OrderDetailView_Previews: PreviewProvider {
     static var previews: some View {
         OrderDetailView(viewModel: CartViewModel())
+            .environmentObject(LocationSearchViewModel())
     }
 }

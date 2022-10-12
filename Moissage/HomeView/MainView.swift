@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainView: View {
-    @EnvironmentObject var appManager : SessionManagerImp
+    @EnvironmentObject var appManager : SessionManager
     
     var body: some View {
         Button {
