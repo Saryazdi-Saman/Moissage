@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct MassageTypeSelectionCard: View {
-    @Binding var orderState : OrderState
+    @Binding var viewState : ViewState
+    @Binding var selectedService : MassageType
 //    @EnvironmentObject var cartManager : CartManager
     
     var body: some View {
@@ -28,10 +29,10 @@ struct MassageTypeSelectionCard: View {
                 VStack(spacing: 12) {
                     ForEach (MassageType.allCases){ type in
                         Button {
-    //                        cartManager.creatCart(serviceName: type.title)
-    //                        withAnimation(.spring()) {
-    //                            orderState = .orderDetails
-    //                        }
+                            selectedService = type
+                            withAnimation(.spring()) {
+                                viewState = .orderDetails
+                            }
                         } label: {
                             HStack{
                                 VStack(alignment: .leading, spacing: 6){
@@ -77,6 +78,7 @@ struct MassageTypeSelectionCard: View {
 
 struct MassageTypeSelectionCard_Previews: PreviewProvider {
     static var previews: some View {
-        MassageTypeSelectionCard(orderState: .constant(.noInput))
+        MassageTypeSelectionCard(viewState: .constant(.noInput),
+                                 selectedService: .constant(.relaxing))
     }
 }

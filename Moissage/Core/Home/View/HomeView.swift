@@ -8,22 +8,25 @@
 import SwiftUI
 
 struct HomeView: View {
+    @StateObject var viewModel = CartViewModel()
+    @State private var viewState = ViewState.noInput
     var body: some View {
         ZStack (alignment: .bottom){
-            ZStack(alignment: .top) {
+            ZStack(alignment: .topLeading) {
                 MapViewRepresentable()
                     .ignoresSafeArea()
-                MenuButton()
+                MenuButton(viewState: $viewState)
                     .padding(.leading)
             }
             
-//            if orderState == .noInput {
-            MassageTypeSelectionCard(orderState: .constant(.noInput))
+            if viewState == .noInput {
+                MassageTypeSelectionCard(viewState: $viewState,
+                                         selectedService: $viewModel.cart.mainService)
+                .transition(.move(edge: .bottom))
+            } else if viewState == .orderDetails{
+                OrderDetailView(viewModel: viewModel)
                     .transition(.move(edge: .bottom))
-//            } else if orderState == .orderDetails{
-//                OrderDetailView()
-//                    .transition(.move(edge: .bottom))
-//            }
+            }
         }
         .edgesIgnoringSafeArea(.bottom)
     }

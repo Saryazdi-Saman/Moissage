@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct MenuButton: View {
-    @State var orderState = OrderState.noInput
+    @Binding var viewState : ViewState
     //        @EnvironmentObject var sessionService : SessionServiceImpl
     var body: some View {
         Button {
-            //                withAnimation(.spring()) {
-            //                    actionForState(orderState)
-            //                }
+            withAnimation(.spring()) {
+                actionForState(viewState)
+            }
             
         } label: {
             ZStack{
@@ -22,27 +22,27 @@ struct MenuButton: View {
                     .fill(Color(.secondarySystemBackground))
                     .shadow(color:.secondary ,radius: 4)
                     .frame(width: 55, height: 55)
-                Image(systemName: imageNameForState(orderState))
+                Image(systemName: imageNameForState(viewState))
                     .font(.title3)
                     .foregroundColor(.primary)
-                    
+                
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
         
     }
     
-    //        func actionForState(_ state : OrderState){
-    //            switch state {
-    //            case .noInput :
-    //
-    //                //                sessionService.logout()
-    //            case .orderDetails:
-    //                orderState = OrderState.noInput
-    //            }
-    //        }
+    func actionForState(_ state : ViewState){
+        switch state {
+        case .noInput :
+            return
+            
+            //                                    sessionService.logout()
+        case .orderDetails:
+            viewState = ViewState.noInput
+        }
+    }
     
-    func imageNameForState( _ state : OrderState) -> String{
+    func imageNameForState( _ state : ViewState) -> String{
         switch state {
         case .noInput: return "line.3.horizontal"
         case .orderDetails: return "arrow.left"
@@ -51,13 +51,13 @@ struct MenuButton: View {
     
 }
 
-enum OrderState {
+enum ViewState {
     case noInput
     case orderDetails
 }
 
 struct MenuButton_Previews: PreviewProvider {
     static var previews: some View {
-        MenuButton()
+        MenuButton(viewState: .constant(.noInput))
     }
 }

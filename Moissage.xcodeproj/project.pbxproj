@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F234863F28F69F1700EBB66E /* CartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F234863E28F69F1700EBB66E /* CartViewModel.swift */; };
+		F234864228F6A73000EBB66E /* Cart.swift in Sources */ = {isa = PBXBuildFile; fileRef = F234864128F6A73000EBB66E /* Cart.swift */; };
 		F2D3593428F4DA6600724B4B /* MoissageApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3593328F4DA6600724B4B /* MoissageApp.swift */; };
 		F2D3593828F4DA6800724B4B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F2D3593728F4DA6800724B4B /* Assets.xcassets */; };
 		F2D3593B28F4DA6800724B4B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F2D3593A28F4DA6800724B4B /* Preview Assets.xcassets */; };
@@ -34,11 +36,16 @@
 		F2E947A428F5AED1009B8A3F /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E947A328F5AED1009B8A3F /* LocationManager.swift */; };
 		F2E947A828F5B6B6009B8A3F /* MenuButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E947A728F5B6B6009B8A3F /* MenuButton.swift */; };
 		F2E947AA28F5BA5F009B8A3F /* MassageTypeSelectionCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E947A928F5BA5F009B8A3F /* MassageTypeSelectionCard.swift */; };
-		F2E947AD28F5BAC3009B8A3F /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E947AC28F5BAC3009B8A3F /* File.swift */; };
+		F2E947AD28F5BAC3009B8A3F /* StoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E947AC28F5BAC3009B8A3F /* StoreModel.swift */; };
 		F2E947B128F5D218009B8A3F /* OrderDetialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E947B028F5D218009B8A3F /* OrderDetialView.swift */; };
+		F2E947B628F5E760009B8A3F /* SideMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E947B528F5E760009B8A3F /* SideMenuView.swift */; };
+		F2E947B828F5E8C3009B8A3F /* SideMenuHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E947B728F5E8C3009B8A3F /* SideMenuHeader.swift */; };
+		F2E947BA28F5EB70009B8A3F /* SideMenuCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E947B928F5EB70009B8A3F /* SideMenuCells.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F234863E28F69F1700EBB66E /* CartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewModel.swift; sourceTree = "<group>"; };
+		F234864128F6A73000EBB66E /* Cart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cart.swift; sourceTree = "<group>"; };
 		F2D3593028F4DA6600724B4B /* Moissage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Moissage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2D3593328F4DA6600724B4B /* MoissageApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoissageApp.swift; sourceTree = "<group>"; };
 		F2D3593728F4DA6800724B4B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -65,8 +72,11 @@
 		F2E947A328F5AED1009B8A3F /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		F2E947A728F5B6B6009B8A3F /* MenuButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuButton.swift; sourceTree = "<group>"; };
 		F2E947A928F5BA5F009B8A3F /* MassageTypeSelectionCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MassageTypeSelectionCard.swift; sourceTree = "<group>"; };
-		F2E947AC28F5BAC3009B8A3F /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		F2E947AC28F5BAC3009B8A3F /* StoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreModel.swift; sourceTree = "<group>"; };
 		F2E947B028F5D218009B8A3F /* OrderDetialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetialView.swift; sourceTree = "<group>"; };
+		F2E947B528F5E760009B8A3F /* SideMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuView.swift; sourceTree = "<group>"; };
+		F2E947B728F5E8C3009B8A3F /* SideMenuHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuHeader.swift; sourceTree = "<group>"; };
+		F2E947B928F5EB70009B8A3F /* SideMenuCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuCells.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +92,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F234864028F6A71E00EBB66E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				F234864128F6A73000EBB66E /* Cart.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		F2D3592728F4DA6600724B4B = {
 			isa = PBXGroup;
 			children = (
@@ -251,6 +269,7 @@
 		F2E9479C28F5AB4A009B8A3F /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				F2E947B228F5E708009B8A3F /* SideMenu */,
 				F2E947AE28F5D1EF009B8A3F /* Order */,
 				F2E947A628F5B697009B8A3F /* Components */,
 				F2E947A528F5B5A3009B8A3F /* Home */,
@@ -271,6 +290,7 @@
 		F2E9479E28F5AB5A009B8A3F /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				F234863E28F69F1700EBB66E /* CartViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -278,6 +298,7 @@
 		F2E947A528F5B5A3009B8A3F /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				F234864028F6A71E00EBB66E /* Model */,
 				F2E9479E28F5AB5A009B8A3F /* ViewModel */,
 				F2E9479D28F5AB52009B8A3F /* View */,
 			);
@@ -295,7 +316,7 @@
 		F2E947AB28F5BAB3009B8A3F /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				F2E947AC28F5BAC3009B8A3F /* File.swift */,
+				F2E947AC28F5BAC3009B8A3F /* StoreModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -314,6 +335,32 @@
 				F2E947B028F5D218009B8A3F /* OrderDetialView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		F2E947B228F5E708009B8A3F /* SideMenu */ = {
+			isa = PBXGroup;
+			children = (
+				F2E947B428F5E720009B8A3F /* ViewModel */,
+				F2E947B328F5E71A009B8A3F /* View */,
+			);
+			path = SideMenu;
+			sourceTree = "<group>";
+		};
+		F2E947B328F5E71A009B8A3F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F2E947B528F5E760009B8A3F /* SideMenuView.swift */,
+				F2E947B728F5E8C3009B8A3F /* SideMenuHeader.swift */,
+				F2E947B928F5EB70009B8A3F /* SideMenuCells.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F2E947B428F5E720009B8A3F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -394,13 +441,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F234864228F6A73000EBB66E /* Cart.swift in Sources */,
 				F2D3594528F4DAB500724B4B /* LoginView.swift in Sources */,
 				F2E9479628F55A3A009B8A3F /* RegistrationService.swift in Sources */,
 				F2E947A828F5B6B6009B8A3F /* MenuButton.swift in Sources */,
 				F2D3596028F4FF5000724B4B /* MainView.swift in Sources */,
+				F2E947BA28F5EB70009B8A3F /* SideMenuCells.swift in Sources */,
 				F2E947AA28F5BA5F009B8A3F /* MassageTypeSelectionCard.swift in Sources */,
 				F2D3595928F4E93800724B4B /* ForgotPasswordView.swift in Sources */,
-				F2E947AD28F5BAC3009B8A3F /* File.swift in Sources */,
+				F2E947AD28F5BAC3009B8A3F /* StoreModel.swift in Sources */,
+				F2E947B628F5E760009B8A3F /* SideMenuView.swift in Sources */,
+				F2E947B828F5E8C3009B8A3F /* SideMenuHeader.swift in Sources */,
+				F234863F28F69F1700EBB66E /* CartViewModel.swift in Sources */,
 				F2E9478C28F54CA0009B8A3F /* ForgotPasswordService.swift in Sources */,
 				F2D3596328F513DE00724B4B /* SessionManagerImp.swift in Sources */,
 				F2D3593428F4DA6600724B4B /* MoissageApp.swift in Sources */,

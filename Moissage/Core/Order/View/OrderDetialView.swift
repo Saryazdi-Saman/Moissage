@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct OrderDetailView: View {
+    @ObservedObject var viewModel : CartViewModel
     
-    init(){
+    init(viewModel : CartViewModel){
+        self.viewModel = viewModel
         UISegmentedControl.appearance().selectedSegmentTintColor = .systemBlue
         UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
     }
@@ -35,7 +37,7 @@ struct OrderDetailView: View {
                 .opacity(0.95)
             VStack{
                 VStack(alignment: .leading, spacing: 10){
-                    Text(name + " Massage")
+                    Text(viewModel.cart.mainService.title + " Massage")
                     //                    .font(.subheadline)
                         .font(.headline)
                         .fontWeight(.semibold)
@@ -103,8 +105,10 @@ struct OrderDetailView: View {
                 
                 // MARK: - Duration Picker
                 
-                Picker ("Duration", selection: $serviceDuration){
-                    ForEach(["60 min","90 min", "120 min"], id: \.self){Text($0)}
+                Picker ("Duration", selection: $viewModel.cart.duration){
+                    ForEach(MainServiceDuration.allCases, id: \.self){
+                        Text($0.rawValue)
+                    }
                 }
                 .pickerStyle(SegmentedPickerStyle())
                 
@@ -132,16 +136,21 @@ struct OrderDetailView: View {
                         
                         .foregroundColor(.secondary)
                     VStack{
-                        Picker ("Head", selection: $extraHead){
-                            ForEach(["-","15 min", "30 min"], id: \.self){Text($0)}
+                        Picker ("Head", selection: $viewModel.cart.extraHeadMassage){
+                            ForEach(ExtraHeadMassage.allCases, id: \.self){
+                                Text($0.rawValue)
+                                
+                            }
                         }
                         .pickerStyle(SegmentedPickerStyle())
-                        Picker ("Foot", selection: $extraFoot){
-                            ForEach(["-","15 min", "30 min"], id: \.self){Text($0)}
+                        Picker ("Foot", selection: $viewModel.cart.extraFootMassage){
+                            ForEach(ExtraFootMassage.allCases, id: \.self){
+                                Text($0.rawValue)
+                            }
                         }
                         .pickerStyle(SegmentedPickerStyle())
                         
-                        Picker ("Foot", selection: $gender){
+                        Picker ("gender", selection: $viewModel.cart.preferredGender){
                             ForEach(["female","male", "anyone"], id: \.self){Text($0)}
                         }
                         .pickerStyle(SegmentedPickerStyle())
@@ -155,7 +164,7 @@ struct OrderDetailView: View {
                     Text("total:")
                         .fontWeight(.bold)
                     Spacer()
-                    Text("$")
+                    Text("$ \(String(format: "%.0f", viewModel.cartTotal))")
                         .fontWeight(.bold)
                 }
                 
@@ -185,6 +194,6 @@ struct OrderDetailView: View {
 
 struct OrderDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        OrderDetailView()
+        OrderDetailView(viewModel: CartViewModel())
     }
 }
