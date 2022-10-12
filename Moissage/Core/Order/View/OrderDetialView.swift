@@ -8,37 +8,32 @@
 import SwiftUI
 
 struct OrderDetailView: View {
-    @ObservedObject var viewModel : CartViewModel
+    @ObservedObject var cartVM : CartViewModel
+    @StateObject var locationVM = LocationSearchViewModel()
     
     init(viewModel : CartViewModel){
-        self.viewModel = viewModel
+        self.cartVM = viewModel
         UISegmentedControl.appearance().selectedSegmentTintColor = .systemBlue
         UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
     }
     
 //    @EnvironmentObject var viewModel: LocationSearchViewModel
 //    @EnvironmentObject var cartManager : CartManager
-    @State var name = ""
-    @State var addressBar = ""
-    @State var serviceDuration = "60 min"
-    @State var extraHead = "-"
-    @State var extraFoot = "-"
-    @State var gender = "female"
-    
-    @State private var adressText: String = ""
-//    @State var locationSelectionState = LocationSelectionState.noInput
+//    @State var name = ""
+//    @State var addressBar = ""
+//    @State private var adressText: String = ""
+    @State private var openSearchBar = false
     
     var body: some View {
         
         ZStack {
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color(.secondarySystemBackground))
-                .frame(maxHeight: 500)
+                .frame(maxHeight: locationVM.viewState == .noInput ? 500 : .infinity)
                 .opacity(0.95)
             VStack{
                 VStack(alignment: .leading, spacing: 10){
-                    Text(viewModel.cart.mainService.title + " Massage")
-                    //                    .font(.subheadline)
+                    Text(cartVM.cart.mainService.title + " Massage")
                         .font(.headline)
                         .fontWeight(.semibold)
                         .foregroundColor(.primary)
@@ -50,21 +45,17 @@ struct OrderDetailView: View {
                 
                 // MARK: - address bar
                 VStack{
-                    HStack{
-                        Image(systemName: "mappin.circle.fill")
-                            .foregroundColor(Color(.systemRed))
-                            .font(.largeTitle)
-                        TextField("choose address", text: $addressBar)
-                            .frame(height: 38)
-                            .padding(5)
-                            .background(Color(.systemGray4))
+                    if locationVM.viewState == .noInput {
+                        LocationSearchActivationView()
+                            .padding(.bottom,8)
                             .onTapGesture {
-    //                            withAnimation {
-    //                                locationSelectionState = .searchAdress
-    //                            }
+                                withAnimation(.spring()){
+                                    locationVM.viewState = .searchAddress
+                                }
                             }
+                    } else{
+                        LocationSearchView(viewModel: locationVM)
                     }
-                    .padding(.bottom,8)
     //                if locationSelectionState == .searchAdress{
     //                    ScrollView{
     //                        VStack(alignment: .leading) {
@@ -105,7 +96,7 @@ struct OrderDetailView: View {
                 
                 // MARK: - Duration Picker
                 
-                Picker ("Duration", selection: $viewModel.cart.duration){
+                Picker ("Duration", selection: $cartVM.cart.duration){
                     ForEach(MainServiceDuration.allCases, id: \.self){
                         Text($0.rawValue)
                     }
@@ -136,21 +127,21 @@ struct OrderDetailView: View {
                         
                         .foregroundColor(.secondary)
                     VStack{
-                        Picker ("Head", selection: $viewModel.cart.extraHeadMassage){
+                        Picker ("Head", selection: $cartVM.cart.extraHeadMassage){
                             ForEach(ExtraHeadMassage.allCases, id: \.self){
                                 Text($0.rawValue)
                                 
                             }
                         }
                         .pickerStyle(SegmentedPickerStyle())
-                        Picker ("Foot", selection: $viewModel.cart.extraFootMassage){
+                        Picker ("Foot", selection: $cartVM.cart.extraFootMassage){
                             ForEach(ExtraFootMassage.allCases, id: \.self){
                                 Text($0.rawValue)
                             }
                         }
                         .pickerStyle(SegmentedPickerStyle())
                         
-                        Picker ("gender", selection: $viewModel.cart.preferredGender){
+                        Picker ("gender", selection: $cartVM.cart.preferredGender){
                             ForEach(["female","male", "anyone"], id: \.self){Text($0)}
                         }
                         .pickerStyle(SegmentedPickerStyle())
@@ -161,12 +152,13 @@ struct OrderDetailView: View {
                 Divider()
                     .padding(.vertical, 8)
                 HStack{
-                    Text("total:")
+                    Text("Total:")
                         .fontWeight(.bold)
                     Spacer()
-                    Text("$ \(String(format: "%.0f", viewModel.cartTotal))")
+                    Text("$ \(String(format: "%.0f", cartVM.cartTotal))")
                         .fontWeight(.bold)
                 }
+                .padding(.horizontal,4)
                 
                 Divider()
                     .padding(.vertical, 2)
@@ -190,7 +182,6 @@ struct OrderDetailView: View {
         }
     }
 }
-
 
 struct OrderDetailView_Previews: PreviewProvider {
     static var previews: some View {

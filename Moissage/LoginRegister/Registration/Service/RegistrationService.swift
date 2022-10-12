@@ -71,6 +71,10 @@ final class RegistrationServiceImpl: RegistrationService {
                                     if let err = error {
                                         promise(.failure(err))
                                     } else {
+                                        UserDefaults.standard.set(credentials.firstName, forKey: "firstName")
+                                        UserDefaults.standard.set(credentials.lastName, forKey: "lastName")
+                                        UserDefaults.standard.set(credentials.phoneNumber, forKey: "phoneNumber")
+                                        UserDefaults.standard.set(credentials.preferredGender, forKey: "preferredGender")
                                         promise(.success(()))
                                     }
                                 }

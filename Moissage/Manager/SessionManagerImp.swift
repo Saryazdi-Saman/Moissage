@@ -86,6 +86,8 @@ private extension SessionManagerImp {
                                 return
                             }
                             
+                            
+                            
                             DispatchQueue.main.async {
                                 UserDefaults.standard.set(firstName, forKey: "firstName")
                                 UserDefaults.standard.set(lastName, forKey: "lastName")
