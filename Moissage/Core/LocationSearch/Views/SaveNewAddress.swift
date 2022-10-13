@@ -9,36 +9,37 @@ import SwiftUI
 
 struct SaveNewAddress: View {
     @EnvironmentObject var vm : LocationSearchViewModel
-    @State var info : String = ""
     var body: some View {
         VStack(spacing: 10){
             HStack{
-                TextField("# Unit number", text: $info)
+                TextField("# Unit number", text: $vm.newAddress.unitNumber)
                     .padding(.leading)
                     .frame(height: 44)
                     .background(Color(.systemGray4))
-                TextField("# BUZZER", text: $info)
+                TextField("# BUZZER", text: $vm.newAddress.buzzer)
                     .padding(.leading)
                     .frame(height: 44)
                     .background(Color(.systemGray4))
             }
-            TextField("Add a label (ex. home or Bobby's appartment)", text: $info)
+            TextField("Add a label (ex. home or Bobby's appartment)", text: $vm.newAddress.label)
                 .padding(.leading)
                 .frame(height: 44)
                 .background(Color(.systemGray4))
             
-            TextField("Building name", text: $info)
+            TextField("Building name", text: $vm.newAddress.buildingName)
                 .padding(.leading)
                 .frame(height: 44)
                 .background(Color(.systemGray4))
             
-            TextField("Add instructions", text: $info)
+            TextField("Add instructions", text: $vm.newAddress.instruction)
                 .padding(.leading)
                 .frame(height: 44)
                 .background(Color(.systemGray4))
             
             Button {
-                vm.viewState = .noInput
+                withAnimation(.spring()){
+                    vm.viewState = .noInput
+                }
             } label: {
                 Text("SAVE ADDRESS")
                     .fontWeight(.bold)

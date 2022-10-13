@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct LocationSearchActivationView: View {
+    @EnvironmentObject var vm : LocationSearchViewModel
     var body: some View {
         HStack{
             Image(systemName: "mappin.circle.fill")
@@ -18,7 +19,7 @@ struct LocationSearchActivationView: View {
                 .frame(height: 44)
                 .overlay (
                     HStack{
-                        Text("select address")
+                        Text(vm.addressToGo.isEmpty ? "Select address" : vm.addressToGo)
                             .font(.subheadline)
                             .fontWeight(.semibold)
                             .foregroundColor(.primary)
@@ -27,11 +28,17 @@ struct LocationSearchActivationView: View {
                     }.padding(.leading)
                 )
         }
+        .onTapGesture {
+            withAnimation(.spring()){
+                vm.viewState = .showSavedAddresses
+            }
+        }
+        
     }
 }
 
 struct LocationSearchActivationView_Previews: PreviewProvider {
     static var previews: some View {
-        LocationSearchActivationView()
+        LocationSearchActivationView().environmentObject(LocationSearchViewModel())
     }
 }

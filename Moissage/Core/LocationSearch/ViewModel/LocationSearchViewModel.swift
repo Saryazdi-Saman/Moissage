@@ -15,9 +15,11 @@ class LocationSearchViewModel: NSObject, ObservableObject {
     @Published var viewState : LocationSearchViewState
     @Published var userSavedAddresses = [Address]()
     @Published var results = [MKLocalSearchCompletion]()
-    @Published var selectedLocation: String?
     private let searchCompleter = MKLocalSearchCompleter()
     private var service : LocationSearchService
+    var addressToGo: String = ""
+    var selectedLocation: MKLocalSearchCompletion?
+    var newAddress = NewAddress()
 
     
     
@@ -43,8 +45,33 @@ class LocationSearchViewModel: NSObject, ObservableObject {
     }
     
     // MARK: - Helpers
-    func selectLocation(_ location: String){
-        self.selectedLocation = location
+    
+    func selectLocation(_ location: MKLocalSearchCompletion){
+        
+    }
+    
+    func addNewAddress(_ localSearch: MKLocalSearchCompletion){
+        self.addressToGo = localSearch.title.appending(localSearch.subtitle)
+        locationSearch(ForLocalSearchCompletion: localSearch) { respons, error in
+            if let error = error {
+                print("DEBUG: Location search fail with error \(error.localizedDescription)")
+                return
+            }
+            guard let item = respons?.mapItems.first else {return}
+            let coordinate = item.placemark.coordinate
+            print("DEBUG: location coordinates are: \(coordinate)")
+            self.newAddress.lat = Double(coordinate.latitude)
+            self.newAddress.lon = Double(coordinate.longitude)
+        }
+    }
+    
+    func locationSearch(ForLocalSearchCompletion localSearch: MKLocalSearchCompletion,
+                        completion: @escaping MKLocalSearch.CompletionHandler){
+        let searchRequest = MKLocalSearch.Request()
+        searchRequest.naturalLanguageQuery = localSearch.title.appending(localSearch.subtitle)
+        let search = MKLocalSearch(request: searchRequest)
+        search.start(completionHandler: completion)
+        
     }
 }
 
@@ -85,4 +112,16 @@ enum LocationSearchViewState {
     case showSavedAddresses
     case userIsTyping
     case saveNewAddress
+}
+
+struct NewAddress {
+    var saveNewAddress: Bool = false
+    var address : String = ""
+    var unitNumber : String = ""
+    var buzzer: String = ""
+    var label : String = ""
+    var buildingName: String = ""
+    var instruction: String = ""
+    var lat: Double = 0
+    var lon: Double = 0
 }

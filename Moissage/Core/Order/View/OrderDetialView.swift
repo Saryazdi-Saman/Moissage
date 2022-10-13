@@ -42,11 +42,6 @@ struct OrderDetailView: View {
                     if locationVM.viewState == .noInput {
                         LocationSearchActivationView()
                             .padding(.bottom,8)
-                            .onTapGesture {
-                                withAnimation(.spring()){
-                                    locationVM.viewState = .showSavedAddresses
-                                }
-                            }
                     } else{
                         LocationSearchView()
                             .environmentObject(locationVM)

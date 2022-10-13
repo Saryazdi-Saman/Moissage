@@ -13,13 +13,19 @@ struct LocationSearchView: View {
     var body: some View {
         VStack{
             HStack{
-                TextField("select address", text: $viewModel.queryFragment)
-                    .frame(height: 44)
-                    .background(Color(.systemGray4))
+                if viewModel.viewState == .saveNewAddress{
+                    LocationSearchActivationView()
+                } else {
+                    TextField("select address", text: $viewModel.queryFragment)
+                        .padding(.leading, 8)
+                        .frame(height: 44)
+                        .background(Color(.systemGray4))
+                }
             }
             .padding(.bottom)
             ScrollView{
                 VStack(alignment: .leading) {
+                    
                     if viewModel.viewState == .showSavedAddresses {
                         ForEach(viewModel.userSavedAddresses, id: \.self){
                             result in
@@ -31,21 +37,25 @@ struct LocationSearchView: View {
                                 }
                             }
                         }
+                        .transition(.move(edge: .bottom))
                     }
+                    
                     if viewModel.viewState == .userIsTyping {
                         ForEach (viewModel.results, id: \.self){
                             result in
                             LocationSearchResultCell(title: result.title,
                                                      subtitle: result.subtitle)
                             .onTapGesture {
-                                withAnimation(.spring()){
+                                viewModel.addNewAddress(result)
+                                withAnimation{
                                     viewModel.viewState = .saveNewAddress
                                 }
                             }
                         }
                     }
+                    
                     if viewModel.viewState == .saveNewAddress {
-                        SaveNewAddress()
+                        SaveNewAddress().transition(.move(edge: .bottom))
                         
                     }
                 }.padding(.horizontal)
