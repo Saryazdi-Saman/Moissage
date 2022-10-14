@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 enum MassageType : Int, CaseIterable, Identifiable {
     
@@ -83,29 +84,34 @@ enum ExtraFootMassage : String, CaseIterable{
     }
 }
 
-enum PreferredGender : String, CaseIterable {
+enum PreferredGender: String, CaseIterable {
     case male
     case female
     case anyone
 }
 
-struct Address : Hashable {
+struct Address: Hashable{
     
-    let label: String?
-    let address: String
-    let lat: Double
-    let lon: Double
-    let buildingName: String?
-    let buzzer: String?
-    let instruction: String?
+    var label: String?
+    var address: String
+    var lat: Double
+    var lon: Double
+    var buildingName: String?
+    var buzzer: String?
+    var instruction: String?
+    var location: CLLocation{
+        return CLLocation(latitude: self.lat, longitude: self.lon)
+    }
+    func distance(to location: CLLocation) -> CLLocationDistance {
+        return location.distance(from: self.location)
+    }
 }
 
 struct Therapist {
     let id: String
-    let gender : String
-    var lat : Double
-    var lon : Double
-    
+    let gender: String
+    var lat: Double
+    var lon: Double
 }
 
 enum DatabaseError: Error {

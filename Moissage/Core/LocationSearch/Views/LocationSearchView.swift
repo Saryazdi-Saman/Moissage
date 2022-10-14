@@ -17,7 +17,7 @@ struct LocationSearchView: View {
                 if viewModel.viewState == .saveNewAddress{
                     LocationSearchActivationView()
                 } else {
-                    TextField("select address", text: $searchHelper.queryFragment)
+                    TextField("Search for address", text: $searchHelper.queryFragment)
                         .padding(.leading, 8)
                         .frame(height: 44)
                         .frame(maxWidth: .infinity)
@@ -29,12 +29,14 @@ struct LocationSearchView: View {
             ScrollView{
                 VStack(alignment: .leading) {
                     
-                    if searchHelper.viewState == .showSavedAddresses {
-                        ForEach(viewModel.userSavedAddresses, id: \.self){
+                    if searchHelper.viewState == .showSavedAddresses,
+                       !viewModel.addressShouldBeSaved {
+                        ForEach(viewModel.addressbook, id: \.self){
                             result in
                             LocationSearchResultCell(title: result.label ?? "",
                                                      subtitle: result.address)
                             .onTapGesture {
+                                viewModel.selectedLocation = result
                                 withAnimation(.spring()){
                                     viewModel.viewState = .noInput
                                 }
@@ -49,6 +51,7 @@ struct LocationSearchView: View {
                             LocationSearchResultCell(title: result.title,
                                                      subtitle: result.subtitle)
                             .onTapGesture {
+                                viewModel.selectNewLocation(result)
                                 withAnimation{
                                     searchHelper.viewState = .saveNewAddress
                                     viewModel.viewState = .saveNewAddress

@@ -18,7 +18,6 @@ final class AppManager {
     
     private let database = Database.database().reference()
     private let currentUser = Auth.auth().currentUser
-    @Published var addressBook : [Address]?
     
     init(){
         updateUserDefaults()
@@ -28,7 +27,7 @@ final class AppManager {
         guard let uid = currentUser?.uid else{return}
         
         database.child("users/\(uid)")
-            .observeSingleEvent(of: .value, with: { [weak self] snapshot  in
+            .observeSingleEvent(of: .value, with: {snapshot  in
                 
                 guard
                     let value = snapshot.value as? NSDictionary,
@@ -48,64 +47,37 @@ final class AppManager {
                     
                     print("DEBUG: FROM APP MANAGER: user default saved successfully")
                 }
-                
-                if let savedAddresses = value["addresses"] as? [[String:Any]] {
-                    let addressBook: [Address] = savedAddresses.compactMap { dictionary in
-                        guard let address = dictionary["address"] as? String,
-                              let lat = dictionary["lat"] as? Double,
-                              let lon = dictionary["lon"] as? Double else {
-                            return nil
-                        }
-                        return Address(label: dictionary["building_name"] as? String,
-                                       address: address,
-                                       lat: lat,
-                                       lon: lon,
-                                       buildingName: dictionary["building_name"] as? String,
-                                       buzzer: dictionary["buzzer"] as? String,
-                                       instruction: dictionary["instruction"] as? String)
-                    }
-                    self?.addressBook = addressBook
-                    print("DEBUG: -FROM APPMANAGER- saved addresses retrieved")
-                }
-                
-            }
-            )
+            })
     }
     
-    func getSavedAddresses(){
-        
-    }
-    
-    func getSavedAddresses(completion: @escaping (Result<[Address], Error>)-> Void) {
-        guard let userID = UserDefaults.standard.string(forKey: "id") else{
-            return
-        }
-        database.child("\(userID)/addresses")
+    func getStoredAddresses(completion: @escaping (Result<[Address], Error>) -> Void) {
+        guard let uid = currentUser?.uid else{return}
+        database.child("users/\(uid)/addresses")
             .observeSingleEvent(of: .value, with: { snapshot in
-                guard let value = snapshot.value as? [[String:Any]] else {
+                guard let value = snapshot.value as? [[String: Any]] else{
                     completion(.failure(DatabaseError.failedToFetch))
                     return
                 }
-                let addresses: [Address] = value.compactMap { dictionary in
+                
+                let addressBook: [Address] = value.compactMap({ dictionary in
                     guard let address = dictionary["address"] as? String,
-                          let label = dictionary["label"] as? String,
                           let lat = dictionary["lat"] as? Double,
                           let lon = dictionary["lon"] as? Double else {
                         return nil
                     }
-                    return Address(label: label,
+                    
+                    return Address(label: dictionary["building_name"] as? String,
                                    address: address,
                                    lat: lat,
                                    lon: lon,
                                    buildingName: dictionary["building_name"] as? String,
                                    buzzer: dictionary["buzzer"] as? String,
                                    instruction: dictionary["instruction"] as? String)
-                }
-                completion(.success(addresses))
+                })
+                
+                completion(.success(addressBook))
             })
     }
-    
-    
     
     public func locateAllTherapist(completion: @escaping (Result<[Therapist], Error>) -> Void) {
         database.child("aactive").observe(.value, with: { snapshot in

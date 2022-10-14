@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LocationSearchActivationView: View {
     @EnvironmentObject var vm : LocationSearchViewModel
+    
     var body: some View {
         HStack{
             Image(systemName: "mappin.circle.fill")
@@ -19,7 +20,9 @@ struct LocationSearchActivationView: View {
                 .frame(height: 44)
                 .overlay (
                     HStack{
-                        Text("Select address")
+                        Text(vm.selectedLocation?.label ??
+                             vm.selectedLocation?.address ??
+                             "Select address")
                             .font(.subheadline)
                             .fontWeight(.semibold)
                             .foregroundColor(.primary)

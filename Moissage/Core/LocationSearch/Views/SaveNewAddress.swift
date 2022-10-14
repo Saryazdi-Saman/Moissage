@@ -21,7 +21,8 @@ struct SaveNewAddress: View {
                     .frame(height: 44)
                     .background(Color(.systemGray4))
             }
-            TextField("Add a label (ex. home or Bobby's appartment)", text: $vm.newAddress.label)
+            TextField("Add a label (ex. home or Bobby's appartment)",
+                      text: $vm.newAddress.label)
                 .padding(.leading)
                 .frame(height: 44)
                 .background(Color(.systemGray4))
@@ -38,6 +39,7 @@ struct SaveNewAddress: View {
             
             Button {
                 withAnimation(.spring()){
+                    vm.addressShouldBeSaved.toggle()
                     vm.viewState = .noInput
                 }
             } label: {

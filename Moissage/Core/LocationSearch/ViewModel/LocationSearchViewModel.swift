@@ -14,7 +14,99 @@ class LocationSearchViewModel: ObservableObject {
     private var manager = AppManager()
     
     @Published var viewState : LocationSearchViewState = .noInput
-    @Published var userSavedAddresses = [Address]()
+    @Published var addressbook = [Address](){
+        didSet {
+            selectedLocation = addressbook.first
+        }
+    }
+    @Published var selectedLocation :Address?
+    var newAddress = NewAddressRegistration()
+    var userLocation : CLLocationCoordinate2D?
+    var addressShouldBeSaved = false
+    init(){
+        startListeningForAddresses()
+    }
+    
+    private func startListeningForAddresses(){
+        manager.getStoredAddresses { [weak self] result in
+            switch result{
+            case .success(let addressbook):
+                print("DEBUG: LocationSearchViewModel - successfully got addressbook")
+                guard !addressbook.isEmpty else {
+                    print("DEBUG: LocationSearchViewModel - addressbook was empty")
+                    return
+                }
+                self?.addressbook = addressbook
+                
+            case .failure(let error):
+                print("failed to get saved addresses: \(error)")
+            }
+        }
+    }
+    
+    func sortAddressBook(){
+        if let location = self.userLocation {
+            let currentLocation = CLLocation(latitude: location.latitude,
+                                             longitude: location.longitude)
+            
+            self.addressbook = addressbook
+                .sorted(
+                    by: { $0.distance(to: currentLocation)
+                        < $1.distance(to: currentLocation) })
+            return
+        } else {
+            return
+        }
+    }
+    
+    func selectNewLocation(_ localSearch: MKLocalSearchCompletion) {
+        locationSearch(forLocalSearchCompletion: localSearch) {[weak self] result, error in
+            if let error = error {
+                print("DEBUG: LocationViewModel - location coordinate search failed: \(error.localizedDescription)")
+                return
+            }
+            guard let item = result?.mapItems.first else {return}
+            let coordinate = item.placemark.coordinate
+            print("DEBUG: LocationViewModel - successfully retrieved selected location's coordinate: \(coordinate)")
+            self?.selectedLocation = Address(label: nil,
+                                       address: localSearch.title.appending(localSearch.subtitle),
+                                       lat: coordinate.latitude,
+                                       lon: coordinate.longitude,
+                                       buildingName: nil,
+                                       buzzer: nil,
+                                       instruction: nil)
+        }
+        
+    }
+    
+    func locationSearch(forLocalSearchCompletion localSearch: MKLocalSearchCompletion,
+                        completion: @escaping MKLocalSearch.CompletionHandler) {
+        let searchRequest = MKLocalSearch.Request()
+        searchRequest.naturalLanguageQuery = localSearch.title.appending(localSearch.subtitle)
+        let search = MKLocalSearch(request: searchRequest)
+        search.start(completionHandler: completion)
+    }
+    
+    func saveNewAddress(){
+        if !newAddress.label.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty{
+            selectedLocation?.label = newAddress.label
+        }
+        if !newAddress.buzzer.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty{
+            selectedLocation?.buzzer = newAddress.buzzer
+        }
+        if !newAddress.unitNumber.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty{
+            selectedLocation?.address = newAddress.unitNumber + " - " + selectedLocation!.address
+        }
+        if !newAddress.buildingName.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty{
+            selectedLocation?.buildingName = newAddress.buildingName
+        }
+        if !newAddress.buzzer.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty{
+            selectedLocation?.instruction = newAddress.instruction
+        }
+    }
+
+
+
 //    @Published var selectedLocation : Address
     
     private var workers = [Therapist]()
@@ -27,12 +119,6 @@ class LocationSearchViewModel: ObservableObject {
 //        }
 //    }
     
-    var newAddress = NewAddress()
-    var userLocation : CLLocationCoordinate2D?{
-        didSet{
-            sortAddressBook(userLocation!)
-        }
-    }
     
 //    // MARK: - Lifecycle
 //    override init(){
@@ -50,11 +136,7 @@ class LocationSearchViewModel: ObservableObject {
         
     }
     
-    func sortAddressBook(_ userLocation: CLLocationCoordinate2D){
-//        guard let savedAddresses = SessionManager.shared.addressBook else {
-//            return
-//        }
-    }
+    
 }
 
 // MARK: - Communications with server
@@ -82,14 +164,10 @@ enum LocationSearchViewState {
     case saveNewAddress
 }
 
-struct NewAddress {
-    var saveNewAddress: Bool = false
-    var address : String = ""
+struct NewAddressRegistration {
     var unitNumber : String = ""
     var buzzer: String = ""
     var label : String = ""
     var buildingName: String = ""
     var instruction: String = ""
-    var lat: Double = 0
-    var lon: Double = 0
 }

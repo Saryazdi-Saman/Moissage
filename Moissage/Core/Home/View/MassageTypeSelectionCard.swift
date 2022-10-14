@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MassageTypeSelectionCard: View {
+    @EnvironmentObject var viewModel : LocationSearchViewModel
     @Binding var viewState : ViewState
     @Binding var selectedService : MassageType
 //    @EnvironmentObject var cartManager : CartManager
@@ -30,8 +31,10 @@ struct MassageTypeSelectionCard: View {
                     ForEach (MassageType.allCases){ type in
                         Button {
                             selectedService = type
+                            viewModel.sortAddressBook()
                             withAnimation(.spring()) {
                                 viewState = .orderDetails
+                                
                             }
                         } label: {
                             HStack{
