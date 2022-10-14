@@ -50,7 +50,7 @@ final class AppManager {
             })
     }
     
-    func getStoredAddresses(completion: @escaping (Result<[Address], Error>) -> Void) {
+    func getSavedAddresses(completion: @escaping (Result<[Address], Error>) -> Void) {
         guard let uid = currentUser?.uid else{return}
         database.child("users/\(uid)/addresses")
             .observeSingleEvent(of: .value, with: { snapshot in
@@ -79,7 +79,8 @@ final class AppManager {
             })
     }
     
-    public func locateAllTherapist(completion: @escaping (Result<[Therapist], Error>) -> Void) {
+    
+    func locateAllactiveTherapist(completion: @escaping (Result<[Therapist], Error>) -> Void) {
         database.child("aactive").observe(.value, with: { snapshot in
             guard let value = snapshot.value as? [[String: Any]] else{
                 completion(.failure(DatabaseError.failedToFetch))
@@ -94,8 +95,6 @@ final class AppManager {
                     return nil
                 }
                 
-                //                   let workerLocation = CLLocation(latitude: lat, longitude: lon)
-                //                   let distance = workerLocation.distance(from: location)
                 return Therapist(id: id,gender: gender, lat: lat, lon: lon)
             })
             

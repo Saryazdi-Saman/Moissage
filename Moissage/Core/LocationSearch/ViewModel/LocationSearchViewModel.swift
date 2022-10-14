@@ -19,16 +19,24 @@ class LocationSearchViewModel: ObservableObject {
             selectedLocation = addressbook.first
         }
     }
+    
+    @Published var workerDatabase = [Therapist]()
     @Published var selectedLocation :Address?
     var newAddress = NewAddressRegistration()
-    var userLocation : CLLocationCoordinate2D?
     var addressShouldBeSaved = false
+    
+    var userLocation : CLLocationCoordinate2D?{
+        didSet{
+            startListeningForActiveMembers()
+        }
+    }
+    
     init(){
         startListeningForAddresses()
     }
     
     private func startListeningForAddresses(){
-        manager.getStoredAddresses { [weak self] result in
+        manager.getSavedAddresses { [weak self] result in
             switch result{
             case .success(let addressbook):
                 print("DEBUG: LocationSearchViewModel - successfully got addressbook")
@@ -44,12 +52,45 @@ class LocationSearchViewModel: ObservableObject {
         }
     }
     
+    private func startListeningForActiveMembers(){
+        manager.locateAllactiveTherapist { [weak self] result in
+            switch result{
+            case .success(let workerDatabase):
+//                print("DEBUG: LocationSearchViewModel - successfully got online workers, total members: \(workerDatabase.count)")
+                guard !workerDatabase.isEmpty else {
+//                    print("DEBUG: LocationSearchViewModel - workers was empty")
+                    return
+                }
+                self?.workerDatabase = workerDatabase
+                self?.sortWorkersDB()
+                
+            case .failure(let error):
+                print("failed to get online workers: \(error)")
+            }
+        }
+    }
+    
     func sortAddressBook(){
         if let location = self.userLocation {
             let currentLocation = CLLocation(latitude: location.latitude,
                                              longitude: location.longitude)
             
             self.addressbook = addressbook
+                .sorted(
+                    by: { $0.distance(to: currentLocation)
+                        < $1.distance(to: currentLocation) })
+            return
+        } else {
+            return
+        }
+    }
+    
+    private func sortWorkersDB(){
+        if let location = self.userLocation {
+            let currentLocation = CLLocation(latitude: location.latitude,
+                                             longitude: location.longitude)
+            
+            self.workerDatabase = workerDatabase
                 .sorted(
                     by: { $0.distance(to: currentLocation)
                         < $1.distance(to: currentLocation) })
@@ -109,7 +150,6 @@ class LocationSearchViewModel: ObservableObject {
 
 //    @Published var selectedLocation : Address
     
-    private var workers = [Therapist]()
 //    private var downloadedAddresses : Bool{
 //        if SessionManager.shared.addressBook != nil {
 //            userSavedAddresses = SessionManager.shared.addressBook!

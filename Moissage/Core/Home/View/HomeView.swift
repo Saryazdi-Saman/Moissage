@@ -36,9 +36,6 @@ struct HomeView: View {
                 locationViewModel.userLocation = location
             }
         }
-//        .onTapGesture {
-//            locationViewModel.sortAddressBook()
-//        }
     }
 }
 

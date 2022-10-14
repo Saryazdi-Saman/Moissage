@@ -112,6 +112,12 @@ struct Therapist {
     let gender: String
     var lat: Double
     var lon: Double
+    var location: CLLocation{
+        return CLLocation(latitude: self.lat, longitude: self.lon)
+    }
+    func distance(to location: CLLocation) -> CLLocationDistance {
+        return location.distance(from: self.location)
+    }
 }
 
 enum DatabaseError: Error {
