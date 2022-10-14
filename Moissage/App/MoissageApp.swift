@@ -34,9 +34,9 @@ struct MoissageApp: App {
                     LoginView()
                 }
             }
-            .onAppear{
-                sessionService.signedIn = sessionService.isSignedIn
-            }
+//            .onAppear{
+//                sessionService.signedIn = sessionService.isSignedIn
+//            }
             
         }
     }

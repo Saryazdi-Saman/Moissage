@@ -19,7 +19,7 @@ struct LocationSearchActivationView: View {
                 .frame(height: 44)
                 .overlay (
                     HStack{
-                        Text(vm.addressToGo.isEmpty ? "Select address" : vm.addressToGo)
+                        Text("Select address")
                             .font(.subheadline)
                             .fontWeight(.semibold)
                             .foregroundColor(.primary)

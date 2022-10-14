@@ -66,7 +66,6 @@ final class RegistrationServiceImpl: RegistrationService {
                                 .reference()
                                 .child("users")
                                 .child(uid)
-                                .child("credentials")
                                 .updateChildValues(values) { error, ref in
                                     
                                     if let err = error {

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LocationSearchView: View {
     @EnvironmentObject var viewModel : LocationSearchViewModel
+    @StateObject var searchHelper = SearchCompletor()
     @State private var showSave = false
     var body: some View {
         VStack{
@@ -16,20 +17,22 @@ struct LocationSearchView: View {
                 if viewModel.viewState == .saveNewAddress{
                     LocationSearchActivationView()
                 } else {
-                    TextField("select address", text: $viewModel.queryFragment)
+                    TextField("select address", text: $searchHelper.queryFragment)
                         .padding(.leading, 8)
                         .frame(height: 44)
+                        .frame(maxWidth: .infinity)
                         .background(Color(.systemGray4))
+                        .cornerRadius(12)
                 }
             }
             .padding(.bottom)
             ScrollView{
                 VStack(alignment: .leading) {
                     
-                    if viewModel.viewState == .showSavedAddresses {
+                    if searchHelper.viewState == .showSavedAddresses {
                         ForEach(viewModel.userSavedAddresses, id: \.self){
                             result in
-                            LocationSearchResultCell(title: result.label,
+                            LocationSearchResultCell(title: result.label ?? "",
                                                      subtitle: result.address)
                             .onTapGesture {
                                 withAnimation(.spring()){
@@ -40,14 +43,14 @@ struct LocationSearchView: View {
                         .transition(.move(edge: .bottom))
                     }
                     
-                    if viewModel.viewState == .userIsTyping {
-                        ForEach (viewModel.results, id: \.self){
+                    if searchHelper.viewState == .userIsTyping {
+                        ForEach (searchHelper.results, id: \.self){
                             result in
                             LocationSearchResultCell(title: result.title,
                                                      subtitle: result.subtitle)
                             .onTapGesture {
-                                viewModel.addNewAddress(result)
                                 withAnimation{
+                                    searchHelper.viewState = .saveNewAddress
                                     viewModel.viewState = .saveNewAddress
                                 }
                             }

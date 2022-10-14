@@ -14,7 +14,7 @@
 		F234864A28F6CD1500EBB66E /* LocationSearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F234864928F6CD1500EBB66E /* LocationSearchResultCell.swift */; };
 		F234864C28F6D96100EBB66E /* SaveNewAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = F234864B28F6D96100EBB66E /* SaveNewAddress.swift */; };
 		F234864E28F6E14000EBB66E /* LocationSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F234864D28F6E14000EBB66E /* LocationSearchViewModel.swift */; };
-		F234865328F73F7800EBB66E /* LocationSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F234865228F73F7800EBB66E /* LocationSearchService.swift */; };
+		F234865528F8DEF100EBB66E /* SearchCompletor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F234865428F8DEF100EBB66E /* SearchCompletor.swift */; };
 		F2D3593428F4DA6600724B4B /* MoissageApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3593328F4DA6600724B4B /* MoissageApp.swift */; };
 		F2D3593828F4DA6800724B4B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F2D3593728F4DA6800724B4B /* Assets.xcassets */; };
 		F2D3593B28F4DA6800724B4B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F2D3593A28F4DA6800724B4B /* Preview Assets.xcassets */; };
@@ -57,7 +57,7 @@
 		F234864928F6CD1500EBB66E /* LocationSearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchResultCell.swift; sourceTree = "<group>"; };
 		F234864B28F6D96100EBB66E /* SaveNewAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveNewAddress.swift; sourceTree = "<group>"; };
 		F234864D28F6E14000EBB66E /* LocationSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchViewModel.swift; sourceTree = "<group>"; };
-		F234865228F73F7800EBB66E /* LocationSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchService.swift; sourceTree = "<group>"; };
+		F234865428F8DEF100EBB66E /* SearchCompletor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCompletor.swift; sourceTree = "<group>"; };
 		F2D3593028F4DA6600724B4B /* Moissage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Moissage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2D3593328F4DA6600724B4B /* MoissageApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoissageApp.swift; sourceTree = "<group>"; };
 		F2D3593728F4DA6800724B4B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -115,7 +115,6 @@
 		F234864328F6BC6400EBB66E /* LocationSearch */ = {
 			isa = PBXGroup;
 			children = (
-				F234865128F73F4500EBB66E /* Service */,
 				F2E947B428F5E720009B8A3F /* ViewModel */,
 				F234864428F6BC7400EBB66E /* Views */,
 			);
@@ -131,14 +130,6 @@
 				F234864B28F6D96100EBB66E /* SaveNewAddress.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		F234865128F73F4500EBB66E /* Service */ = {
-			isa = PBXGroup;
-			children = (
-				F234865228F73F7800EBB66E /* LocationSearchService.swift */,
-			);
-			path = Service;
 			sourceTree = "<group>";
 		};
 		F2D3592728F4DA6600724B4B = {
@@ -401,6 +392,7 @@
 			isa = PBXGroup;
 			children = (
 				F234864D28F6E14000EBB66E /* LocationSearchViewModel.swift */,
+				F234865428F8DEF100EBB66E /* SearchCompletor.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -500,12 +492,12 @@
 				F234864C28F6D96100EBB66E /* SaveNewAddress.swift in Sources */,
 				F2D3596328F513DE00724B4B /* SessionManager.swift in Sources */,
 				F2D3593428F4DA6600724B4B /* MoissageApp.swift in Sources */,
-				F234865328F73F7800EBB66E /* LocationSearchService.swift in Sources */,
 				F2E947B128F5D218009B8A3F /* OrderDetialView.swift in Sources */,
 				F234864828F6C3F400EBB66E /* LocationSearchView.swift in Sources */,
 				F2D3594F28F4E29E00724B4B /* ButtonView.swift in Sources */,
 				F2E9478928F54B8F009B8A3F /* ForgotPasswordViewModel.swift in Sources */,
 				F2E947A028F5AB74009B8A3F /* HomeView.swift in Sources */,
+				F234865528F8DEF100EBB66E /* SearchCompletor.swift in Sources */,
 				F2E947A228F5ABE3009B8A3F /* MapViewRepresentable.swift in Sources */,
 				F2E9479028F5584F009B8A3F /* LoginViewModel.swift in Sources */,
 				F2E947A428F5AED1009B8A3F /* LocationManager.swift in Sources */,

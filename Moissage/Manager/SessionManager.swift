@@ -9,27 +9,23 @@ import Foundation
 import FirebaseAuth
 import FirebaseDatabase
 
-struct UserSessionDetails {
-    let firstName: String
-    let lastName: String
-    let phoneNumber: String
-    let preferredGender: String
-}
+
 
 final class SessionManager: ObservableObject {
     
     @Published var signedIn = false
+    @Published var addressBook : [Address]?
     
     
     var isSignedIn : Bool {
         return Auth.auth().currentUser != nil
     }
-    var test : Void {
-        if isSignedIn {
-            setupObservations()
-        }
-        return
-    }
+//    var test : Void {
+//        if isSignedIn {
+//            setupObservations()
+//        }
+//        return
+//    }
     
     private var handler: AuthStateDidChangeListenerHandle?
     
@@ -60,36 +56,6 @@ private extension SessionManager {
                 let currentUser = Auth.auth().currentUser
                 self.signedIn = currentUser == nil ? false : true
                 
-                if let uid = currentUser?.uid {
-                    
-                    Database
-                        .database()
-                        .reference()
-                        .child("users")
-                        .child(uid)
-                        .child("credentials")
-                        .observeSingleEvent(of: .value, with: { snapshot  in
-                            
-                            guard
-                                  let value = snapshot.value as? NSDictionary,
-                                  let firstName = value[RegistrationKeys.firstName.rawValue] as? String,
-                                  let lastName = value[RegistrationKeys.lastName.rawValue] as? String,
-                                  let phoneNumber = value[RegistrationKeys.phoneNumber.rawValue] as? String,
-                                  let preferredGender = value[RegistrationKeys.preferredGender.rawValue] as? String else {
-                                return
-                            }
-                
-                            DispatchQueue.main.async {
-                                UserDefaults.standard.set(uid, forKey: "id")
-                                UserDefaults.standard.set(firstName, forKey: "firstName")
-                                UserDefaults.standard.set(lastName, forKey: "lastName")
-                                UserDefaults.standard.set(phoneNumber, forKey: "phoneNumber")
-                                UserDefaults.standard.set(preferredGender, forKey: "preferredGender")
-                                
-                                print("DEBUG: user default saved successfully")
-                            }
-                        })
-                }
             }
     }
 }

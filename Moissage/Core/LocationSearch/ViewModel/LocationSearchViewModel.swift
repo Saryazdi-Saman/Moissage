@@ -8,41 +8,41 @@
 import Foundation
 import MapKit
 
-class LocationSearchViewModel: NSObject, ObservableObject {
+class LocationSearchViewModel: ObservableObject {
     
     // MARK: - Properties
+    private var manager = AppManager()
     
-    @Published var viewState : LocationSearchViewState
+    @Published var viewState : LocationSearchViewState = .noInput
     @Published var userSavedAddresses = [Address]()
-    @Published var results = [MKLocalSearchCompletion]()
-    private let searchCompleter = MKLocalSearchCompleter()
-    private var service : LocationSearchService
-    var addressToGo: String = ""
-    var selectedLocation: MKLocalSearchCompletion?
+//    @Published var selectedLocation : Address
+    
+    private var workers = [Therapist]()
+//    private var downloadedAddresses : Bool{
+//        if SessionManager.shared.addressBook != nil {
+//            userSavedAddresses = SessionManager.shared.addressBook!
+//            return true
+//        } else {
+//            return false
+//        }
+//    }
+    
     var newAddress = NewAddress()
-
-    
-    
-    var queryFragment: String = "" {
+    var userLocation : CLLocationCoordinate2D?{
         didSet{
-            searchCompleter.queryFragment = queryFragment
-            if queryFragment.isEmpty {
-                viewState = .showSavedAddresses
-            } else {
-                viewState = .userIsTyping
-            }
+            sortAddressBook(userLocation!)
         }
     }
     
-    // MARK: - Lifecycle
-    override init(){
-        viewState = LocationSearchViewState.noInput
-        self.service = LocationSearchService()
-        super.init()
-        searchCompleter.delegate = self
-        searchCompleter.queryFragment = queryFragment
-        loadUserSavedLocations()
-    }
+//    // MARK: - Lifecycle
+//    override init(){
+//        super.init()
+//        startListeningForWorkersAvailable()
+//        loadUserSavedLocations()
+//
+//    }
+    
+    
     
     // MARK: - Helpers
     
@@ -50,62 +50,30 @@ class LocationSearchViewModel: NSObject, ObservableObject {
         
     }
     
-    func addNewAddress(_ localSearch: MKLocalSearchCompletion){
-        self.addressToGo = localSearch.title.appending(localSearch.subtitle)
-        locationSearch(ForLocalSearchCompletion: localSearch) { respons, error in
-            if let error = error {
-                print("DEBUG: Location search fail with error \(error.localizedDescription)")
-                return
-            }
-            guard let item = respons?.mapItems.first else {return}
-            let coordinate = item.placemark.coordinate
-            print("DEBUG: location coordinates are: \(coordinate)")
-            self.newAddress.lat = Double(coordinate.latitude)
-            self.newAddress.lon = Double(coordinate.longitude)
-        }
-    }
-    
-    func locationSearch(ForLocalSearchCompletion localSearch: MKLocalSearchCompletion,
-                        completion: @escaping MKLocalSearch.CompletionHandler){
-        let searchRequest = MKLocalSearch.Request()
-        searchRequest.naturalLanguageQuery = localSearch.title.appending(localSearch.subtitle)
-        let search = MKLocalSearch(request: searchRequest)
-        search.start(completionHandler: completion)
-        
+    func sortAddressBook(_ userLocation: CLLocationCoordinate2D){
+//        guard let savedAddresses = SessionManager.shared.addressBook else {
+//            return
+//        }
     }
 }
 
 // MARK: - Communications with server
 extension LocationSearchViewModel{
-    
-    func loadUserSavedLocations(){
-        guard let uid = UserDefaults.standard.string(forKey: "id") else {
-            return
-        }
-        service.getSavedAddresses(for: uid) { [weak self] result in
-            switch result{
-            case .success(let addresses):
-                guard !addresses.isEmpty else {
-                    return
-                }
-                self?.userSavedAddresses = addresses
-            case .failure(let error):
-                print("failed to fetch saved addresses\(error)")
-            }
-        }
-    }
+ 
+//    private func startListeningForWorkersAvailable(){
+//        AppManager.shared.locateAllTherapist(){ [weak self] result in
+//            switch result {
+//            case .success(let workers):
+//                guard !workers.isEmpty else {return}
+//                self?.workers = workers
+//            case .failure(let error):
+//                print("DEBUG: failed to fetch worker's Location \(error)")
+//
+//            }
+//
+//        }
+//    }
 }
-
-// MARK: - MKLocalSearchCompleterDelegate
-
-extension LocationSearchViewModel: MKLocalSearchCompleterDelegate {
-    func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-        self.results = completer.results
-        
-    }
-    
-}
-
 
 enum LocationSearchViewState {
     case noInput

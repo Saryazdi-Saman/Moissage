@@ -88,3 +88,33 @@ enum PreferredGender : String, CaseIterable {
     case female
     case anyone
 }
+
+struct Address : Hashable {
+    
+    let label: String?
+    let address: String
+    let lat: Double
+    let lon: Double
+    let buildingName: String?
+    let buzzer: String?
+    let instruction: String?
+}
+
+struct Therapist {
+    let id: String
+    let gender : String
+    var lat : Double
+    var lon : Double
+    
+}
+
+enum DatabaseError: Error {
+    case failedToFetch
+    
+    public var localizedDescription: String {
+        switch self {
+        case .failedToFetch:
+            return "This means blah failed"
+        }
+    }
+}
