@@ -37,6 +37,7 @@ struct LocationSearchView: View {
                                                      subtitle: result.address)
                             .onTapGesture {
                                 viewModel.selectedLocation = result
+                                viewModel.priorotizeWorkers(forLocation: result.location)
                                 withAnimation(.spring()){
                                     viewModel.viewState = .noInput
                                 }

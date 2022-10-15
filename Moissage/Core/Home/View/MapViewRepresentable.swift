@@ -25,10 +25,8 @@ struct MapViewRepresentable : UIViewRepresentable {
     
     func updateUIView(_ uiView: UIViewType, context: Context) {
         let nearbyWorkers = locationVM.workCandidates
-        context.coordinator.addAnnotations(forWorkers: nearbyWorkers)
-        if let address = locationVM.selectedLocation {
-            context.coordinator.addServiceLocationAnnotation(forLocation: address)
-        }
+        let address = locationVM.selectedLocation
+        context.coordinator.addAnnotations(forWorkers: nearbyWorkers, serviceLocation: address)
     }
     
     func makeCoordinator() -> MapCoordinator {
@@ -49,12 +47,12 @@ extension MapViewRepresentable {
         // MARK: - MKMapViewDelegate
         
         func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
-            let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: userLocation.coordinate.latitude,
-                                                                           longitude: userLocation.coordinate.longitude),
-                                            span: MKCoordinateSpan(latitudeDelta: 0.05,
-                                                                   longitudeDelta: 0.05))
-
-            parent.mapView.setRegion(region, animated: true)
+//            let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: userLocation.coordinate.latitude,
+//                                                                           longitude: userLocation.coordinate.longitude),
+//                                            span: MKCoordinateSpan(latitudeDelta: 0.05,
+//                                                                   longitudeDelta: 0.05))
+//
+//            parent.mapView.setRegion(region, animated: true)
             parent.mapView.layoutMargins = UIEdgeInsets(top: 5, left: 5, bottom: 500, right: 5)
         }
 //
@@ -109,8 +107,14 @@ extension MapViewRepresentable {
         
         
         // MARK: - Helpers
-        func addAnnotations(forWorkers workerDB: [Therapist]){
+        func addAnnotations(forWorkers workerDB: [Therapist], serviceLocation address: Address?){
             parent.mapView.removeAnnotations(parent.mapView.annotations)
+            if let location = address {
+                let anno = MKPointAnnotation()
+                anno.title = "address"
+                anno.coordinate = location.location.coordinate
+                parent.mapView.addAnnotation(anno)
+            }
             let numberOfAnnos = min(4, workerDB.count)
             for worker in workerDB[..<numberOfAnnos]{
                 let anno = MKPointAnnotation()
@@ -122,14 +126,6 @@ extension MapViewRepresentable {
                 anno.coordinate = worker.location.coordinate
                 self.parent.mapView.addAnnotation(anno)
             }
-            parent.mapView.showAnnotations(parent.mapView.annotations, animated: true)
-        }
-        
-        func addServiceLocationAnnotation(forLocation address: Address){
-            let anno = MKPointAnnotation()
-            anno.title = "address"
-            anno.coordinate = address.location.coordinate
-            parent.mapView.addAnnotation(anno)
             parent.mapView.showAnnotations(parent.mapView.annotations, animated: true)
         }
     }

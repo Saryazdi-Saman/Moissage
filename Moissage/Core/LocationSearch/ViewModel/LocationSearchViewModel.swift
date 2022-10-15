@@ -7,11 +7,13 @@
 
 import Foundation
 import MapKit
+import Combine
 
 class LocationSearchViewModel: ObservableObject {
     
     // MARK: - Properties
     private var manager = AppManager()
+    var cancallables = Set<AnyCancellable>()
     
     @Published var viewState : LocationSearchViewState = .noInput
     @Published var addressbook = [Address](){
@@ -19,69 +21,76 @@ class LocationSearchViewModel: ObservableObject {
             selectedLocation = addressbook.first
         }
     }
-    @Published var preference = UserDefaults.standard.string(forKey: "preferredGender") ?? "anyone"
-    var workCandidates : [Therapist] {
-        if preference == "anyone" {
-            return workerDatabase
-        } else {
-            return workerDatabase.filter({$0.gender == preference})
-        }
-    }
-    private var workerDatabase = [Therapist]()
-    var selectedLocation :Address? {
-        didSet{
-            sortWorkersDB()
-        }
-    }
+    @Published var genderPreference = UserDefaults.standard.string(forKey: "preferredGender") ?? "anyone"
+    @Published var workCandidates = [Therapist]()
+    @Published var workerDatabase = [Therapist]()
+    @Published var selectedLocation :Address?
     var newAddress = NewAddressRegistration()
     var addressShouldBeSaved = false
     
-    var userLocation : CLLocationCoordinate2D?{
-        didSet{
-            startListeningForActiveMembers()
-        }
-    }
+    @Published var userLocation : CLLocationCoordinate2D?
     
     init(){
-        startListeningForAddresses()
+        addAddressbookSubscriber()
+        startListeningForActiveMembers()
+        filterWorkersForValidCandidates()
     }
-    
-    private func startListeningForAddresses(){
-        manager.getSavedAddresses { [weak self] result in
-            switch result{
-            case .success(let addressbook):
-                print("DEBUG: LocationSearchViewModel - successfully got addressbook")
-                guard !addressbook.isEmpty else {
-                    print("DEBUG: LocationSearchViewModel - addressbook was empty")
+    private func addAddressbookSubscriber(){
+        manager.$addressBook
+            .combineLatest($userLocation)
+            .sink {[weak self] (savedAddresses, location) in
+                guard let addresses = savedAddresses,
+                      addresses.count > 0 else {return}
+                
+                self?.addressbook = addresses
+                guard location != nil else {
                     return
                 }
-                self?.addressbook = addressbook
+                self?.sortAddressBook()
                 
-            case .failure(let error):
-                print("failed to get saved addresses: \(error)")
             }
-        }
+            .store(in: &cancallables)
     }
     
     private func startListeningForActiveMembers(){
-        manager.locateAllactiveTherapist { [weak self] result in
-            switch result{
-            case .success(let workerDatabase):
-//                print("DEBUG: LocationSearchViewModel - successfully got online workers, total members: \(workerDatabase.count)")
-                guard !workerDatabase.isEmpty else {
-//                    print("DEBUG: LocationSearchViewModel - workers was empty")
+        manager.$onlineWorkers
+            .combineLatest($userLocation)
+            .sink {[weak self] (onlineMembers, location) in
+                guard let onlineMembers = onlineMembers,
+                      onlineMembers.count > 0 else {return}
+                
+                self?.workerDatabase = onlineMembers
+                guard location != nil else {
                     return
                 }
-                self?.workerDatabase = workerDatabase
                 self?.sortWorkersDB()
-                
-            case .failure(let error):
-                print("failed to get online workers: \(error)")
             }
-        }
+            .store(in: &cancallables)
     }
     
-    func sortAddressBook(){
+    private func startListeningForLocationSelection(){
+        $selectedLocation.sink {[weak self] location in
+            guard let location = location else {return}
+            if location.lat != 0, location.lon != 0 {
+                self?.priorotizeWorkers(forLocation: location.location)
+            }
+        }.store(in: &cancallables)
+    }
+    
+    private func filterWorkersForValidCandidates(){
+        $workerDatabase
+            .combineLatest($genderPreference)
+            .sink {[weak self] (workers, gender) in
+                
+                if gender != "anyone" {
+                    self?.workCandidates = workers.filter({$0.gender == gender})
+                } else {
+                    self?.workCandidates = workers
+                }
+            }.store(in: &cancallables)
+    }
+    
+    private func sortAddressBook(){
         if let location = self.userLocation {
             let currentLocation = CLLocation(latitude: location.latitude,
                                              longitude: location.longitude)
@@ -96,10 +105,17 @@ class LocationSearchViewModel: ObservableObject {
         }
     }
     
+    func priorotizeWorkers(forLocation location:CLLocation){
+        self.workerDatabase = workerDatabase
+            .sorted(
+                by: { $0.distance(to: location)
+                    < $1.distance(to: location) })
+    }
+    
     private func sortWorkersDB(){
         if let address = self.selectedLocation {
-            let serviceAddressLocation = CLLocation(latitude: address.location.coordinate.latitude,
-                                                    longitude: address.location.coordinate.longitude)
+            let serviceAddressLocation = CLLocation(latitude: address.lat,
+                                                    longitude: address.lon)
             self.workerDatabase = workerDatabase
                 .sorted(
                     by: { $0.distance(to: serviceAddressLocation)
@@ -140,6 +156,8 @@ class LocationSearchViewModel: ObservableObject {
             print("DEBUG: LocationViewModel - successfully retrieved selected location's coordinate: \(coordinate)")
             self?.selectedLocation?.lat =  coordinate.latitude
             self?.selectedLocation?.lon =  coordinate.longitude
+            self?.priorotizeWorkers(forLocation: CLLocation(latitude: coordinate.latitude,
+                                                            longitude: coordinate.longitude))
         }
         
     }

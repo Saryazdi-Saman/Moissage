@@ -95,7 +95,7 @@ struct OrderDetailView: View {
                         }
                         .pickerStyle(SegmentedPickerStyle())
                         
-                        Picker ("gender", selection: $locationVM.preference){
+                        Picker ("gender", selection: $locationVM.genderPreference){
                             ForEach(["female","male", "anyone"], id: \.self){Text($0)}
                         }
                         .pickerStyle(SegmentedPickerStyle())

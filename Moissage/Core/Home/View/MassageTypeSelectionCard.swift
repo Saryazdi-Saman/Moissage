@@ -31,7 +31,6 @@ struct MassageTypeSelectionCard: View {
                     ForEach (MassageType.allCases){ type in
                         Button {
                             selectedService = type
-                            viewModel.sortAddressBook()
                             withAnimation(.spring()) {
                                 viewState = .orderDetails
                                 

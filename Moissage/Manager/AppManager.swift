@@ -20,16 +20,19 @@ final class AppManager {
     private let currentUser = Auth.auth().currentUser
     private var workerDB = [Therapist]()
     private var workerDBDownloadedSuccessfully = false
+    @Published var addressBook: [Address]?
+    @Published var onlineWorkers: [Therapist]?
     
     init(){
         updateUserDefaults()
+        startListeningForAvailableWorkers()
     }
     
     private func updateUserDefaults() {
         guard let uid = currentUser?.uid else{return}
         
         database.child("users/\(uid)")
-            .observeSingleEvent(of: .value, with: {snapshot  in
+            .observeSingleEvent(of: .value, with: {[weak self] snapshot  in
                 
                 guard
                     let value = snapshot.value as? NSDictionary,
@@ -49,8 +52,54 @@ final class AppManager {
                     
                     print("DEBUG: FROM APP MANAGER: user default saved successfully")
                 }
+                
+                guard let addressbookSnapshot = value["addresses"] as? [[String:Any]] else{
+                    return
+                }
+                let addressbook: [Address] = addressbookSnapshot.compactMap { dictionary in
+                    guard let address = dictionary["address"] as? String,
+                            let lat = dictionary["lat"] as? Double,
+                            let lon = dictionary["lon"] as? Double else {
+                          return nil
+                      }
+                    return Address(label: dictionary["building_name"] as? String,
+                                   address: address,
+                                   lat: lat,
+                                   lon: lon,
+                                   buildingName: dictionary["building_name"] as? String,
+                                   buzzer: dictionary["buzzer"] as? String,
+                                   instruction: dictionary["instruction"] as? String)
+                }
+                self?.addressBook = addressbook
             })
     }
+    
+    
+    
+    private func startListeningForAvailableWorkers(){
+        database.child("aactive").observe(.value, with: { [weak self]snapshot in
+            guard let value = snapshot.value as? [[String: Any]] else{
+                return
+            }
+            
+            let activeTherapist: [Therapist] = value.compactMap({ dictionary in
+                guard let id = dictionary["id"] as? String,
+                      let gender = dictionary["gender"] as? String,
+                      let lat = dictionary["lat"] as? Double,
+                      let lon = dictionary["lon"] as? Double else {
+                    return nil
+                }
+                
+                return Therapist(id: id,gender: gender, lat: lat, lon: lon)
+            })
+            
+            self?.onlineWorkers = activeTherapist
+        })
+    }
+    
+    
+    
+    
     
     func getSavedAddresses(completion: @escaping (Result<[Address], Error>) -> Void) {
         guard let uid = currentUser?.uid else{return}
