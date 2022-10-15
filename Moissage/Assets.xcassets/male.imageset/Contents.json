@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "male.pdf",
+      "filename" : "male1.pdf",
       "idiom" : "universal"
     }
   ],
@@ -10,6 +10,7 @@
     "version" : 1
   },
   "properties" : {
+    "localizable" : true,
     "preserves-vector-representation" : true
   }
 }

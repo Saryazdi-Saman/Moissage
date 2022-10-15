@@ -19,9 +19,20 @@ class LocationSearchViewModel: ObservableObject {
             selectedLocation = addressbook.first
         }
     }
-    
-    @Published var workerDatabase = [Therapist]()
-    @Published var selectedLocation :Address?
+    @Published var preference = UserDefaults.standard.string(forKey: "preferredGender") ?? "anyone"
+    var workCandidates : [Therapist] {
+        if preference == "anyone" {
+            return workerDatabase
+        } else {
+            return workerDatabase.filter({$0.gender == preference})
+        }
+    }
+    private var workerDatabase = [Therapist]()
+    var selectedLocation :Address? {
+        didSet{
+            sortWorkersDB()
+        }
+    }
     var newAddress = NewAddressRegistration()
     var addressShouldBeSaved = false
     
@@ -86,21 +97,39 @@ class LocationSearchViewModel: ObservableObject {
     }
     
     private func sortWorkersDB(){
-        if let location = self.userLocation {
-            let currentLocation = CLLocation(latitude: location.latitude,
-                                             longitude: location.longitude)
-            
+        if let address = self.selectedLocation {
+            let serviceAddressLocation = CLLocation(latitude: address.location.coordinate.latitude,
+                                                    longitude: address.location.coordinate.longitude)
             self.workerDatabase = workerDatabase
                 .sorted(
-                    by: { $0.distance(to: currentLocation)
-                        < $1.distance(to: currentLocation) })
+                    by: { $0.distance(to: serviceAddressLocation)
+                        < $1.distance(to: serviceAddressLocation) })
             return
         } else {
-            return
+            if let location = self.userLocation {
+                let currentLocation = CLLocation(latitude: location.latitude,
+                                                 longitude: location.longitude)
+                
+                self.workerDatabase = workerDatabase
+                    .sorted(
+                        by: { $0.distance(to: currentLocation)
+                            < $1.distance(to: currentLocation) })
+                return
+            } else {
+                return
+            }
         }
     }
     
     func selectNewLocation(_ localSearch: MKLocalSearchCompletion) {
+        
+        selectedLocation = Address(label: nil,
+                                   address: localSearch.title.appending(localSearch.subtitle),
+                                   lat: 0,
+                                   lon: 0,
+                                   buildingName: nil,
+                                   buzzer: nil,
+                                   instruction: nil)
         locationSearch(forLocalSearchCompletion: localSearch) {[weak self] result, error in
             if let error = error {
                 print("DEBUG: LocationViewModel - location coordinate search failed: \(error.localizedDescription)")
@@ -109,13 +138,8 @@ class LocationSearchViewModel: ObservableObject {
             guard let item = result?.mapItems.first else {return}
             let coordinate = item.placemark.coordinate
             print("DEBUG: LocationViewModel - successfully retrieved selected location's coordinate: \(coordinate)")
-            self?.selectedLocation = Address(label: nil,
-                                       address: localSearch.title.appending(localSearch.subtitle),
-                                       lat: coordinate.latitude,
-                                       lon: coordinate.longitude,
-                                       buildingName: nil,
-                                       buzzer: nil,
-                                       instruction: nil)
+            self?.selectedLocation?.lat =  coordinate.latitude
+            self?.selectedLocation?.lon =  coordinate.longitude
         }
         
     }
@@ -145,57 +169,9 @@ class LocationSearchViewModel: ObservableObject {
             selectedLocation?.instruction = newAddress.instruction
         }
     }
-
-
-
-//    @Published var selectedLocation : Address
-    
-//    private var downloadedAddresses : Bool{
-//        if SessionManager.shared.addressBook != nil {
-//            userSavedAddresses = SessionManager.shared.addressBook!
-//            return true
-//        } else {
-//            return false
-//        }
-//    }
-    
-    
-//    // MARK: - Lifecycle
-//    override init(){
-//        super.init()
-//        startListeningForWorkersAvailable()
-//        loadUserSavedLocations()
-//
-//    }
-    
-    
-    
-    // MARK: - Helpers
-    
-    func selectLocation(_ location: MKLocalSearchCompletion){
-        
-    }
-    
-    
 }
 
-// MARK: - Communications with server
-extension LocationSearchViewModel{
- 
-//    private func startListeningForWorkersAvailable(){
-//        AppManager.shared.locateAllTherapist(){ [weak self] result in
-//            switch result {
-//            case .success(let workers):
-//                guard !workers.isEmpty else {return}
-//                self?.workers = workers
-//            case .failure(let error):
-//                print("DEBUG: failed to fetch worker's Location \(error)")
-//
-//            }
-//
-//        }
-//    }
-}
+
 
 enum LocationSearchViewState {
     case noInput

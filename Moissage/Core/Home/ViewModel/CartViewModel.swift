@@ -21,7 +21,7 @@ final class CartViewModel : ObservableObject{
                     duration: .oneHour,
                     extraHeadMassage: .none,
                     extraFootMassage: .none,
-                    preferredGender: UserDefaults.standard.string(forKey: "gender") ?? "anyone")
+                    preferredGender: UserDefaults.standard.string(forKey: "preferredGender") ?? "anyone")
         cartTotal = Double(MainServiceDuration.oneHour.price)
         
     }
