@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LocationSearchResultCell: View {
-    let title : String
+    let title : String?
     let subtitle : String
     var body: some View {
         HStack{
@@ -17,13 +17,19 @@ struct LocationSearchResultCell: View {
                 .foregroundColor(Color(.systemRed))
             
             VStack(alignment: .leading, spacing: 4){
-                Text(title)
-                    .font(.body)
-                    .foregroundColor(.primary)
-                
-                Text(subtitle)
-                    .font(.system(size: 15))
-                    .foregroundColor(.secondary)
+                if let title = title {
+                    Text(title)
+                        .font(.body)
+                        .foregroundColor(.primary)
+                    
+                    Text(subtitle)
+                        .font(.system(size: 15))
+                        .foregroundColor(.secondary)
+                } else{
+                    Text(subtitle)
+                        .font(.body)
+                        .foregroundColor(.primary)
+                }
                 
                 Divider()
             }

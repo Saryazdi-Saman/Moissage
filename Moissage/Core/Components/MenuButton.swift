@@ -9,7 +9,6 @@ import SwiftUI
 
 struct MenuButton: View {
     @Binding var viewState : ViewState
-    //        @EnvironmentObject var sessionService : SessionServiceImpl
     var body: some View {
         Button {
             withAnimation(.spring()) {
@@ -34,16 +33,19 @@ struct MenuButton: View {
     func actionForState(_ state : ViewState){
         switch state {
         case .noInput :
-            return
+            viewState = ViewState.sideMenue
             
-            //                                    sessionService.logout()
         case .orderDetails:
+            viewState = ViewState.noInput
+            
+        case .sideMenue:
             viewState = ViewState.noInput
         }
     }
     
     func imageNameForState( _ state : ViewState) -> String{
         switch state {
+        case .sideMenue: return "arrow.left"
         case .noInput: return "line.3.horizontal"
         case .orderDetails: return "arrow.left"
         }
@@ -54,6 +56,7 @@ struct MenuButton: View {
 enum ViewState {
     case noInput
     case orderDetails
+    case sideMenue
 }
 
 struct MenuButton_Previews: PreviewProvider {

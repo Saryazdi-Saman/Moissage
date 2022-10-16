@@ -25,7 +25,7 @@ struct RegistrationCredentials {
     var firstName: String
     var lastName: String
     var phoneNumber: String
-    var preferredGender: Gender
+    var preferredGender: String
 }
 
 protocol RegistrationService {
@@ -59,7 +59,7 @@ final class RegistrationServiceImpl: RegistrationService {
                             let values = [RegistrationKeys.firstName.rawValue: credentials.firstName,
                                           RegistrationKeys.lastName.rawValue: credentials.lastName,
                                           RegistrationKeys.phoneNumber.rawValue: credentials.phoneNumber,
-                                          RegistrationKeys.preferredGender.rawValue: credentials.preferredGender.rawValue] as [String : Any]
+                                          RegistrationKeys.preferredGender.rawValue: credentials.preferredGender] as [String : Any]
                             
                             Database
                                 .database()

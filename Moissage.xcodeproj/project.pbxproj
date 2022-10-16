@@ -30,13 +30,14 @@
 		F2D3595D28F4F19A00724B4B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F2D3595C28F4F19A00724B4B /* GoogleService-Info.plist */; };
 		F2D3596028F4FF5000724B4B /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3595F28F4FF5000724B4B /* MainView.swift */; };
 		F2D3596328F513DE00724B4B /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3596228F513DE00724B4B /* SessionManager.swift */; };
+		F2D4744328FB6315002CB42C /* sideMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D4744228FB6315002CB42C /* sideMenu.swift */; };
+		F2D4744528FB68C8002CB42C /* logout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D4744428FB68C8002CB42C /* logout.swift */; };
 		F2E9478928F54B8F009B8A3F /* ForgotPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E9478828F54B8F009B8A3F /* ForgotPasswordViewModel.swift */; };
 		F2E9478C28F54CA0009B8A3F /* ForgotPasswordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E9478B28F54CA0009B8A3F /* ForgotPasswordService.swift */; };
 		F2E9479028F5584F009B8A3F /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E9478F28F5584F009B8A3F /* LoginViewModel.swift */; };
 		F2E9479328F5588C009B8A3F /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E9479228F5588C009B8A3F /* LoginService.swift */; };
 		F2E9479628F55A3A009B8A3F /* RegistrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E9479528F55A3A009B8A3F /* RegistrationService.swift */; };
 		F2E9479928F55A72009B8A3F /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E9479828F55A72009B8A3F /* RegistrationViewModel.swift */; };
-		F2E9479B28F58203009B8A3F /* AppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E9479A28F58203009B8A3F /* AppManager.swift */; };
 		F2E947A028F5AB74009B8A3F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E9479F28F5AB74009B8A3F /* HomeView.swift */; };
 		F2E947A228F5ABE3009B8A3F /* MapViewRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E947A128F5ABE3009B8A3F /* MapViewRepresentable.swift */; };
 		F2E947A428F5AED1009B8A3F /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E947A328F5AED1009B8A3F /* LocationManager.swift */; };
@@ -44,9 +45,7 @@
 		F2E947AA28F5BA5F009B8A3F /* MassageTypeSelectionCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E947A928F5BA5F009B8A3F /* MassageTypeSelectionCard.swift */; };
 		F2E947AD28F5BAC3009B8A3F /* StoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E947AC28F5BAC3009B8A3F /* StoreModel.swift */; };
 		F2E947B128F5D218009B8A3F /* OrderDetialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E947B028F5D218009B8A3F /* OrderDetialView.swift */; };
-		F2E947B628F5E760009B8A3F /* SideMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E947B528F5E760009B8A3F /* SideMenuView.swift */; };
 		F2E947B828F5E8C3009B8A3F /* SideMenuHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E947B728F5E8C3009B8A3F /* SideMenuHeader.swift */; };
-		F2E947BA28F5EB70009B8A3F /* SideMenuCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E947B928F5EB70009B8A3F /* SideMenuCells.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,13 +71,14 @@
 		F2D3595C28F4F19A00724B4B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F2D3595F28F4FF5000724B4B /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		F2D3596228F513DE00724B4B /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
+		F2D4744228FB6315002CB42C /* sideMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sideMenu.swift; sourceTree = "<group>"; };
+		F2D4744428FB68C8002CB42C /* logout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = logout.swift; sourceTree = "<group>"; };
 		F2E9478828F54B8F009B8A3F /* ForgotPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewModel.swift; sourceTree = "<group>"; };
 		F2E9478B28F54CA0009B8A3F /* ForgotPasswordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordService.swift; sourceTree = "<group>"; };
 		F2E9478F28F5584F009B8A3F /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		F2E9479228F5588C009B8A3F /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		F2E9479528F55A3A009B8A3F /* RegistrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationService.swift; sourceTree = "<group>"; };
 		F2E9479828F55A72009B8A3F /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
-		F2E9479A28F58203009B8A3F /* AppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppManager.swift; sourceTree = "<group>"; };
 		F2E9479F28F5AB74009B8A3F /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		F2E947A128F5ABE3009B8A3F /* MapViewRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewRepresentable.swift; sourceTree = "<group>"; };
 		F2E947A328F5AED1009B8A3F /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
@@ -86,9 +86,7 @@
 		F2E947A928F5BA5F009B8A3F /* MassageTypeSelectionCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MassageTypeSelectionCard.swift; sourceTree = "<group>"; };
 		F2E947AC28F5BAC3009B8A3F /* StoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreModel.swift; sourceTree = "<group>"; };
 		F2E947B028F5D218009B8A3F /* OrderDetialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetialView.swift; sourceTree = "<group>"; };
-		F2E947B528F5E760009B8A3F /* SideMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuView.swift; sourceTree = "<group>"; };
 		F2E947B728F5E8C3009B8A3F /* SideMenuHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuHeader.swift; sourceTree = "<group>"; };
-		F2E947B928F5EB70009B8A3F /* SideMenuCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuCells.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -244,7 +242,6 @@
 			children = (
 				F2E947AB28F5BAB3009B8A3F /* Models */,
 				F2D3596228F513DE00724B4B /* SessionManager.swift */,
-				F2E9479A28F58203009B8A3F /* AppManager.swift */,
 				F2E947A328F5AED1009B8A3F /* LocationManager.swift */,
 			);
 			path = Manager;
@@ -381,9 +378,9 @@
 		F2E947B328F5E71A009B8A3F /* View */ = {
 			isa = PBXGroup;
 			children = (
-				F2E947B528F5E760009B8A3F /* SideMenuView.swift */,
 				F2E947B728F5E8C3009B8A3F /* SideMenuHeader.swift */,
-				F2E947B928F5EB70009B8A3F /* SideMenuCells.swift */,
+				F2D4744228FB6315002CB42C /* sideMenu.swift */,
+				F2D4744428FB68C8002CB42C /* logout.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -480,13 +477,13 @@
 				F2E9479628F55A3A009B8A3F /* RegistrationService.swift in Sources */,
 				F2E947A828F5B6B6009B8A3F /* MenuButton.swift in Sources */,
 				F2D3596028F4FF5000724B4B /* MainView.swift in Sources */,
-				F2E947BA28F5EB70009B8A3F /* SideMenuCells.swift in Sources */,
 				F2E947AA28F5BA5F009B8A3F /* MassageTypeSelectionCard.swift in Sources */,
 				F234864A28F6CD1500EBB66E /* LocationSearchResultCell.swift in Sources */,
 				F2D3595928F4E93800724B4B /* ForgotPasswordView.swift in Sources */,
 				F2E947AD28F5BAC3009B8A3F /* StoreModel.swift in Sources */,
-				F2E947B628F5E760009B8A3F /* SideMenuView.swift in Sources */,
+				F2D4744328FB6315002CB42C /* sideMenu.swift in Sources */,
 				F2E947B828F5E8C3009B8A3F /* SideMenuHeader.swift in Sources */,
+				F2D4744528FB68C8002CB42C /* logout.swift in Sources */,
 				F234863F28F69F1700EBB66E /* CartViewModel.swift in Sources */,
 				F2E9478C28F54CA0009B8A3F /* ForgotPasswordService.swift in Sources */,
 				F234864C28F6D96100EBB66E /* SaveNewAddress.swift in Sources */,
@@ -502,7 +499,6 @@
 				F2E9479028F5584F009B8A3F /* LoginViewModel.swift in Sources */,
 				F2E947A428F5AED1009B8A3F /* LocationManager.swift in Sources */,
 				F2D3595628F4E54800724B4B /* RegistrationView.swift in Sources */,
-				F2E9479B28F58203009B8A3F /* AppManager.swift in Sources */,
 				F2D3595328F4E35C00724B4B /* PasswordField.swift in Sources */,
 				F2D3595B28F4E9F900724B4B /* DismissButton.swift in Sources */,
 				F2E9479928F55A72009B8A3F /* RegistrationViewModel.swift in Sources */,

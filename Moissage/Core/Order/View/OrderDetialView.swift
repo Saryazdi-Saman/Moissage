@@ -119,6 +119,9 @@ struct OrderDetailView: View {
                 
                 // MARK: - request button
                 Button {
+                    if locationVM.selectedLocation == nil {
+                        locationVM.viewState = .showSavedAddresses
+                    }
                     
                 } label: {
                     Text("CONFIRM REQUEST")

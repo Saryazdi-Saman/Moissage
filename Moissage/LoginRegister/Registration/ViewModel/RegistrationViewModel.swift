@@ -33,7 +33,7 @@ final class RegistrationViewModelImpl: ObservableObject, RegistrationViewModel {
                                                      firstName: "",
                                                      lastName: "",
                                                      phoneNumber: "",
-                                                     preferredGender: .any)
+                                                     preferredGender: "anyone")
     @Published var hasError: Bool = false
 
     private var subscriptions = Set<AnyCancellable>()

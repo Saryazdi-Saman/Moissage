@@ -33,17 +33,17 @@ struct LocationSearchView: View {
                        !viewModel.addressShouldBeSaved {
                         ForEach(viewModel.addressbook, id: \.self){
                             result in
-                            LocationSearchResultCell(title: result.label ?? "",
+                            LocationSearchResultCell(title: result.label,
                                                      subtitle: result.address)
                             .onTapGesture {
                                 viewModel.selectedLocation = result
-                                viewModel.priorotizeWorkers(forLocation: result.location)
+                                viewModel.prioritizeWorkers(forLocation: result.location)
                                 withAnimation(.spring()){
                                     viewModel.viewState = .noInput
                                 }
                             }
                         }
-                        .transition(.move(edge: .bottom))
+//                        .transition(.move(edge: .bottom))
                     }
                     
                     if searchHelper.viewState == .userIsTyping {
@@ -53,16 +53,17 @@ struct LocationSearchView: View {
                                                      subtitle: result.subtitle)
                             .onTapGesture {
                                 viewModel.selectNewLocation(result)
-                                withAnimation{
+//                                withAnimation{
                                     searchHelper.viewState = .saveNewAddress
                                     viewModel.viewState = .saveNewAddress
-                                }
+//                                }
                             }
                         }
                     }
                     
                     if viewModel.viewState == .saveNewAddress {
-                        SaveNewAddress().transition(.move(edge: .bottom))
+                        SaveNewAddress()
+//                            .transition(.move(edge: .bottom))
                         
                     }
                 }.padding(.horizontal)

@@ -12,7 +12,7 @@ import Combine
 class LocationSearchViewModel: ObservableObject {
     
     // MARK: - Properties
-    private var manager = AppManager()
+    private let manager = SessionManager.shared
     var cancallables = Set<AnyCancellable>()
     
     @Published var viewState : LocationSearchViewState = .noInput
@@ -35,6 +35,10 @@ class LocationSearchViewModel: ObservableObject {
         startListeningForActiveMembers()
         filterWorkersForValidCandidates()
     }
+    
+    
+    //MARK: - Subscriptions
+    
     private func addAddressbookSubscriber(){
         manager.$addressBook
             .combineLatest($userLocation)
@@ -55,27 +59,28 @@ class LocationSearchViewModel: ObservableObject {
     private func startListeningForActiveMembers(){
         manager.$onlineWorkers
             .combineLatest($userLocation)
-            .sink {[weak self] (onlineMembers, location) in
+            .sink {[weak self] onlineMembers, location in
                 guard let onlineMembers = onlineMembers,
                       onlineMembers.count > 0 else {return}
                 
                 self?.workerDatabase = onlineMembers
-                guard location != nil else {
+                guard let location = location else {
                     return
                 }
-                self?.sortWorkersDB()
+                self?.prioritizeWorkers(forLocation: CLLocation(latitude: location.latitude,
+                                                                longitude: location.longitude))
             }
             .store(in: &cancallables)
     }
     
-    private func startListeningForLocationSelection(){
-        $selectedLocation.sink {[weak self] location in
-            guard let location = location else {return}
-            if location.lat != 0, location.lon != 0 {
-                self?.priorotizeWorkers(forLocation: location.location)
-            }
-        }.store(in: &cancallables)
-    }
+//    private func startListeningForLocationSelection(){
+//        $selectedLocation.sink {[weak self] location in
+//            guard let location = location else {return}
+//            if location.lat != 0, location.lon != 0 {
+//                self?.prioritizeWorkers(forLocation: location.location)
+//            }
+//        }.store(in: &cancallables)
+//    }
     
     private func filterWorkersForValidCandidates(){
         $workerDatabase
@@ -89,6 +94,9 @@ class LocationSearchViewModel: ObservableObject {
                 }
             }.store(in: &cancallables)
     }
+    
+    
+    //MARK: - helpers
     
     private func sortAddressBook(){
         if let location = self.userLocation {
@@ -105,42 +113,42 @@ class LocationSearchViewModel: ObservableObject {
         }
     }
     
-    func priorotizeWorkers(forLocation location:CLLocation){
+    func prioritizeWorkers(forLocation location:CLLocation){
         self.workerDatabase = workerDatabase
             .sorted(
                 by: { $0.distance(to: location)
                     < $1.distance(to: location) })
     }
     
-    private func sortWorkersDB(){
-        if let address = self.selectedLocation {
-            let serviceAddressLocation = CLLocation(latitude: address.lat,
-                                                    longitude: address.lon)
-            self.workerDatabase = workerDatabase
-                .sorted(
-                    by: { $0.distance(to: serviceAddressLocation)
-                        < $1.distance(to: serviceAddressLocation) })
-            return
-        } else {
-            if let location = self.userLocation {
-                let currentLocation = CLLocation(latitude: location.latitude,
-                                                 longitude: location.longitude)
-                
-                self.workerDatabase = workerDatabase
-                    .sorted(
-                        by: { $0.distance(to: currentLocation)
-                            < $1.distance(to: currentLocation) })
-                return
-            } else {
-                return
-            }
-        }
-    }
+//    private func sortWorkersDB(){
+//        if let address = self.selectedLocation {
+//            let serviceAddressLocation = CLLocation(latitude: address.lat,
+//                                                    longitude: address.lon)
+//            self.workerDatabase = workerDatabase
+//                .sorted(
+//                    by: { $0.distance(to: serviceAddressLocation)
+//                        < $1.distance(to: serviceAddressLocation) })
+//            return
+//        } else {
+//            if let location = self.userLocation {
+//                let currentLocation = CLLocation(latitude: location.latitude,
+//                                                 longitude: location.longitude)
+//
+//                self.workerDatabase = workerDatabase
+//                    .sorted(
+//                        by: { $0.distance(to: currentLocation)
+//                            < $1.distance(to: currentLocation) })
+//                return
+//            } else {
+//                return
+//            }
+//        }
+//    }
     
     func selectNewLocation(_ localSearch: MKLocalSearchCompletion) {
         
         selectedLocation = Address(label: nil,
-                                   address: localSearch.title.appending(localSearch.subtitle),
+                                   address: localSearch.title.appending(", " + localSearch.subtitle),
                                    lat: 0,
                                    lon: 0,
                                    buildingName: nil,
@@ -156,7 +164,7 @@ class LocationSearchViewModel: ObservableObject {
             print("DEBUG: LocationViewModel - successfully retrieved selected location's coordinate: \(coordinate)")
             self?.selectedLocation?.lat =  coordinate.latitude
             self?.selectedLocation?.lon =  coordinate.longitude
-            self?.priorotizeWorkers(forLocation: CLLocation(latitude: coordinate.latitude,
+            self?.prioritizeWorkers(forLocation: CLLocation(latitude: coordinate.latitude,
                                                             longitude: coordinate.longitude))
         }
         
@@ -165,7 +173,7 @@ class LocationSearchViewModel: ObservableObject {
     func locationSearch(forLocalSearchCompletion localSearch: MKLocalSearchCompletion,
                         completion: @escaping MKLocalSearch.CompletionHandler) {
         let searchRequest = MKLocalSearch.Request()
-        searchRequest.naturalLanguageQuery = localSearch.title.appending(localSearch.subtitle)
+        searchRequest.naturalLanguageQuery = localSearch.title.appending(", " + localSearch.subtitle)
         let search = MKLocalSearch(request: searchRequest)
         search.start(completionHandler: completion)
     }

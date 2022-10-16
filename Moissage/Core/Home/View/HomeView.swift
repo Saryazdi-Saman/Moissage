@@ -16,17 +16,27 @@ struct HomeView: View {
             ZStack(alignment: .topLeading) {
                 MapViewRepresentable()
                     .ignoresSafeArea()
-                MenuButton(viewState: $viewState)
-                    .padding(.leading)
+                HStack(alignment: .top){
+                    if viewState == .sideMenue{
+                        sideMenu()
+//                            .animation(.easeOut(duration: 0.65))
+                            .transition(.move(edge: .leading))
+                            .offset(x: -5, y: 0)
+                    }
+                    MenuButton(viewState: $viewState)
+                        .padding(.horizontal)
+                }
             }
             
             if viewState == .noInput {
                 MassageTypeSelectionCard(viewState: $viewState,
                                          selectedService: $viewModel.cart.mainService)
+//                .animation(.easeOut(duration: 0.65))
                 .transition(.move(edge: .bottom))
             } else if viewState == .orderDetails{
                 OrderDetailView(viewModel: viewModel)
                     .environmentObject(SessionManager())
+//                    .animation(.easeOut(duration: 0.65))
                     .transition(.move(edge: .bottom))
             }
         }
