@@ -8,13 +8,26 @@
 import SwiftUI
 
 struct OrderInProgress: View {
+    @EnvironmentObject var vm: LocationSearchViewModel
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        if vm.globalVS == .lookingForTherapist{
+            withAnimation {
+                LoadingView()
+                    .transition(.move(edge: .bottom))
+            }
+            
+        }
+        if vm.globalVS == .sessionInProgress{
+            withAnimation {
+                SessionInProgressView()
+                    .transition(.move(edge: .bottom))
+            }
+        }
     }
 }
 
 struct OrderInProgress_Previews: PreviewProvider {
     static var previews: some View {
-        OrderInProgress()
+        OrderInProgress().environmentObject(LocationSearchViewModel())
     }
 }

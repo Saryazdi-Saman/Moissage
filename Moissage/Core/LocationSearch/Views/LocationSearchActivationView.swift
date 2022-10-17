@@ -20,8 +20,8 @@ struct LocationSearchActivationView: View {
                 .frame(height: 44)
                 .overlay (
                     HStack{
-                        Text(vm.selectedLocation?.label ??
-                             vm.selectedLocation?.address ??
+                        Text(vm.selectedLocation?.label?.capitalized ??
+                             vm.selectedLocation?.address.capitalized ??
                              "Select address")
                             .font(.subheadline)
                             .fontWeight(.semibold)

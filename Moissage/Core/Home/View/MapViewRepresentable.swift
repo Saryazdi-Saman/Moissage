@@ -8,9 +8,11 @@
 import SwiftUI
 import UIKit
 import MapKit
+import Combine
 
 struct MapViewRepresentable : UIViewRepresentable {
     @EnvironmentObject var locationVM : LocationSearchViewModel
+    
     
     let mapView = MKMapView()
     let locationManager = LocationManager.shared
@@ -27,12 +29,17 @@ struct MapViewRepresentable : UIViewRepresentable {
         let nearbyWorkers = locationVM.workCandidates
         let address = locationVM.selectedLocation
         context.coordinator.addAnnotations(forWorkers: nearbyWorkers, serviceLocation: address)
+        if nearbyWorkers.count == 1{
+            
+            context.coordinator.addAnnotations(forWorkers: nearbyWorkers, serviceLocation: address)
+        }
     }
     
     func makeCoordinator() -> MapCoordinator {
         return MapCoordinator(parent: self)
         
     }
+    
 }
 
 extension MapViewRepresentable {
@@ -66,8 +73,8 @@ extension MapViewRepresentable {
             let femaleIcon = UIImage(named: "female")
             let homeIcon = UIImage(named: "home")
             let resizedHomeSize = CGSize(width: 40, height: 40)
-            let resizedMaleSize = CGSize(width: 65, height: 65)
-            let resizedFemaleSize = CGSize(width: 43.5, height: 52.2)
+            let resizedMaleSize = CGSize(width: 45.5, height: 45.5)
+            let resizedFemaleSize = CGSize(width: 30.5, height: 36.54)
             
             UIGraphicsBeginImageContext(resizedMaleSize)
             maleIcon?.draw(in: CGRect(origin: .zero, size: resizedMaleSize))
@@ -115,7 +122,7 @@ extension MapViewRepresentable {
                 anno.coordinate = location.location.coordinate
                 parent.mapView.addAnnotation(anno)
             }
-            let numberOfAnnos = min(4, workerDB.count)
+            let numberOfAnnos = min(3, workerDB.count)
             for worker in workerDB[..<numberOfAnnos]{
                 let anno = MKPointAnnotation()
                 if worker.gender == "male"{

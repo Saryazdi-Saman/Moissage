@@ -8,11 +8,9 @@
 import SwiftUI
 
 struct OrderDetailView: View {
-    @ObservedObject var cartVM : CartViewModel
-    @EnvironmentObject var locationVM: LocationSearchViewModel
+    @EnvironmentObject var vm: LocationSearchViewModel
     
-    init(viewModel : CartViewModel){
-        self.cartVM = viewModel
+    init(){
         UISegmentedControl.appearance().selectedSegmentTintColor = .systemBlue
         UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
     }
@@ -23,11 +21,11 @@ struct OrderDetailView: View {
         ZStack {
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color(.secondarySystemBackground))
-                .frame(maxHeight: locationVM.viewState == .noInput ? 500 : .infinity)
+                .frame(maxHeight: vm.viewState == .noInput ? 500 : .infinity)
                 .opacity(0.95)
             VStack{
                 VStack(alignment: .leading, spacing: 10){
-                    Text(cartVM.cart.mainService.title + " Massage")
+                    Text(vm.cartManager.cart.mainService.title + " Massage")
                         .font(.headline)
                         .fontWeight(.semibold)
                         .foregroundColor(.primary)
@@ -39,18 +37,18 @@ struct OrderDetailView: View {
                 
                 // MARK: - address bar
                 VStack{
-                    if locationVM.viewState == .noInput {
+                    if vm.viewState == .noInput {
                         LocationSearchActivationView()
                             .padding(.bottom,8)
                     } else{
                         LocationSearchView()
-                            .environmentObject(locationVM)
+                            .environmentObject(vm)
                     }
                 }
                 
                 // MARK: - Duration Picker
                 
-                Picker ("Duration", selection: $cartVM.cart.duration){
+                Picker ("Duration", selection: $vm.cartManager.cart.duration){
                     ForEach(MainServiceDuration.allCases, id: \.self){
                         Text($0.rawValue)
                     }
@@ -81,21 +79,21 @@ struct OrderDetailView: View {
                         
                         .foregroundColor(.secondary)
                     VStack{
-                        Picker ("Head", selection: $cartVM.cart.extraHeadMassage){
+                        Picker ("Head", selection: $vm.cartManager.cart.extraHeadMassage){
                             ForEach(ExtraHeadMassage.allCases, id: \.self){
                                 Text($0.rawValue)
                                 
                             }
                         }
                         .pickerStyle(SegmentedPickerStyle())
-                        Picker ("Foot", selection: $cartVM.cart.extraFootMassage){
+                        Picker ("Foot", selection: $vm.cartManager.cart.extraFootMassage){
                             ForEach(ExtraFootMassage.allCases, id: \.self){
                                 Text($0.rawValue)
                             }
                         }
                         .pickerStyle(SegmentedPickerStyle())
                         
-                        Picker ("gender", selection: $locationVM.genderPreference){
+                        Picker ("gender", selection: $vm.genderPreference){
                             ForEach(["female","male", "anyone"], id: \.self){Text($0)}
                         }
                         .pickerStyle(SegmentedPickerStyle())
@@ -109,7 +107,7 @@ struct OrderDetailView: View {
                     Text("Total:")
                         .fontWeight(.bold)
                     Spacer()
-                    Text("$ \(String(format: "%.0f", cartVM.cartTotal))")
+                    Text("$ \(String(format: "%.0f", vm.cartManager.cartTotal))")
                         .fontWeight(.bold)
                 }
                 .padding(.horizontal,4)
@@ -119,10 +117,16 @@ struct OrderDetailView: View {
                 
                 // MARK: - request button
                 Button {
-                    if locationVM.selectedLocation == nil {
-                        locationVM.viewState = .showSavedAddresses
+                    if vm.selectedLocation == nil {
+                        vm.viewState = .showSavedAddresses
                     }
-                    
+                    else {
+                        withAnimation {
+                            vm.submitOrder()
+                            vm.globalVS = .lookingForTherapist
+                            print(vm.cartManager.cart.total)
+                        }
+                    }
                 } label: {
                     Text("CONFIRM REQUEST")
                         .fontWeight(.bold)
@@ -141,7 +145,7 @@ struct OrderDetailView: View {
 
 struct OrderDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        OrderDetailView(viewModel: CartViewModel())
+        OrderDetailView()
             .environmentObject(LocationSearchViewModel())
     }
 }

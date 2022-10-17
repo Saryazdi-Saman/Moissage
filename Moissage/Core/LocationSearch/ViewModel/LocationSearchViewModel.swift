@@ -12,21 +12,35 @@ import Combine
 class LocationSearchViewModel: ObservableObject {
     
     // MARK: - Properties
+
     private let manager = SessionManager.shared
-    var cancallables = Set<AnyCancellable>()
+    @Published var cartManager = CartManager()
     
+    var cancallables = Set<AnyCancellable>()
+    @Published var globalVS : ViewState = .noInput
     @Published var viewState : LocationSearchViewState = .noInput
-    @Published var addressbook = [Address](){
+    var addressbook = [Address](){
         didSet {
             selectedLocation = addressbook.first
         }
     }
-    @Published var genderPreference = UserDefaults.standard.string(forKey: "preferredGender") ?? "anyone"
+    @Published var genderPreference = UserDefaults.standard.string(forKey: "preferredGender") ?? "anyone"{
+        didSet{
+            cartManager.cart.preferredGender = genderPreference
+        }
+    }
     @Published var workCandidates = [Therapist]()
     @Published var workerDatabase = [Therapist]()
     @Published var selectedLocation :Address?
     var newAddress = NewAddressRegistration()
     var addressShouldBeSaved = false
+    @Published var onCallWorker: Therapist?{
+        didSet{
+            if let onCallWorker = onCallWorker{
+                workCandidates = [onCallWorker]
+            }
+        }
+    }
     
     @Published var userLocation : CLLocationCoordinate2D?
     
@@ -62,25 +76,16 @@ class LocationSearchViewModel: ObservableObject {
             .sink {[weak self] onlineMembers, location in
                 guard let onlineMembers = onlineMembers,
                       onlineMembers.count > 0 else {return}
-                
-                self?.workerDatabase = onlineMembers
+                guard let self = self else {return}
+                self.workerDatabase = onlineMembers
                 guard let location = location else {
                     return
                 }
-                self?.prioritizeWorkers(forLocation: CLLocation(latitude: location.latitude,
+                self.prioritizeWorkers(forLocation: CLLocation(latitude: location.latitude,
                                                                 longitude: location.longitude))
             }
             .store(in: &cancallables)
     }
-    
-//    private func startListeningForLocationSelection(){
-//        $selectedLocation.sink {[weak self] location in
-//            guard let location = location else {return}
-//            if location.lat != 0, location.lon != 0 {
-//                self?.prioritizeWorkers(forLocation: location.location)
-//            }
-//        }.store(in: &cancallables)
-//    }
     
     private func filterWorkersForValidCandidates(){
         $workerDatabase
@@ -120,30 +125,6 @@ class LocationSearchViewModel: ObservableObject {
                     < $1.distance(to: location) })
     }
     
-//    private func sortWorkersDB(){
-//        if let address = self.selectedLocation {
-//            let serviceAddressLocation = CLLocation(latitude: address.lat,
-//                                                    longitude: address.lon)
-//            self.workerDatabase = workerDatabase
-//                .sorted(
-//                    by: { $0.distance(to: serviceAddressLocation)
-//                        < $1.distance(to: serviceAddressLocation) })
-//            return
-//        } else {
-//            if let location = self.userLocation {
-//                let currentLocation = CLLocation(latitude: location.latitude,
-//                                                 longitude: location.longitude)
-//
-//                self.workerDatabase = workerDatabase
-//                    .sorted(
-//                        by: { $0.distance(to: currentLocation)
-//                            < $1.distance(to: currentLocation) })
-//                return
-//            } else {
-//                return
-//            }
-//        }
-//    }
     
     func selectNewLocation(_ localSearch: MKLocalSearchCompletion) {
         
@@ -195,6 +176,44 @@ class LocationSearchViewModel: ObservableObject {
             selectedLocation?.instruction = newAddress.instruction
         }
     }
+    
+    func submitOrder(){
+//        manager.test()
+        print("submiting check out")
+        if addressShouldBeSaved {
+            print("address should be saved")
+            self.saveNewAddress()
+            guard let address = selectedLocation else {return}
+            print("selected location was not nill, order is submitted to be saved")
+            manager.updateAddressbook(withAddress: address)
+
+        }
+        guard workCandidates.count > 0,
+            let location = selectedLocation else {
+            print("no candidates")
+            //             ///// Do Something if noOne is available
+            return
+        }
+
+        manager.submitOrder(ofCart: cartManager.cart,
+                            toCandidates: workCandidates,
+                            forLocation: location, completion: { [self]result in
+            
+            switch result {
+            case .success(let worker):
+                self.onCallWorker = worker
+                self.cancallables.removeAll()
+                print("successfully connected a Therapist")
+                self.globalVS = .sessionInProgress
+                
+            case .failure( _ ):
+                self.globalVS = .noResponse
+            }
+            
+            
+        })
+        
+    }
 }
 
 
@@ -213,3 +232,4 @@ struct NewAddressRegistration {
     var buildingName: String = ""
     var instruction: String = ""
 }
+

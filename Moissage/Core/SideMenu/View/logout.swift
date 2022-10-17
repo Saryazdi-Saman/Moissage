@@ -16,7 +16,6 @@ struct logout: View {
                 
             Text("Log out")
                 .font(.system(size: 15, weight: .semibold))
-            Spacer()
         }.foregroundColor(.primary)
             .padding()
     }

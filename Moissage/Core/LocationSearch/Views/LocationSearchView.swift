@@ -53,10 +53,10 @@ struct LocationSearchView: View {
                                                      subtitle: result.subtitle)
                             .onTapGesture {
                                 viewModel.selectNewLocation(result)
-//                                withAnimation{
-                                    searchHelper.viewState = .saveNewAddress
-                                    viewModel.viewState = .saveNewAddress
-//                                }
+                                viewModel.addressShouldBeSaved = true
+                                searchHelper.viewState = .saveNewAddress
+                                viewModel.viewState = .saveNewAddress
+                                
                             }
                         }
                     }

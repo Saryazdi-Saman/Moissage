@@ -8,44 +8,51 @@
 import SwiftUI
 
 struct HomeView: View {
-    @StateObject var viewModel = CartViewModel()
-    @EnvironmentObject var locationViewModel : LocationSearchViewModel
-    @State private var viewState = ViewState.noInput
+//    @StateObject var viewModel = CartViewModel()
+    @EnvironmentObject var viewModel : LocationSearchViewModel
+    
     var body: some View {
         ZStack (alignment: .bottom){
             ZStack(alignment: .topLeading) {
                 MapViewRepresentable()
                     .ignoresSafeArea()
                 HStack(alignment: .top){
-                    if viewState == .sideMenue{
+                    if viewModel.globalVS == .sideMenue{
                         sideMenu()
-//                            .animation(.easeOut(duration: 0.65))
                             .transition(.move(edge: .leading))
-                            .offset(x: -5, y: 0)
+                            .offset(x: -5, y: 2)
                     }
-                    MenuButton(viewState: $viewState)
+                    MenuButton()
                         .padding(.horizontal)
+                    Spacer()
                 }
             }
             
-            if viewState == .noInput {
-                MassageTypeSelectionCard(viewState: $viewState,
-                                         selectedService: $viewModel.cart.mainService)
-//                .animation(.easeOut(duration: 0.65))
+            if viewModel.globalVS == .noInput {
+                MassageTypeSelectionCard()
                 .transition(.move(edge: .bottom))
-            } else if viewState == .orderDetails{
-                OrderDetailView(viewModel: viewModel)
+            }
+            if viewModel.globalVS == .orderDetails{
+                OrderDetailView()
                     .environmentObject(SessionManager())
-//                    .animation(.easeOut(duration: 0.65))
                     .transition(.move(edge: .bottom))
+            }
+            if viewModel.globalVS == .lookingForTherapist{
+                OrderInProgress()
+                    .transition(.move(edge: .bottom))
+            }
+            if viewModel.globalVS == .sessionInProgress{
+                SessionInProgressView()
+                    .transition(.move(edge: .bottom)).animation(.spring())
             }
         }
         .edgesIgnoringSafeArea(.bottom)
         .onReceive(LocationManager.shared.$userLocation) { location in
             if let location = location {
-                locationViewModel.userLocation = location
+                viewModel.userLocation = location
             }
         }
+        
     }
 }
 

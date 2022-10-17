@@ -18,17 +18,17 @@ struct LocationSearchResultCell: View {
             
             VStack(alignment: .leading, spacing: 4){
                 if let title = title {
-                    Text(title)
+                    Text(title.capitalized)
                         .font(.body)
                         .foregroundColor(.primary)
                     
-                    Text(subtitle)
+                    Text(subtitle.capitalized)
                         .font(.system(size: 15))
                         .foregroundColor(.secondary)
                 } else{
-                    Text(subtitle)
-                        .font(.body)
-                        .foregroundColor(.primary)
+                    Text(subtitle.capitalized)
+                        .font(.system(size: 15))
+                        .foregroundColor(.secondary)
                 }
                 
                 Divider()

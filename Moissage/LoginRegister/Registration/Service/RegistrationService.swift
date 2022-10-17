@@ -37,6 +37,7 @@ enum RegistrationKeys: String {
     case lastName
     case phoneNumber
     case preferredGender
+    case email
 }
 
 final class RegistrationServiceImpl: RegistrationService {
@@ -59,7 +60,8 @@ final class RegistrationServiceImpl: RegistrationService {
                             let values = [RegistrationKeys.firstName.rawValue: credentials.firstName,
                                           RegistrationKeys.lastName.rawValue: credentials.lastName,
                                           RegistrationKeys.phoneNumber.rawValue: credentials.phoneNumber,
-                                          RegistrationKeys.preferredGender.rawValue: credentials.preferredGender] as [String : Any]
+                                          RegistrationKeys.preferredGender.rawValue: credentials.preferredGender,
+                                          RegistrationKeys.email.rawValue: credentials.email] as [String : Any]
                             
                             Database
                                 .database()
@@ -76,6 +78,7 @@ final class RegistrationServiceImpl: RegistrationService {
                                         UserDefaults.standard.set(credentials.lastName, forKey: "lastName")
                                         UserDefaults.standard.set(credentials.phoneNumber, forKey: "phoneNumber")
                                         UserDefaults.standard.set(credentials.preferredGender, forKey: "preferredGender")
+                                        UserDefaults.standard.set(credentials.email, forKey: "email")
                                         promise(.success(()))
                                     }
                                 }

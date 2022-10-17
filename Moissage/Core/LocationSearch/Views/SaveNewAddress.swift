@@ -39,7 +39,7 @@ struct SaveNewAddress: View {
             
             Button {
                 withAnimation(.spring()){
-                    vm.addressShouldBeSaved.toggle()
+//                    vm.saveNewAddress()
                     vm.viewState = .noInput
                 }
             } label: {

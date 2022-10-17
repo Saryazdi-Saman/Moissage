@@ -15,6 +15,7 @@ struct sideMenu: View {
                 .frame(maxHeight: .infinity)
                 .frame(width: 220)
                 .opacity(0.95)
+                .shadow(color: .secondary, radius: 3)
             VStack(alignment: .leading){
                 SideMenuHeader()
                     .padding(.horizontal)
@@ -26,7 +27,6 @@ struct sideMenu: View {
                         
                     Text("Profile")
                         .font(.system(size: 15, weight: .semibold))
-                    Spacer()
                 }.foregroundColor(.primary)
                     .padding()
                 

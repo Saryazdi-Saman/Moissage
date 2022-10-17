@@ -8,38 +8,50 @@
 import SwiftUI
 
 struct MenuButton: View {
-    @Binding var viewState : ViewState
+//    @Binding var viewState : ViewState
+    @EnvironmentObject var vm : LocationSearchViewModel
     var body: some View {
+//        if vm.globalVS != .lookingForTherapist {
         Button {
             withAnimation(.spring()) {
-                actionForState(viewState)
+                actionForState(vm.globalVS)
             }
             
         } label: {
             ZStack{
-                Circle()
-                    .fill(Color(.secondarySystemBackground))
-                    .shadow(color:.secondary ,radius: 4)
-                    .frame(width: 55, height: 55)
-                Image(systemName: imageNameForState(viewState))
-                    .font(.title3)
-                    .foregroundColor(.primary)
+                    Circle()
+                        .fill(Color(.secondarySystemBackground))
+                        .shadow(color:.secondary ,radius: 4)
+                        .frame(width: 55, height: 55)
+                Image(systemName: imageNameForState(vm.globalVS))
+                        .font(.title3)
+                        .foregroundColor(.primary)
+                }
                 
             }
-        }
+//        }
         
     }
     
     func actionForState(_ state : ViewState){
         switch state {
+        case .lookingForTherapist:
+            vm.globalVS = ViewState.orderDetails
+            
         case .noInput :
-            viewState = ViewState.sideMenue
+            vm.globalVS = ViewState.sideMenue
             
         case .orderDetails:
-            viewState = ViewState.noInput
+            vm.globalVS = ViewState.noInput
             
         case .sideMenue:
-            viewState = ViewState.noInput
+            vm.globalVS = ViewState.noInput
+            
+        case .noResponse:
+            vm.globalVS = ViewState.orderDetails
+            
+        case .sessionInProgress:
+            return
         }
     }
     
@@ -48,6 +60,9 @@ struct MenuButton: View {
         case .sideMenue: return "arrow.left"
         case .noInput: return "line.3.horizontal"
         case .orderDetails: return "arrow.left"
+        case .lookingForTherapist: return "arrow.left"
+        case .noResponse: return "arrow.left"
+        case .sessionInProgress: return "line.3.horizontal"
         }
     }
     
@@ -57,10 +72,13 @@ enum ViewState {
     case noInput
     case orderDetails
     case sideMenue
+    case lookingForTherapist
+    case noResponse
+    case sessionInProgress
 }
 
 struct MenuButton_Previews: PreviewProvider {
     static var previews: some View {
-        MenuButton(viewState: .constant(.noInput))
+        MenuButton()
     }
 }

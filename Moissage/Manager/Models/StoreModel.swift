@@ -109,6 +109,7 @@ struct Address: Hashable{
 
 struct Therapist {
     let id: String
+    let name: String
     let gender: String
     var lat: Double
     var lon: Double
@@ -122,11 +123,36 @@ struct Therapist {
 
 enum DatabaseError: Error {
     case failedToFetch
+    case failedToFindWorker
     
     public var localizedDescription: String {
         switch self {
         case .failedToFetch:
             return "This means blah failed"
+        case .failedToFindWorker:
+            return "Did not find a therapist"
+            
         }
     }
+}
+
+struct Cart {
+    var mainService : MassageType
+    var duration : MainServiceDuration
+    var extraHeadMassage : ExtraHeadMassage
+    var extraFootMassage : ExtraFootMassage
+    var preferredGender : String
+    var total: Int {
+        return duration.price + extraHeadMassage.price + extraFootMassage.price
+    }
+}
+
+enum AddressAtributes: String {
+    case label
+    case address
+    case lat
+    case lon
+    case buildingName
+    case buzzer
+    case instruction
 }
