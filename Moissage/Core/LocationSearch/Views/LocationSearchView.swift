@@ -14,7 +14,7 @@ struct LocationSearchView: View {
     var body: some View {
         VStack{
             HStack{
-                if viewModel.viewState == .saveNewAddress{
+                if viewModel.searchVS == .saveNewAddress{
                     LocationSearchActivationView()
                 } else {
                     TextField("Search for address", text: $searchHelper.queryFragment)
@@ -39,7 +39,7 @@ struct LocationSearchView: View {
                                 viewModel.selectedLocation = result
                                 viewModel.prioritizeWorkers(forLocation: result.location)
                                 withAnimation(.spring()){
-                                    viewModel.viewState = .noInput
+                                    viewModel.searchVS = .noInput
                                 }
                             }
                         }
@@ -55,13 +55,13 @@ struct LocationSearchView: View {
                                 viewModel.selectNewLocation(result)
                                 viewModel.addressShouldBeSaved = true
                                 searchHelper.viewState = .saveNewAddress
-                                viewModel.viewState = .saveNewAddress
+                                viewModel.searchVS = .saveNewAddress
                                 
                             }
                         }
                     }
                     
-                    if viewModel.viewState == .saveNewAddress {
+                    if viewModel.searchVS == .saveNewAddress {
                         SaveNewAddress()
 //                            .transition(.move(edge: .bottom))
                         

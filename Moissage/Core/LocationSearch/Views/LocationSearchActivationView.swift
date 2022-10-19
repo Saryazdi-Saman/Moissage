@@ -33,7 +33,7 @@ struct LocationSearchActivationView: View {
         }
         .onTapGesture {
             withAnimation(.spring()){
-                vm.viewState = .showSavedAddresses
+                vm.searchVS = .showSavedAddresses
             }
         }
         

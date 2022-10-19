@@ -1,41 +1,40 @@
 //
-//  LoadingView.swift
+//  NoResponse.swift
 //  Moissage
 //
-//  Created by Saman Saryazdi on 2022-10-16.
+//  Created by Saman Saryazdi on 2022-10-18.
 //
 
 import SwiftUI
 
-struct LoadingView: View {
+struct NoResponse: View {
     var body: some View {
-        ZStack(alignment: .top) {
+        ZStack(alignment: .topLeading) {
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color(.secondarySystemBackground))
                 .frame(maxHeight: 400)
                 .opacity(0.95)
-            VStack(spacing: 10){
-                Text("Connecting you to a therapist")
-                    .font(.subheadline)
+            VStack(alignment: .leading, spacing: 4){
+                Text("Stay on the waiting list").font(.subheadline)
                     .fontWeight(.semibold)
                     .foregroundColor(.primary)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.top, 10)
-                    .padding()
                 
                 Divider()
-                    .padding(.bottom, 50)
+                    .padding()
                 
-                    LoadingBar()
-                        .padding()
+                Text("Looks Like everyone is busy")
+                Text("But we can Keep you on the waiting list")
                 
             }
+            .padding()
         }
     }
 }
 
-struct LoadingView_Previews: PreviewProvider {
+struct NoResponse_Previews: PreviewProvider {
     static var previews: some View {
-        LoadingView()
+        NoResponse()
     }
 }

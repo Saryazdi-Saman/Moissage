@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MenuButton: View {
-//    @Binding var viewState : ViewState
+//    @Binding var searchVS : ViewState
     @EnvironmentObject var vm : LocationSearchViewModel
     var body: some View {
 //        if vm.globalVS != .lookingForTherapist {
@@ -35,8 +35,6 @@ struct MenuButton: View {
     
     func actionForState(_ state : ViewState){
         switch state {
-        case .lookingForTherapist:
-            vm.globalVS = ViewState.orderDetails
             
         case .noInput :
             vm.globalVS = ViewState.sideMenue
@@ -47,8 +45,13 @@ struct MenuButton: View {
         case .sideMenue:
             vm.globalVS = ViewState.noInput
             
+        case .lookingForTherapist:
+            vm.globalVS = ViewState.orderDetails
+            vm.cancelOrder()
+            
         case .noResponse:
             vm.globalVS = ViewState.orderDetails
+            vm.cancelOrder()
             
         case .sessionInProgress:
             return
@@ -79,6 +82,6 @@ enum ViewState {
 
 struct MenuButton_Previews: PreviewProvider {
     static var previews: some View {
-        MenuButton()
+        MenuButton().environmentObject(LocationSearchViewModel())
     }
 }

@@ -14,18 +14,13 @@ import Combine
 
 final class SessionManager: ObservableObject {
     
-    private var callTherapistWorkItem : DispatchWorkItem?
-    private var removeOfferWorkItem : DispatchWorkItem?
-    
     @Published var signedIn = false
     @Published var addressBook: [Address]?
     @Published var onlineWorkers: [Therapist]?
     @Published var uid : String?
-//    @Published var assignedWorker: Therapist?
     
     private let database = Database.database().reference()
     private var cancallables = Set<AnyCancellable>()
-    private var workerID : String?
     
     static let shared = SessionManager()
     
@@ -37,7 +32,7 @@ final class SessionManager: ObservableObject {
     
     init() {
         setupObservations()
-        StartUpdatingDatabase()
+        startUpdatingDatabase()
     }
     
     deinit {
@@ -48,6 +43,20 @@ final class SessionManager: ObservableObject {
     
     func logout() {
         try? Auth.auth().signOut()
+    }
+    
+    func startUpdatingDatabase(){
+        $uid.sink { [weak self] id in
+            guard let uid = id else { return }
+            guard let self = self else {return}
+                self.updateUserDefaults(forUserWithID: uid)
+                self.startListeningForAvailableWorkers()
+        }
+        .store(in: &cancallables)
+    }
+    
+    func stopDatabaseObservations(){
+        cancallables.removeAll()
     }
 }
 
@@ -67,15 +76,7 @@ private extension SessionManager {
             }
     }
     
-    private func StartUpdatingDatabase(){
-        $uid.sink { [weak self] id in
-            guard let uid = id else { return }
-            guard let self = self else {return}
-                self.updateUserDefaults(forUserWithID: uid)
-                self.startListeningForAvailableWorkers()
-        }
-        .store(in: &cancallables)
-    }
+    
     
     private func updateUserDefaults(forUserWithID uid: String) {
         
@@ -122,7 +123,7 @@ private extension SessionManager {
             })
     }
     
-    private func startListeningForAvailableWorkers(){
+    func startListeningForAvailableWorkers(){
         database.child("aactive").observe(.value, with: { [weak self]snapshot in
             guard let value = snapshot.value as? [[String: Any]] else{
                 return
@@ -140,13 +141,15 @@ private extension SessionManager {
                 return Therapist(id: id, name: name,gender: gender, lat: lat, lon: lon)
             })
             
-//            print("DEBUG: SessionManager - Workers DB updated successfully")
             self?.onlineWorkers = activeTherapist
         })
     }
 }
 
+// MARK: - Uploading to server
+
 extension SessionManager{
+    
     func updateAddressbook(withAddress location: Address){
         guard let uid = uid else {return}
         let values = [AddressAtributes.label.rawValue: location.label as Any,
@@ -156,120 +159,21 @@ extension SessionManager{
                       AddressAtributes.buzzer.rawValue: location.buzzer as Any,
                       AddressAtributes.instruction.rawValue: location.instruction as Any,
                       AddressAtributes.buildingName.rawValue: location.buildingName as Any] as [String : Any]
-        
+
         let entryNumber = addressBook?.count ?? 0
         database.child("users")
             .child(uid)
             .child("addresses")
             .child(String(entryNumber))
             .updateChildValues(values)
-        
     }
     
-    
-    
-    
-    
-    
-    func submitOrder(ofCart cart : Cart, toCandidates candidates: [Therapist], forLocation location: Address,
-                     completion: @escaping (Result<Therapist, Error>) -> Void){
-        
-        guard let uid = uid else {
-            return
-            
-        }
-        var notifiedWorker: Therapist?
-        var jobAccepted = false{
-            didSet{
-                if jobAccepted{
-//                    completion(.success(worker))
-                    print("Job was accepted - updating through didSet")
-//                    print(worker)
-                    callTherapistWorkItem?.cancel()
-                    removeOfferWorkItem?.cancel()
-                }
-            }
-        }
-        
-        /// set up dispatchworkItem to schedule request to workers
-        ///
-        var workers = candidates
-        let workItem = DispatchWorkItem {
-            
-            print("WorkItem is working")
-            
-            var value = ["id" : uid,
-                         "lat" : location.lat,
-                         "lon" : location.lon,
-                         "duration" : cart.duration.rawValue,
-                         "type" : cart.mainService.title,
-                         "amount" : cart.total,
-                         "status": false] as [String : Any]
-            if cart.extraHeadMassage != .none {
-                value["extra_head_massage"] = cart.extraHeadMassage.rawValue
-            }
-            if cart.extraFootMassage != .none {
-                value["extra_foot_massage"] = cart.extraFootMassage.rawValue
-            }
-            
-            if workers.count == 0 {
-                completion(.failure(DatabaseError.failedToFindWorker))
-                return
-            }
-            notifiedWorker = workers.removeFirst()
-            guard let worker = notifiedWorker else {return}
-            self.database.child("aactive")
-                .child(worker.id)
-                .child("offer").updateChildValues(value)
-            
-            self.database.child("aactive")
-                .child(worker.id)
-                .child("offer").observe(.value) { snapshot in
-                    guard let value = snapshot.value as? [String: Any] else
-                    {return}
-                    if let status = value["status"] as? Bool{
-                        jobAccepted = status
-                        if jobAccepted {
-                            completion(.success(worker))
-                            print("job was accepted-updating though the closure")
-                            print(worker)
-                        }
-                    }
-                }
-//            if jobAccepted{
-//                completion(.success(worker))
-//                print("job was accepted-updating though the closure")
-//                print(worker)
-//                return
-//            }
-        }
-        
-        
-        var workersToRemove = candidates
-        let removeWorkItem = DispatchWorkItem{
-            if workersToRemove.isEmpty {return}
-            notifiedWorker = workersToRemove.removeFirst()
-            if let worker = notifiedWorker {
-                self.database.child("aactive")
-                    .child(worker.id)
-                    .child("offer").setValue(nil)
-                
-                self.database.child("aactive")
-                    .child(worker.id)
-                    .child("offer").removeAllObservers()
-            }
-        }
-        
-        
-        removeOfferWorkItem = removeWorkItem
-        callTherapistWorkItem = workItem
-        var delay = 0
-        for _ in candidates{
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(delay), execute: workItem)
-            delay += 20
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(delay), execute: removeWorkItem)
-        }
-        
+    func updateGenderPreference(_ preference : String){
+        guard let uid = uid else {return}
+        let values = [RegistrationKeys.preferredGender.rawValue: preference]
+        database.child("users")
+            .child(uid)
+            .updateChildValues(values)
     }
 }
 

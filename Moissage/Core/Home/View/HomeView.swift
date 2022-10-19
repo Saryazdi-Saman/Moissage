@@ -38,12 +38,19 @@ struct HomeView: View {
                     .transition(.move(edge: .bottom))
             }
             if viewModel.globalVS == .lookingForTherapist{
-                OrderInProgress()
-                    .transition(.move(edge: .bottom))
+                withAnimation {
+                    LoadingView()
+                        .transition(.asymmetric(insertion: .move(edge: .bottom),
+                                                removal: .move(edge: .leading)))
+                    
+                }
+                
             }
             if viewModel.globalVS == .sessionInProgress{
                 SessionInProgressView()
-                    .transition(.move(edge: .bottom)).animation(.spring())
+            }
+            if viewModel.globalVS == .noResponse{
+                NoResponse().transition(.move(edge: .trailing))
             }
         }
         .edgesIgnoringSafeArea(.bottom)

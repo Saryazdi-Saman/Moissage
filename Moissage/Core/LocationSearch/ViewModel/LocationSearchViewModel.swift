@@ -14,11 +14,12 @@ class LocationSearchViewModel: ObservableObject {
     // MARK: - Properties
 
     private let manager = SessionManager.shared
+    private var dispatcher: DispatchManager?
     @Published var cartManager = CartManager()
     
-    var cancallables = Set<AnyCancellable>()
+    private var cancallables = Set<AnyCancellable>()
     @Published var globalVS : ViewState = .noInput
-    @Published var viewState : LocationSearchViewState = .noInput
+    @Published var searchVS : LocationSearchViewState = .noInput
     var addressbook = [Address](){
         didSet {
             selectedLocation = addressbook.first
@@ -45,13 +46,17 @@ class LocationSearchViewModel: ObservableObject {
     @Published var userLocation : CLLocationCoordinate2D?
     
     init(){
-        addAddressbookSubscriber()
-        startListeningForActiveMembers()
-        filterWorkersForValidCandidates()
+        setUpAllSubscriptions()
     }
     
     
     //MARK: - Subscriptions
+    
+    private func setUpAllSubscriptions(){
+        addAddressbookSubscriber()
+        startListeningForActiveMembers()
+        filterWorkersForValidCandidates()
+    }
     
     private func addAddressbookSubscriber(){
         manager.$addressBook
@@ -178,27 +183,28 @@ class LocationSearchViewModel: ObservableObject {
     }
     
     func submitOrder(){
-//        manager.test()
-        print("submiting check out")
         if addressShouldBeSaved {
-            print("address should be saved")
             self.saveNewAddress()
             guard let address = selectedLocation else {return}
-            print("selected location was not nill, order is submitted to be saved")
             manager.updateAddressbook(withAddress: address)
-
         }
+        
         guard workCandidates.count > 0,
             let location = selectedLocation else {
             print("no candidates")
             //             ///// Do Something if noOne is available
             return
         }
+        
+        manager.stopDatabaseObservations()
+        if genderPreference != UserDefaults.standard.string(forKey: "preferredGender"){
+            manager.updateGenderPreference(genderPreference)
+        }
 
-        manager.submitOrder(ofCart: cartManager.cart,
-                            toCandidates: workCandidates,
-                            forLocation: location, completion: { [self]result in
-            
+        dispatcher = DispatchManager(candidates: workCandidates,
+                                     cart: cartManager.cart,
+                                     serviceAddress: location)
+        dispatcher?.submitOrder { result in
             switch result {
             case .success(let worker):
                 self.onCallWorker = worker
@@ -209,10 +215,14 @@ class LocationSearchViewModel: ObservableObject {
             case .failure( _ ):
                 self.globalVS = .noResponse
             }
-            
-            
-        })
+        }
         
+    }
+    
+    func cancelOrder(){
+        dispatcher?.cancelRequest()
+        manager.startUpdatingDatabase()
+        setUpAllSubscriptions()
     }
 }
 

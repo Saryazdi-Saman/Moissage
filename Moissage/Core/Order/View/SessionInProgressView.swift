@@ -16,18 +16,62 @@ struct SessionInProgressView: View {
                 .frame(maxHeight: 400)
                 .opacity(0.95)
             VStack(spacing: 10){
-                Text(" is on the way")
-                    .font(.body)
-                    .fontWeight(.bold)
+                HStack{
+                    
+                    Text("Kobra will be there in 20 minutes")
+                        .font(.headline)
+                    .fontWeight(.semibold)
                     .foregroundColor(.primary)
+                    .lineLimit(/*@START_MENU_TOKEN@*/2/*@END_MENU_TOKEN@*/)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.top, 10)
+                    .padding(.leading)
+                    Button {
+
+                    } label: {
+                        ZStack{
+                                Circle()
+                                    .fill(Color(.secondarySystemBackground))
+                                    .shadow(color:.secondary ,radius: 4)
+                                    .frame(width: 60, height: 60)
+                            Image(systemName: "message")
+                                    .font(.title3)
+                                    .foregroundColor(.primary)
+                            }
+                    }
                     .padding()
+                }
                 
                 Divider()
-//                LoadingBar()
-                //                FlowerLoadingBar()
-//                    .padding()
+                
+                Flower()
+                    .frame(height: 200)
+                HStack{
+                    Button {
+                        
+                    } label: {
+                        Text("CANCEL")
+                            .fontWeight(.bold)
+                            .frame(width: 200, height: 50)
+                            .background(Color(.systemRed))
+                            .cornerRadius(25)
+                            .foregroundColor(.white)
+                            .shadow(color:.secondary ,radius: 4)
+                    }
+//                    Button {
+//
+//                    } label: {
+//                        ZStack{
+//                                RoundedRectangle(cornerRadius: 15)
+//                                    .fill(Color(.secondarySystemBackground))
+//                                    .shadow(color:.secondary ,radius: 4)
+//                                    .frame(width: 50, height: 50)
+//                            Image(systemName: "message")
+//                                    .font(.title3)
+//                                    .foregroundColor(.primary)
+//                            }
+//                    }
+                }
+                .padding(.horizontal, 20)
                 
             }
         }

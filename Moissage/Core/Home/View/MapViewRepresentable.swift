@@ -8,7 +8,6 @@
 import SwiftUI
 import UIKit
 import MapKit
-import Combine
 
 struct MapViewRepresentable : UIViewRepresentable {
     @EnvironmentObject var locationVM : LocationSearchViewModel
@@ -17,21 +16,22 @@ struct MapViewRepresentable : UIViewRepresentable {
     let mapView = MKMapView()
     let locationManager = LocationManager.shared
     
-    func makeUIView(context: Context) -> some UIView {
+    
+    func makeUIView(context: Context) -> MKMapView {
         mapView.delegate = context.coordinator
+        mapView.showsUserLocation = false
         mapView.isRotateEnabled = false
-        mapView.showsUserLocation = true
         mapView.userTrackingMode = .follow
+        mapView.mapType = .mutedStandard
         return mapView
     }
     
     func updateUIView(_ uiView: UIViewType, context: Context) {
         let nearbyWorkers = locationVM.workCandidates
-        let address = locationVM.selectedLocation
-        context.coordinator.addAnnotations(forWorkers: nearbyWorkers, serviceLocation: address)
-        if nearbyWorkers.count == 1{
-            
-            context.coordinator.addAnnotations(forWorkers: nearbyWorkers, serviceLocation: address)
+        let userAddress = locationVM.selectedLocation
+        context.coordinator.addAnnotations(forWorkers: nearbyWorkers, serviceLocation: userAddress)
+        if let selectedWorker = locationVM.onCallWorker {
+            context.coordinator.configurePolyline(from: selectedWorker)
         }
     }
     
@@ -42,9 +42,14 @@ struct MapViewRepresentable : UIViewRepresentable {
     
 }
 
+
+
+
 extension MapViewRepresentable {
     class MapCoordinator : NSObject, MKMapViewDelegate{
+        
         let parent : MapViewRepresentable
+        
         // MARK: - Lifecycle
         init(parent: MapViewRepresentable) {
             self.parent = parent
@@ -54,17 +59,21 @@ extension MapViewRepresentable {
         // MARK: - MKMapViewDelegate
         
         func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
-//            let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: userLocation.coordinate.latitude,
-//                                                                           longitude: userLocation.coordinate.longitude),
-//                                            span: MKCoordinateSpan(latitudeDelta: 0.05,
-//                                                                   longitudeDelta: 0.05))
-//
-//            parent.mapView.setRegion(region, animated: true)
-            parent.mapView.layoutMargins = UIEdgeInsets(top: 5, left: 5, bottom: 500, right: 5)
+            
+            let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: userLocation.coordinate.latitude,
+                                                                           longitude: userLocation.coordinate.longitude),
+                                            span: MKCoordinateSpan(latitudeDelta: 0.05,
+                                                                   longitudeDelta: 0.05))
+            parent.mapView.setRegion(region, animated: true)
+            parent.mapView.layoutMargins = UIEdgeInsets(top: 5, left: 5, bottom: 400, right: 5)
         }
-//
         
-        
+        func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+            let polyLine = MKPolylineRenderer(overlay: overlay)
+            polyLine.strokeColor = .systemBlue
+            polyLine.lineWidth = 6
+            return polyLine
+        }
         
         func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
             guard !(annotation is MKUserLocation) else {return nil}
@@ -112,6 +121,13 @@ extension MapViewRepresentable {
             return annotationView
         }
         
+        func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
+            if parent.locationVM.onCallWorker != nil {
+                mapView.showsUserLocation = false
+                mapView.removeAnnotation(mapView.userLocation)
+            }
+        }
+        
         
         // MARK: - Helpers
         func addAnnotations(forWorkers workerDB: [Therapist], serviceLocation address: Address?){
@@ -134,6 +150,59 @@ extension MapViewRepresentable {
                 self.parent.mapView.addAnnotation(anno)
             }
             parent.mapView.showAnnotations(parent.mapView.annotations, animated: true)
+        }
+        
+        
+        func configurePolyline(from worker: Therapist) {
+            guard let userAddress = parent.locationVM.selectedLocation else {return}
+            let workerLocation = CLLocationCoordinate2D(latitude: worker.location.coordinate.latitude,
+                                                        longitude: worker.location.coordinate.longitude)
+            let userLocation = CLLocationCoordinate2D(latitude: userAddress.location.coordinate.latitude,
+                                                      longitude: userAddress.location.coordinate.longitude)
+            
+            getDestinationRoute(from: workerLocation, to: userLocation) { route in
+                self.parent.mapView.addOverlay(route.polyline)
+                self.updateMapRegion(forPolyline: route.polyline)
+            }
+        }
+        
+        func updateMapRegion(forPolyline polyLine: MKPolyline){
+            var regionRect = polyLine.boundingMapRect
+            
+            let wPadding = regionRect.size.width * 0.25
+            let hPadding = regionRect.size.height * 0.25
+            
+            //Add padding to the region
+            regionRect.size.width += wPadding
+            regionRect.size.height += hPadding
+            
+            //Center the region on the line
+            regionRect.origin.x -= wPadding / 2
+            regionRect.origin.y -= hPadding / 2
+            
+            parent.mapView.setRegion(MKCoordinateRegion(regionRect), animated: true)
+        }
+        
+        
+        func getDestinationRoute(from workerLocation: CLLocationCoordinate2D,
+                                 to userLocation: CLLocationCoordinate2D, completion:
+                                 @escaping(MKRoute)-> Void){
+            let workerPlacemark = MKPlacemark(coordinate: workerLocation)
+            let userPlaceMark = MKPlacemark(coordinate: userLocation)
+            let request = MKDirections.Request()
+            request.source = MKMapItem(placemark: workerPlacemark)
+            request.destination = MKMapItem(placemark: userPlaceMark)
+            let directions = MKDirections(request: request)
+            
+            directions.calculate { response, error in
+                if let error = error {
+                    print("DEBUG: failed to get directions with error \(error.localizedDescription)")
+                    return
+                }
+                guard let route = response?.routes.first else { return }
+                completion(route)
+            }
+            
         }
     }
 }

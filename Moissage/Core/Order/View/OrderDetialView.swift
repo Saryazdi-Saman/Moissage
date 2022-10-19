@@ -21,7 +21,7 @@ struct OrderDetailView: View {
         ZStack {
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color(.secondarySystemBackground))
-                .frame(maxHeight: vm.viewState == .noInput ? 500 : .infinity)
+                .frame(maxHeight: vm.searchVS == .noInput ? 500 : .infinity)
                 .opacity(0.95)
             VStack{
                 VStack(alignment: .leading, spacing: 10){
@@ -37,7 +37,7 @@ struct OrderDetailView: View {
                 
                 // MARK: - address bar
                 VStack{
-                    if vm.viewState == .noInput {
+                    if vm.searchVS == .noInput {
                         LocationSearchActivationView()
                             .padding(.bottom,8)
                     } else{
@@ -118,7 +118,7 @@ struct OrderDetailView: View {
                 // MARK: - request button
                 Button {
                     if vm.selectedLocation == nil {
-                        vm.viewState = .showSavedAddresses
+                        vm.searchVS = .showSavedAddresses
                     }
                     else {
                         withAnimation {
