@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct MenuButton: View {
-//    @Binding var searchVS : ViewState
     @EnvironmentObject var vm : LocationSearchViewModel
     var body: some View {
 //        if vm.globalVS != .lookingForTherapist {
