@@ -10,28 +10,31 @@ import UIKit
 import MapKit
 
 struct MapViewRepresentable : UIViewRepresentable {
-    @EnvironmentObject var locationVM : LocationSearchViewModel
-    
-    
+    @ObservedObject var locationVM : LocationSearchViewModel
     let mapView = MKMapView()
-    let locationManager = LocationManager.shared
-    
     
     func makeUIView(context: Context) -> MKMapView {
         mapView.delegate = context.coordinator
-        mapView.showsUserLocation = false
+        mapView.showsUserLocation = true
         mapView.isRotateEnabled = false
-        mapView.userTrackingMode = .follow
+//        mapView.userTrackingMode = .follow
         mapView.mapType = .mutedStandard
         return mapView
     }
     
     func updateUIView(_ uiView: UIViewType, context: Context) {
-        let nearbyWorkers = locationVM.workCandidates
-        let userAddress = locationVM.selectedLocation
-        context.coordinator.addAnnotations(forWorkers: nearbyWorkers, serviceLocation: userAddress)
+//        let nearbyWorkers = locationVM.workCandidates
+        if let userAddress = locationVM.invoice.address {
+            context.coordinator.addAnnotations(forLocation: userAddress)
+            context.coordinator.updateMapCenter(forLocation: userAddress)
+        } 
+        
         if let selectedWorker = locationVM.onCallWorker {
-            context.coordinator.configurePolyline(from: selectedWorker)
+            withAnimation {
+                context.coordinator.agentAnno(forLocation: selectedWorker)
+                context.coordinator.configurePolyline(from: selectedWorker)
+            }
+            
         }
     }
     
@@ -62,16 +65,17 @@ extension MapViewRepresentable {
             
             let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: userLocation.coordinate.latitude,
                                                                            longitude: userLocation.coordinate.longitude),
-                                            span: MKCoordinateSpan(latitudeDelta: 0.05,
-                                                                   longitudeDelta: 0.05))
+                                            span: MKCoordinateSpan(latitudeDelta: 0.008,
+                                                                   longitudeDelta: 0.008))
             parent.mapView.setRegion(region, animated: true)
             parent.mapView.layoutMargins = UIEdgeInsets(top: 5, left: 5, bottom: 400, right: 5)
+            parent.mapView.showsUserLocation = false
         }
         
         func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
             let polyLine = MKPolylineRenderer(overlay: overlay)
             polyLine.strokeColor = .systemBlue
-            polyLine.lineWidth = 6
+            polyLine.lineWidth = 3
             return polyLine
         }
         
@@ -121,16 +125,16 @@ extension MapViewRepresentable {
             return annotationView
         }
         
-        func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
-            if parent.locationVM.onCallWorker != nil {
-                mapView.showsUserLocation = false
-                mapView.removeAnnotation(mapView.userLocation)
-            }
-        }
+//        func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
+//            if parent.locationVM.onCallWorker != nil {
+//                mapView.showsUserLocation = false
+//                mapView.removeAnnotation(mapView.userLocation)
+//            }
+//        }
         
         
         // MARK: - Helpers
-        func addAnnotations(forWorkers workerDB: [Therapist], serviceLocation address: Address?){
+        func addAnnotations(forLocation address: Address?){
             parent.mapView.removeAnnotations(parent.mapView.annotations)
             if let location = address {
                 let anno = MKPointAnnotation()
@@ -138,33 +142,61 @@ extension MapViewRepresentable {
                 anno.coordinate = location.location.coordinate
                 parent.mapView.addAnnotation(anno)
             }
-            let numberOfAnnos = min(3, workerDB.count)
-            for worker in workerDB[..<numberOfAnnos]{
-                let anno = MKPointAnnotation()
-                if worker.gender == "male"{
-                    anno.title = "male"
-                } else {
-                    anno.title = "female"
-                }
-                anno.coordinate = worker.location.coordinate
-                self.parent.mapView.addAnnotation(anno)
-            }
-            parent.mapView.showAnnotations(parent.mapView.annotations, animated: true)
+            
+            parent.mapView.showAnnotations(parent.mapView.annotations, animated: false)
+        }
+        func agentAnno(forLocation address: AddressPoint){
+//            parent.mapView.removeAnnotations(parent.mapView.annotations)
+            let anno = MKPointAnnotation()
+            anno.title = "male"
+            anno.coordinate = address.location.coordinate
+            parent.mapView.addAnnotation(anno)
+            
+            parent.mapView.showAnnotations(parent.mapView.annotations, animated: false)
+        }
+//        func addAnnotations(forWorkers workerDB: [Therapist], serviceLocation address: Address?){
+//            parent.mapView.removeAnnotations(parent.mapView.annotations)
+//            if let location = address {
+//                let anno = MKPointAnnotation()
+//                anno.title = "address"
+//                anno.coordinate = location.location.coordinate
+//                parent.mapView.addAnnotation(anno)
+//            }
+//            let numberOfAnnos = min(3, workerDB.count)
+//            for worker in workerDB[..<numberOfAnnos]{
+//                let anno = MKPointAnnotation()
+//                if worker.gender == "male"{
+//                    anno.title = "male"
+//                } else {
+//                    anno.title = "female"
+//                }
+//                anno.coordinate = worker.location.coordinate
+//                self.parent.mapView.addAnnotation(anno)
+//            }
+//            parent.mapView.showAnnotations(parent.mapView.annotations, animated: true)
+//        }
+        
+        func updateMapCenter(forLocation location: Address?){
+            guard let location = location else {return}
+            let mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: location.lat, longitude: location.lon), span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
+            parent.mapView.setRegion(mapRegion, animated: false)
         }
         
         
-        func configurePolyline(from worker: Therapist) {
-            guard let userAddress = parent.locationVM.selectedLocation else {return}
+        func configurePolyline(from worker: AddressPoint) {
+            guard let userAddress = parent.locationVM.invoice.address else {return}
             let workerLocation = CLLocationCoordinate2D(latitude: worker.location.coordinate.latitude,
                                                         longitude: worker.location.coordinate.longitude)
             let userLocation = CLLocationCoordinate2D(latitude: userAddress.location.coordinate.latitude,
                                                       longitude: userAddress.location.coordinate.longitude)
             
             getDestinationRoute(from: workerLocation, to: userLocation) { route in
+                self.parent.mapView.removeOverlays(self.parent.mapView.overlays)
                 self.parent.mapView.addOverlay(route.polyline)
                 self.updateMapRegion(forPolyline: route.polyline)
             }
         }
+        
         
         func updateMapRegion(forPolyline polyLine: MKPolyline){
             var regionRect = polyLine.boundingMapRect

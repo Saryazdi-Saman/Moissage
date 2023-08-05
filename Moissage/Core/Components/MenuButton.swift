@@ -8,12 +8,17 @@
 import SwiftUI
 
 struct MenuButton: View {
-    @EnvironmentObject var vm : LocationSearchViewModel
+//    @EnvironmentObject var vm : LocationSearchViewModel
+    @Binding var viewState: ViewState
+    @Binding var withDelay: Bool
+    @Binding var delayedTime: Int
     var body: some View {
 //        if vm.globalVS != .lookingForTherapist {
         Button {
-            withAnimation(.spring()) {
-                actionForState(vm.globalVS)
+            withAnimation(.easeOut) {
+                withDelay = true
+                delayedTime = 0
+                actionForState(viewState)
             }
             
         } label: {
@@ -22,13 +27,12 @@ struct MenuButton: View {
                         .fill(Color(.secondarySystemBackground))
                         .shadow(color:.secondary ,radius: 4)
                         .frame(width: 55, height: 55)
-                Image(systemName: imageNameForState(vm.globalVS))
+                Image(systemName: imageNameForState(viewState))
                         .font(.title3)
                         .foregroundColor(.primary)
                 }
                 
             }
-//        }
         
     }
     
@@ -36,51 +40,79 @@ struct MenuButton: View {
         switch state {
             
         case .noInput :
-            vm.globalVS = ViewState.sideMenue
+            withAnimation {
+                viewState = .sideMenue
+            }
             
         case .orderDetails:
-            vm.globalVS = ViewState.noInput
+            withAnimation {
+                viewState = .noInput
+            }
             
         case .sideMenue:
-            vm.globalVS = ViewState.noInput
+            withAnimation {
+                viewState = .noInput
+            }
+            
+        case .checkout:
+            withAnimation {
+                viewState = .orderDetails
+            }
             
         case .lookingForTherapist:
-            vm.globalVS = ViewState.orderDetails
-            vm.cancelOrder()
+            withAnimation{
+                viewState = .orderDetails
+            }
             
         case .noResponse:
-            vm.globalVS = ViewState.orderDetails
-            vm.cancelOrder()
+            withAnimation{
+                viewState = .orderDetails
+            }
             
         case .sessionInProgress:
+            return
+            
+        case .onTheRoad, .noneOnline:
+            return
+            
+        case .none:
             return
         }
     }
     
     func imageNameForState( _ state : ViewState) -> String{
         switch state {
+        case .none: return "arrow.left"
         case .sideMenue: return "arrow.left"
         case .noInput: return "line.3.horizontal"
         case .orderDetails: return "arrow.left"
+        case .checkout: return "arrow.left"
         case .lookingForTherapist: return "arrow.left"
         case .noResponse: return "arrow.left"
         case .sessionInProgress: return "line.3.horizontal"
+        case .onTheRoad: return "arrow.left"
+        case .noneOnline: return "arrow.left"
         }
     }
     
 }
 
 enum ViewState {
+    case none
     case noInput
     case orderDetails
+    case checkout
     case sideMenue
     case lookingForTherapist
+    case onTheRoad
+    case noneOnline
     case noResponse
     case sessionInProgress
 }
 
 struct MenuButton_Previews: PreviewProvider {
     static var previews: some View {
-        MenuButton().environmentObject(LocationSearchViewModel())
+        MenuButton(viewState:.constant(.noInput),
+                   withDelay: .constant(true), delayedTime: .constant(0))
     }
 }

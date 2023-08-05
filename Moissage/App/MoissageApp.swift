@@ -6,38 +6,22 @@
 //
 
 import SwiftUI
-import Firebase
-
-
-class AppDelegate: NSObject, UIApplicationDelegate {
-  func application(_ application: UIApplication,
-                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-    FirebaseApp.configure()
-
-    return true
-  }
-}
+import FirebaseCore
 
 @main
 struct MoissageApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject var sessionService = SessionManager()
-    @StateObject var locationViewModel = LocationSearchViewModel()
     
     var body: some Scene {
         WindowGroup {
-            NavigationView {
                 if sessionService.signedIn {
                     HomeView()
-                        .environmentObject(locationViewModel)
+//                        .environmentObject(LocationSearchViewModel())
+                        .environmentObject(sessionService)
                 } else{
                     LoginView()
                 }
-            }
-//            .onAppear{
-//                sessionService.signedIn = sessionService.isSignedIn
-//            }
-            
         }
     }
 }

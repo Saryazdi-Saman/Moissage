@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct sideMenu: View {
     var body: some View {
@@ -32,7 +33,7 @@ struct sideMenu: View {
                 
                 logout()
                     .onTapGesture {
-                        SessionManager.shared.logout()
+                        try? Auth.auth().signOut()
                     }
             }
             .padding()

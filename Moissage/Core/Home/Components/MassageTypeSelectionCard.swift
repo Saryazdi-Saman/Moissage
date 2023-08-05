@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct MassageTypeSelectionCard: View {
-    @EnvironmentObject var viewModel : LocationSearchViewModel
-//    @Binding var selectedService : MassageType
-//    @EnvironmentObject var cartManager : CartManager
-    
+    @Binding var selectedService: MassageType
+    @Binding var viewState: ViewState
+    @Binding var withDelay: Bool
+    @Binding var delayedTime: Int
     var body: some View {
         
         ZStack {
@@ -29,9 +29,11 @@ struct MassageTypeSelectionCard: View {
                 VStack(spacing: 12) {
                     ForEach (MassageType.allCases){ type in
                         Button {
-                            viewModel.cartManager.cart.mainService = type
+                            selectedService = type
                             withAnimation(.spring()) {
-                                viewModel.globalVS = .orderDetails
+                                viewState = .orderDetails
+                                withDelay = true
+                                delayedTime = 0
                             }
                         } label: {
                             HStack{
@@ -78,6 +80,8 @@ struct MassageTypeSelectionCard: View {
 
 struct MassageTypeSelectionCard_Previews: PreviewProvider {
     static var previews: some View {
-        MassageTypeSelectionCard()
+        MassageTypeSelectionCard(selectedService: .constant(.relaxing),
+                                 viewState: .constant(.noInput),
+                                 withDelay: .constant(true), delayedTime: .constant(0))
     }
 }

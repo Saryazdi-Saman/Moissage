@@ -8,14 +8,18 @@
 import SwiftUI
 
 struct LocationSearchView: View {
-    @EnvironmentObject var viewModel : LocationSearchViewModel
+    @ObservedObject var vm: LocationSearchViewModel
     @StateObject var searchHelper = SearchCompletor()
     @State private var showSave = false
+    
+    init(viewModel vm: LocationSearchViewModel){
+        self.vm = vm
+    }
     var body: some View {
         VStack{
             HStack{
-                if viewModel.searchVS == .saveNewAddress{
-                    LocationSearchActivationView()
+                if vm.searchVS == .saveNewAddress{
+                    LocationSearchActivationView(viewModel: vm)
                 } else {
                     TextField("Search for address", text: $searchHelper.queryFragment)
                         .padding(.leading, 8)
@@ -29,21 +33,18 @@ struct LocationSearchView: View {
             ScrollView{
                 VStack(alignment: .leading) {
                     
-                    if searchHelper.viewState == .showSavedAddresses,
-                       !viewModel.addressShouldBeSaved {
-                        ForEach(viewModel.addressbook, id: \.self){
+                    if searchHelper.viewState == .showSavedAddresses{
+                        ForEach(vm.addressbook, id: \.self){
                             result in
                             LocationSearchResultCell(title: result.label,
                                                      subtitle: result.address)
                             .onTapGesture {
-                                viewModel.selectedLocation = result
-                                viewModel.prioritizeWorkers(forLocation: result.location)
+                                vm.invoice.address = result
                                 withAnimation(.spring()){
-                                    viewModel.searchVS = .noInput
+                                    vm.searchVS = .noInput
                                 }
                             }
                         }
-//                        .transition(.move(edge: .bottom))
                     }
                     
                     if searchHelper.viewState == .userIsTyping {
@@ -52,18 +53,17 @@ struct LocationSearchView: View {
                             LocationSearchResultCell(title: result.title,
                                                      subtitle: result.subtitle)
                             .onTapGesture {
-                                viewModel.selectNewLocation(result)
-                                viewModel.addressShouldBeSaved = true
+                                vm.selectNewLocation(result)
+                                vm.addressShouldBeSaved = true
                                 searchHelper.viewState = .saveNewAddress
-                                viewModel.searchVS = .saveNewAddress
+                                vm.searchVS = .saveNewAddress
                                 
                             }
                         }
                     }
                     
-                    if viewModel.searchVS == .saveNewAddress {
-                        SaveNewAddress()
-//                            .transition(.move(edge: .bottom))
+                    if vm.searchVS == .saveNewAddress {
+                        SaveNewAddress(viewModel: vm)
                         
                     }
                 }.padding(.horizontal)
@@ -74,6 +74,6 @@ struct LocationSearchView: View {
 
 struct LocationSearchView_Previews: PreviewProvider {
     static var previews: some View {
-        LocationSearchView().environmentObject(LocationSearchViewModel())
+        LocationSearchView(viewModel: LocationSearchViewModel())
     }
 }

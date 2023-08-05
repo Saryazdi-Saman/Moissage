@@ -11,13 +11,6 @@ import Foundation
 import Firebase
 import FirebaseDatabase
 
-enum Gender: String, Identifiable, CaseIterable {
-    var id: Self { self }
-    case male
-    case female
-    case any
-}
-
 struct RegistrationCredentials {
     
     var email: String
@@ -43,42 +36,29 @@ enum RegistrationKeys: String {
 final class RegistrationServiceImpl: RegistrationService {
     
     func register(with credentials: RegistrationCredentials) -> AnyPublisher<Void, Error> {
-        
         Deferred {
-
             Future { promise in
-                
                 Auth.auth().createUser(withEmail: credentials.email,
                                        password: credentials.password) { res, error in
-                    
                     if let err = error {
                         promise(.failure(err))
-                    } else {
-                        
+                    }
+                    else {
                         if let uid = res?.user.uid {
-                            
                             let values = [RegistrationKeys.firstName.rawValue: credentials.firstName,
                                           RegistrationKeys.lastName.rawValue: credentials.lastName,
                                           RegistrationKeys.phoneNumber.rawValue: credentials.phoneNumber,
                                           RegistrationKeys.preferredGender.rawValue: credentials.preferredGender,
                                           RegistrationKeys.email.rawValue: credentials.email] as [String : Any]
-                            
                             Database
                                 .database()
                                 .reference()
-                                .child("users")
+                                .child("user/client")
                                 .child(uid)
                                 .updateChildValues(values) { error, ref in
-                                    
                                     if let err = error {
                                         promise(.failure(err))
                                     } else {
-                                        UserDefaults.standard.set(uid, forKey: "id")
-                                        UserDefaults.standard.set(credentials.firstName, forKey: "firstName")
-                                        UserDefaults.standard.set(credentials.lastName, forKey: "lastName")
-                                        UserDefaults.standard.set(credentials.phoneNumber, forKey: "phoneNumber")
-                                        UserDefaults.standard.set(credentials.preferredGender, forKey: "preferredGender")
-                                        UserDefaults.standard.set(credentials.email, forKey: "email")
                                         promise(.success(()))
                                     }
                                 }
@@ -90,4 +70,8 @@ final class RegistrationServiceImpl: RegistrationService {
         .receive(on: RunLoop.main)
         .eraseToAnyPublisher()
     }
+}
+
+class CreateCustomerResponse: Decodable {
+    let customerID : String
 }

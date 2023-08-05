@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct LocationSearchActivationView: View {
-    @EnvironmentObject var vm : LocationSearchViewModel
-    
+    @ObservedObject var vm: LocationSearchViewModel
+    init (viewModel vm: LocationSearchViewModel){
+        self.vm = vm
+    }
     var body: some View {
         HStack{
             Image(systemName: "mappin.circle.fill")
@@ -17,11 +19,11 @@ struct LocationSearchActivationView: View {
                 .font(.largeTitle)
             RoundedRectangle(cornerRadius: 8)
                 .fill(Color(.systemGray4))
-                .frame(height: 44)
+                .frame(height: 36)
                 .overlay (
                     HStack{
-                        Text(vm.selectedLocation?.label?.capitalized ??
-                             vm.selectedLocation?.address.capitalized ??
+                        Text(vm.invoice.address?.label?.capitalized ??
+                             vm.invoice.address?.address.capitalized ??
                              "Select address")
                             .font(.subheadline)
                             .fontWeight(.semibold)
@@ -42,6 +44,6 @@ struct LocationSearchActivationView: View {
 
 struct LocationSearchActivationView_Previews: PreviewProvider {
     static var previews: some View {
-        LocationSearchActivationView().environmentObject(LocationSearchViewModel())
+        LocationSearchActivationView(viewModel: LocationSearchViewModel())
     }
 }

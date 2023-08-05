@@ -8,9 +8,19 @@
 import SwiftUI
 
 struct SaveNewAddress: View {
-    @EnvironmentObject var vm : LocationSearchViewModel
+    @ObservedObject var vm: LocationSearchViewModel
+    @EnvironmentObject var manager: SessionManager
+    init(viewModel vm: LocationSearchViewModel) {
+        self.vm = vm
+    }
     var body: some View {
         VStack(spacing: 10){
+            TextField("Add a label (ex. home or Bobby's appartment)",
+                      text: $vm.newAddress.label)
+                .padding(.leading)
+                .frame(height: 44)
+                .background(Color(.systemGray4))
+            
             HStack{
                 TextField("# Unit number", text: $vm.newAddress.unitNumber)
                     .padding(.leading)
@@ -21,11 +31,6 @@ struct SaveNewAddress: View {
                     .frame(height: 44)
                     .background(Color(.systemGray4))
             }
-            TextField("Add a label (ex. home or Bobby's appartment)",
-                      text: $vm.newAddress.label)
-                .padding(.leading)
-                .frame(height: 44)
-                .background(Color(.systemGray4))
             
             TextField("Building name", text: $vm.newAddress.buildingName)
                 .padding(.leading)
@@ -39,8 +44,9 @@ struct SaveNewAddress: View {
             
             Button {
                 withAnimation(.spring()){
-//                    vm.saveNewAddress()
-                    vm.searchVS = .noInput
+//                    manager.selectedAddress = vm.selectedLocation
+                    vm.saveNewAddress()
+//                    vm.searchVS = .noInput
                 }
             } label: {
                 Text("SAVE ADDRESS")
@@ -50,13 +56,19 @@ struct SaveNewAddress: View {
                     .cornerRadius(10)
                     .foregroundColor(.white)
             }
+//            Spacer()
             
         }
+//        .onAppear{
+//            manager.selectedAddress?.address = vm.selectedLocation!.address
+//            manager.selectedAddress?.label = vm.selectedLocation!.label
+//        }
     }
 }
 
 struct SaveNewAddress_Previews: PreviewProvider {
     static var previews: some View {
-        SaveNewAddress().environmentObject(LocationSearchViewModel())
+        SaveNewAddress(viewModel: LocationSearchViewModel())
+//            .environmentObject(SessionManager())
     }
 }
