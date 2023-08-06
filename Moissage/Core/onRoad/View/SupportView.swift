@@ -8,10 +8,14 @@
 import SwiftUI
 
 struct SupportView: View {
+    @ObservedObject var vm : OnRoadViweModel
     @Binding var isShowing : Bool
+    @State private var showMessages = false
+    @State private var showChat = false
     @State var showCancel = false
-    init(isShowing: Binding<Bool>){
+    init(isShowing: Binding<Bool>, vm: OnRoadViweModel){
         self._isShowing = isShowing
+        self.vm = vm
     }
     var body: some View {
         ZStack(alignment: .topLeading){
@@ -40,24 +44,34 @@ struct SupportView: View {
                 Divider()
                 Spacer()
                 if showCancel {
-                    CancelationView(isShowing: $showCancel)
+                    CancelationView(isShowing: $showCancel, vm: vm)
                         .frame(width:UIScreen.main.bounds.width)
                         .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .trailing)))
                 } else {
-                    SupportElements(showCancel: $showCancel)
+                    SupportElements(showCancel: $showCancel, showChat: $showChat)
                         .frame(width:UIScreen.main.bounds.width)
                         .transition(.asymmetric(insertion: .move(edge: .leading), removal: .move(edge: .leading)))
                 }
                 Spacer()
             }
-//            .animation(.spring())
+            .fullScreenCover(isPresented: $showChat) {
+                ChatView(isShowing: $showChat, to: Agent(id:"support", name: "Support"))
+            }
+        }
+        .onReceive(vm.$isSessionCanceled) { isCanceled in
+            if isCanceled {
+                withAnimation {
+                    isShowing.toggle()
+                }
+            }
         }
         .padding()
+        
     }
 }
 
 struct SupportView_Previews: PreviewProvider {
     static var previews: some View {
-        SupportView(isShowing: .constant(true))
+        SupportView(isShowing: .constant(true), vm: OnRoadViweModel())
     }
 }

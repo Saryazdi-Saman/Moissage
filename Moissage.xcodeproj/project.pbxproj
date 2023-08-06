@@ -34,12 +34,13 @@
 		F29E58C62A7DF71E006346F8 /* MessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F29E58C52A7DF71E006346F8 /* MessageService.swift */; };
 		F29E58C92A7E05BE006346F8 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F29E58C82A7E05BE006346F8 /* ChatViewModel.swift */; };
 		F29E58CC2A7EC2CA006346F8 /* RoadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F29E58CB2A7EC2CA006346F8 /* RoadService.swift */; };
+		F29E58CF2A7EE513006346F8 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F29E58CE2A7EE513006346F8 /* FirebaseAuth */; };
+		F29E58D12A7EE513006346F8 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = F29E58D02A7EE513006346F8 /* FirebaseDatabase */; };
+		F29E58D32A7EE513006346F8 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = F29E58D22A7EE513006346F8 /* FirebaseStorage */; };
 		F2D3593428F4DA6600724B4B /* MoissageApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3593328F4DA6600724B4B /* MoissageApp.swift */; };
 		F2D3593828F4DA6800724B4B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F2D3593728F4DA6800724B4B /* Assets.xcassets */; };
 		F2D3593B28F4DA6800724B4B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F2D3593A28F4DA6800724B4B /* Preview Assets.xcassets */; };
 		F2D3594528F4DAB500724B4B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3594428F4DAB500724B4B /* LoginView.swift */; };
-		F2D3594A28F4E16400724B4B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F2D3594928F4E16400724B4B /* FirebaseAuth */; };
-		F2D3594C28F4E16400724B4B /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F2D3594B28F4E16400724B4B /* FirebaseDatabaseSwift */; };
 		F2D3594F28F4E29E00724B4B /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3594E28F4E29E00724B4B /* ButtonView.swift */; };
 		F2D3595128F4E33800724B4B /* InputTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3595028F4E33800724B4B /* InputTextFieldView.swift */; };
 		F2D3595328F4E35C00724B4B /* PasswordField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D3595228F4E35C00724B4B /* PasswordField.swift */; };
@@ -151,9 +152,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F2D3594C28F4E16400724B4B /* FirebaseDatabaseSwift in Frameworks */,
+				F29E58D12A7EE513006346F8 /* FirebaseDatabase in Frameworks */,
+				F29E58D32A7EE513006346F8 /* FirebaseStorage in Frameworks */,
 				F2DDDD482908C86A00539DC5 /* StripePaymentSheet in Frameworks */,
-				F2D3594A28F4E16400724B4B /* FirebaseAuth in Frameworks */,
+				F29E58CF2A7EE513006346F8 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -658,9 +660,10 @@
 			);
 			name = Moissage;
 			packageProductDependencies = (
-				F2D3594928F4E16400724B4B /* FirebaseAuth */,
-				F2D3594B28F4E16400724B4B /* FirebaseDatabaseSwift */,
 				F2DDDD472908C86A00539DC5 /* StripePaymentSheet */,
+				F29E58CE2A7EE513006346F8 /* FirebaseAuth */,
+				F29E58D02A7EE513006346F8 /* FirebaseDatabase */,
+				F29E58D22A7EE513006346F8 /* FirebaseStorage */,
 			);
 			productName = Moissage;
 			productReference = F2D3593028F4DA6600724B4B /* Moissage.app */;
@@ -691,8 +694,8 @@
 			);
 			mainGroup = F2D3592728F4DA6600724B4B;
 			packageReferences = (
-				F2D3594828F4E16400724B4B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				F2DDDD462908C86A00539DC5 /* XCRemoteSwiftPackageReference "stripe-ios-spm" */,
+				F29E58CD2A7EE513006346F8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = F2D3593128F4DA6600724B4B /* Products */;
 			projectDirPath = "";
@@ -839,7 +842,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -893,7 +896,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -989,7 +992,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		F2D3594828F4E16400724B4B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+		F29E58CD2A7EE513006346F8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
 			requirement = {
@@ -1008,15 +1011,20 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		F2D3594928F4E16400724B4B /* FirebaseAuth */ = {
+		F29E58CE2A7EE513006346F8 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F2D3594828F4E16400724B4B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = F29E58CD2A7EE513006346F8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
 		};
-		F2D3594B28F4E16400724B4B /* FirebaseDatabaseSwift */ = {
+		F29E58D02A7EE513006346F8 /* FirebaseDatabase */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = F2D3594828F4E16400724B4B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseDatabaseSwift;
+			package = F29E58CD2A7EE513006346F8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		F29E58D22A7EE513006346F8 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F29E58CD2A7EE513006346F8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
 		};
 		F2DDDD472908C86A00539DC5 /* StripePaymentSheet */ = {
 			isa = XCSwiftPackageProductDependency;

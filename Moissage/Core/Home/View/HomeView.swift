@@ -44,6 +44,9 @@ struct HomeView: View {
                             withDelay: $withDelay,
                             delayedTime: $delayedTime)
                         .transition(.move(edge: .bottom))
+                        .onAppear{
+                            locationVM.stopTracking()
+                        }
                     }
                 }
                 if viewState == .orderDetails{
@@ -75,13 +78,11 @@ struct HomeView: View {
                 
                 if viewState == .onTheRoad {
                     if !withDelay{
-                        OnRoadView(viewState: $viewState,
+                        OnRoadView(locationVM: locationVM,
+                                   viewState: $viewState,
                                    withDelay: $withDelay,
                                    delayedTime: $delayedTime)
                         .transition(.move(edge: .bottom))
-                        .onAppear{
-                            locationVM.trackAgent();
-                        }
                     }
                 }
                 

@@ -9,8 +9,10 @@ import SwiftUI
 
 struct SupportElements: View {
     @Binding var showCancel : Bool
-    init(showCancel: Binding<Bool>){
+    @Binding var showChat : Bool
+    init(showCancel: Binding<Bool>, showChat: Binding<Bool>){
         self._showCancel = showCancel
+        self._showChat = showChat
     }
     var body: some View {
         VStack{
@@ -22,7 +24,11 @@ struct SupportElements: View {
                 Text("cancel my booking")
             }
             .padding(.bottom, 50)
-            Button{} label: {
+            Button{
+                withAnimation{
+                    showChat.toggle()
+                }
+            } label: {
                 Text("chat with support")
             }
             .padding(.bottom, 100)
@@ -33,6 +39,6 @@ struct SupportElements: View {
 
 struct SupportElements_Previews: PreviewProvider {
     static var previews: some View {
-        SupportElements(showCancel: .constant(false))
+        SupportElements(showCancel: .constant(false), showChat: .constant(false))
     }
 }

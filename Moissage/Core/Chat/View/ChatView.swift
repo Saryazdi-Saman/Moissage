@@ -27,11 +27,19 @@ struct ChatView: View {
     var body: some View {
         VStack (alignment: .center){
             ZStack{
-                Text("\(contact.name)\n*your therapist*")
-                    .font(.headline)
-                    .fontWeight(.bold)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
+                if contact.id == "support" {
+                    Text("Chat with support")
+                        .font(.headline)
+                        .fontWeight(.bold)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                } else {
+                    Text("\(contact.name)\n*your therapist*")
+                        .font(.headline)
+                        .fontWeight(.bold)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                }
                 HStack{
                     Button {
                         withAnimation {

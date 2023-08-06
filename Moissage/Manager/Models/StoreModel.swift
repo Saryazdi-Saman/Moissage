@@ -113,7 +113,7 @@ struct AddressPoint {
 struct Agent {
     let id: String
     let name: String
-    var imageUrl :String? = "gs://moissage-a078d.appspot.com/4FDFE1B6-6D44-471E-8520-334859F99878_1_105_c.jpeg"
+    var imageUrl : String? = "gs://moissage-a078d.appspot.com/4FDFE1B6-6D44-471E-8520-334859F99878_1_105_c.jpeg"
 }
 
 

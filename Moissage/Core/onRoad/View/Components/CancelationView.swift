@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct CancelationView: View {
+    @ObservedObject var vm : OnRoadViweModel
     @Binding var isShowing : Bool
-    init(isShowing: Binding<Bool>){
+    init(isShowing: Binding<Bool>, vm : OnRoadViweModel){
         self._isShowing = isShowing
+        self.vm = vm
     }
     var body: some View {
         VStack{
@@ -27,8 +29,10 @@ struct CancelationView: View {
                     .fontWeight(.medium)
             }.padding()
             Button{
-                withAnimation{
+                if !vm.isSessionCanceled {
+                    vm.cancelSession()
                 }
+//                isShowing.toggle()
             } label: {
                 Text("Accept fees and cancel my booking")
             }
@@ -40,6 +44,6 @@ struct CancelationView: View {
 
 struct CancelationView_Previews: PreviewProvider {
     static var previews: some View {
-        CancelationView(isShowing: .constant(true))
+        CancelationView(isShowing: .constant(true), vm: OnRoadViweModel())
     }
 }

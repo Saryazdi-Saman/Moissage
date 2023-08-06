@@ -30,6 +30,7 @@ class LocationSearchViewModel: ObservableObject {
     @Published var userLocation : CLLocationCoordinate2D?
     let service = SaveAddressImp()
     private var subscriptions = Set<AnyCancellable>()
+    private var trackingHandler : UInt?
     
     
     //MARK: - helpers
@@ -116,7 +117,7 @@ class LocationSearchViewModel: ObservableObject {
         guard let uid = service.uid else {
             return
         }
-        Database.database().reference()
+        trackingHandler = Database.database().reference()
             .child("contracts/\(uid)/agent/")
             .observe(.value) {[weak self] snapshot in
                 guard let value = snapshot.value as? NSDictionary,
@@ -129,5 +130,20 @@ class LocationSearchViewModel: ObservableObject {
                     self?.onCallWorker = AddressPoint(lat: lat, lon: lon)
                 }
             }
+    }
+    
+    func stopTracking(){
+        guard let uid = service.uid else {
+            return
+        }
+        guard let handler = trackingHandler else {
+            return
+        }
+        Database.database().reference()
+            .child("contracts/\(uid)/agent/")
+            .removeObserver(withHandle: handler)
+        DispatchQueue.main.async {
+            self.onCallWorker = nil
+        }
     }
 }

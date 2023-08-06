@@ -34,8 +34,10 @@ struct MapViewRepresentable : UIViewRepresentable {
                 context.coordinator.agentAnno(forLocation: selectedWorker)
                 context.coordinator.configurePolyline(from: selectedWorker)
             }
-            
+        } else{
+            context.coordinator.clearScreen()
         }
+        
     }
     
     func makeCoordinator() -> MapCoordinator {
@@ -195,6 +197,9 @@ extension MapViewRepresentable {
                 self.parent.mapView.addOverlay(route.polyline)
                 self.updateMapRegion(forPolyline: route.polyline)
             }
+        }
+        func clearScreen() {
+            self.parent.mapView.removeOverlays(self.parent.mapView.overlays)
         }
         
         
